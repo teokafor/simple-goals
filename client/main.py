@@ -4,6 +4,10 @@ import tkinter as gui
 from tkinter import ttk
 from screen.home import HomePage
 from screen.new_goal import NewGoalPage
+from goal import Goal
+
+# Collection of goals stored on the client
+goals = []
 
 class Application(gui.Tk):
 
@@ -41,6 +45,23 @@ class Application(gui.Tk):
     def new_goal(self):
         frame = self.frames[NewGoalPage]
         frame.tkraise()
+
+    def add_goal(self, title, description, date):
+        """Adds a new goal to the local application.
+
+        Args:
+            goal (Goal): the new Goal to add
+        """
+        print("New goal has been added: " + title)
+        goals.append(Goal(title, description, date))
+
+    def push(self):
+        """Pushes local changes to the server.
+        """
+
+    def pull(self):
+        """Pulls new changes from the server.
+        """    
 
 # Main entrypoint
 app = Application()

@@ -12,5 +12,5 @@ class HomePage(gui.Frame):
         simple_label.grid(row=0, column=0)
 
         # Add-new-goal button
-        cancel = ttk.Button(self, text="Cancel", command=controller.new_goal)
-        cancel.grid(row=10, column=0)
+        new_goal = ttk.Button(self, text="New Goal", command=controller.new_goal)
+        new_goal.grid(row=10, column=0)
