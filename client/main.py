@@ -5,9 +5,11 @@ from tkinter import ttk
 from screen.home import HomePage
 from screen.new_goal import NewGoalPage
 from goal import Goal
+import projectio
 
 # Collection of goals stored on the client
 goals = []
+
 
 class Application(gui.Tk):
 
@@ -32,7 +34,7 @@ class Application(gui.Tk):
             instance.grid(row=0, column=0, sticky="nsew")
 
         # Show the home frame.
-        self.show_frame(NewGoalPage)
+        self.show_frame(HomePage)
 
     def show_frame(self, entry):
         frame = self.frames[entry]
@@ -53,7 +55,8 @@ class Application(gui.Tk):
             goal (Goal): the new Goal to add
         """
         print("New goal has been added: " + title)
-        goals.append(Goal(title, description, date))
+        projectio.new_goal(title, description, date)  # Create a new row entry.
+        HomePage.update_goals_listbox(self, projectio)
 
     def push(self):
         """Pushes local changes to the server.
@@ -62,6 +65,7 @@ class Application(gui.Tk):
     def pull(self):
         """Pulls new changes from the server.
         """    
+
 
 # Main entrypoint
 app = Application()

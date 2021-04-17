@@ -82,17 +82,17 @@ class Row:
 
 # General functions not tied to the Row class:
 # This creates an empty goal with an automatically generated ID.
-def new_goal(goal_name, goal_desc):
+def new_goal(goal_name, goal_desc, end_date):
     cur.execute("SELECT * FROM Goal")
 
     # Create and commit new row.
     insert = "INSERT INTO Goal (GoalName, GoalDesc, StartDate, EndDate, TimeSpent, Completion) VALUES (?, ?, ?, ?, ?, ?);"
-    data_tuple = (goal_name, goal_desc, 'N/A', 'N/A', 0, 0)
+    data_tuple = (goal_name, goal_desc, 'N/A', end_date, 0, 0)
     cur.execute(insert, data_tuple)  # Create a row with the given information
     con.commit()  # Insert the new row
 
 
-# Bare-bones delete function.
+# Delete function.
 def delete_goal(goal_id):
     # Delete subgoals first
     cur.execute("DELETE FROM Subgoal WHERE GoalID = ?", (goal_id,))
@@ -100,3 +100,14 @@ def delete_goal(goal_id):
     # Now we can safely delete the goal itself
     cur.execute("DELETE FROM Goal WHERE GoalID = ?", (goal_id,))
     con.commit()
+
+# This function will return a list of objects that are created from each row in the database.
+def make_object_list():
+    cur.execute("SELECT * FROM Goal")
+    rows = cur.fetchall()
+    goals = []
+    for row in rows:
+        goal_id = row[0]
+        goals.append(Row(goal_id))
+
+    return goals
