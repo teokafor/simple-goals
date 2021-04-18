@@ -56,7 +56,7 @@ class Application(gui.Tk):
         """
         print("New goal has been added: " + title)
         projectio.new_goal(title, description, date)  # Create a new row entry.
-        self.frames[HomePage].update_goals_listbox(projectio)
+        self.frames[HomePage].update_goals_listbox()
 
     def push(self):
         """Pushes local changes to the server.
