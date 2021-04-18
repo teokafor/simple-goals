@@ -24,8 +24,11 @@ class HomePage(gui.Frame):
 
     # Should be called when adding, editing, and removing goals from the Listbox
     def update_goals_listbox(self, projectio):
+        # Clear existing goals.
+        self.goals_listbox.delete(0, gui.END)
+
         # Retrieve list of goals and add to Listbox
         goals = projectio.make_object_list()
+
         for goal in goals:
-            pass  # Here is where the listbox will be populated.
-            # self.goals_listbox.insert(gui.END, goal[1])
+            self.goals_listbox.insert(gui.END, goal.get_goal_name())
