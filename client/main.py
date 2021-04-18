@@ -4,6 +4,7 @@ import tkinter as gui
 from tkinter import ttk
 from screen.home import HomePage
 from screen.new_goal import NewGoalPage
+from screen.new_subgoal import NewSubGoalPage
 from goal import Goal
 import projectio
 
@@ -28,7 +29,7 @@ class Application(gui.Tk):
 
         # Iterate over our pages.
         # For each page, initialize it, and add it as a frame.
-        for Entry in (HomePage, NewGoalPage):
+        for Entry in (HomePage, NewGoalPage, NewSubGoalPage):
             instance = Entry(container, self)
             self.frames[Entry] = instance
             instance.grid(row=0, column=0, sticky="nsew")
@@ -48,15 +49,22 @@ class Application(gui.Tk):
         frame = self.frames[NewGoalPage]
         frame.tkraise()
 
+    def new_subgoal(self):
+        frame = self.frames[NewSubGoalPage]
+        frame.tkraise()
+
     def add_goal(self, title, description, date):
         """Adds a new goal to the local application.
 
         Args:
             goal (Goal): the new Goal to add
         """
-        print("New goal has been added: " + title)
         projectio.new_goal(title, description, date)  # Create a new row entry.
         self.frames[HomePage].update_goals_listbox()
+
+    def add_subgoal(self, title):
+        goal_id = self.frames[HomePage].get_selected_goal_id()
+        projectio.new_subgoal(goal_id, title)
 
     def push(self):
         """Pushes local changes to the server.
