@@ -12,33 +12,46 @@ class HomePage(gui.Frame):
 
         # Simple label for testing
         self.simple_label = ttk.Label(self, text="Hello, world!")
-        self.simple_label.grid(row=0, column=0)
+        self.simple_label.grid(row=0, column=1)
 
         # Add-new-goal button
-        self.new_goal = ttk.Button(self, text="New Goal", command=self.controller.new_goal)
-        self.new_goal.grid(row=10, column=0)
+        self.new_goal = ttk.Button(self, text="+", width=3, command=self.controller.new_goal)
+        self.new_goal.grid(row=10, column=1, sticky='ne')
 
         # Delete goal Button
-        self.delete_goal = ttk.Button(self, text='Delete', command=self.controller.delete_goal)
-        self.delete_goal.grid(row=11, column=0)
-
-        # TODO: Only make subgoal button visible/press-able when a goal is selected.
-        # Subgoal Button
-        self.new_subgoal = ttk.Button(self, text="New Subgoal", command=self.controller.new_subgoal)
-        self.new_subgoal.grid(row=10, column=2)
+        self.delete_goal = ttk.Button(self, text='x', width=3, command=self.controller.delete_goal)
+        self.delete_goal.grid(row=10, column=0, sticky='ne')
 
         # Listbox for Goals table
         self.goals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE)
-        self.goals_listbox.grid(row=5, column=0)
+        self.goals_listbox.grid(row=5, column=1)
         self.goals_listbox.bind('<<ListboxSelect>>', self.retrieve_subgoals)
 
         # Scrollbar for goals Listbox
         self.goals_v_scrollbar = gui.Scrollbar(self, orient='vertical', command=self.goals_listbox.yview)
-        self.goals_v_scrollbar.grid(row=5, column=1, sticky='ns')
+        self.goals_v_scrollbar.grid(row=5, column=2, sticky='ns')
         self.goals_listbox.config(yscrollcommand=self.goals_v_scrollbar.set)
 
         # Populate goals Listbox on startup
         self.update_goals_listbox()
+
+        # Blank widgets to space out window. This is terrible and should (probably) be removed ;)
+        self.blank1 = ttk.Label(self, text='                            ')
+        self.blank1.grid(row=0, column=3)
+
+        # TODO: Only make add subgoal button visible/press-able when a goal is selected.
+        # Add subgoal Button
+        self.new_subgoal = ttk.Button(self, text='+', width=3, command=self.controller.new_subgoal)
+        self.new_subgoal.grid(row=10, column=4,sticky='ne')
+
+        # Listbox for Subgoals table
+        self.subgoals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE)
+        self.subgoals_listbox.grid(row=5, column=4)
+
+        # Scrollbar for subgoals Listbox
+        self.subgoals_v_scrollbar = gui.Scrollbar(self, orient='vertical', command=self.subgoals_listbox.yview)
+        self.subgoals_v_scrollbar.grid(row=5, column=5, sticky='ns')
+        self.subgoals_listbox.config(yscrollcommand=self.subgoals_v_scrollbar.set)
 
     # Should be called when adding, editing, and removing goals from the Listbox
     def update_goals_listbox(self):
