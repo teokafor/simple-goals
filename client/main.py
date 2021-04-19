@@ -1,6 +1,7 @@
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
 import tkinter as gui
+from tkinter import messagebox
 from tkinter import ttk
 from screen.home import HomePage
 from screen.new_goal import NewGoalPage
@@ -48,6 +49,16 @@ class Application(gui.Tk):
     def new_goal(self):
         frame = self.frames[NewGoalPage]
         frame.tkraise()
+
+    def delete_goal(self):
+        answer = messagebox.askokcancel('Delete goal?', f'Are you sure you want to delete this goal?')
+        if answer:
+            self.delete_goal_confirm()
+
+    def delete_goal_confirm(self):
+        goal_id = self.frames[HomePage].get_selected_goal_id()
+        projectio.delete_goal(goal_id)
+        self.frames[HomePage].update_goals_listbox()
 
     def new_subgoal(self):
         frame = self.frames[NewSubGoalPage]

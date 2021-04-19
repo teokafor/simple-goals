@@ -18,6 +18,10 @@ class HomePage(gui.Frame):
         self.new_goal = ttk.Button(self, text="New Goal", command=self.controller.new_goal)
         self.new_goal.grid(row=10, column=0)
 
+        # Delete goal Button
+        self.delete_goal = ttk.Button(self, text='Delete', command=self.controller.delete_goal)
+        self.delete_goal.grid(row=11, column=0)
+
         # TODO: Only make subgoal button visible/press-able when a goal is selected.
         # Subgoal Button
         self.new_subgoal = ttk.Button(self, text="New Subgoal", command=self.controller.new_subgoal)
@@ -54,6 +58,7 @@ class HomePage(gui.Frame):
         for subgoal in subgoals:
             print(subgoal[1])
 
+    # This function is used to get row data of currently selected Listbox item
     def get_selected_goal_id(self):
         index = self.goals_listbox.curselection()
         goals = projectio.make_object_list()
