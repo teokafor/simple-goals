@@ -22,10 +22,17 @@ class HomePage(gui.Frame):
         self.delete_goal = ttk.Button(self, text='x', width=3, command=self.controller.delete_goal)
         self.delete_goal.grid(row=10, column=0, sticky='ne')
 
+        # Description Label and StringVar
+        self.description_var = gui.StringVar()
+        self.description_label = ttk.Label(self, textvariable=self.description_var)
+        self.description_label.grid(row=13, column=3)
+
         # Listbox for Goals table
         self.goals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE)
         self.goals_listbox.grid(row=5, column=1)
         self.goals_listbox.bind('<<ListboxSelect>>', self.retrieve_subgoals)
+        self.goals_listbox.bind('<<ListboxSelect>>', self.update_description)
+
 
         # Scrollbar for goals Listbox
         self.goals_v_scrollbar = gui.Scrollbar(self, orient='vertical', command=self.goals_listbox.yview)
@@ -76,3 +83,8 @@ class HomePage(gui.Frame):
         index = self.goals_listbox.curselection()
         goals = projectio.make_object_list()
         return goals[index[0]].get_goal_id()
+
+    def update_description(self, event):
+        index = self.goals_listbox.curselection()
+        goals = projectio.make_object_list()
+        self.description_var.set(goals[index[0]].get_goal_desc())
