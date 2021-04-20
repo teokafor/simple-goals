@@ -63,40 +63,49 @@ class Row:
         con.commit()
 
     # Subgoal-related functions:
-    # Create a new subgoal.
-    def new_subgoal(self, subgoal_name):
-        insert = "INSERT INTO SubGoal (GoalID, SubName, Completion) VALUES (?, ?, ?);"
-        tuple = (self.__goal_id, subgoal_name, 0)
-        cur.execute(insert, tuple)
-        con.commit()
-
     # Retrieve all subgoals associated with this goal.
     def get_subgoals(self):
         insert = "SELECT * FROM Subgoal WHERE GoalID = ?"
         data_tuple = (self.__goal_id,)
         cur.execute(insert, data_tuple)
         subgoals = cur.fetchall()
-        for subgoal in subgoals:
-            print(subgoal)
+        return subgoals
 
 
 # General functions not tied to the Row class:
 # This creates an empty goal with an automatically generated ID.
-def new_goal(goal_name, goal_desc):
+def new_goal(goal_name, goal_desc, end_date):
     cur.execute("SELECT * FROM Goal")
-
     # Create and commit new row.
     insert = "INSERT INTO Goal (GoalName, GoalDesc, StartDate, EndDate, TimeSpent, Completion) VALUES (?, ?, ?, ?, ?, ?);"
-    data_tuple = (goal_name, goal_desc, 'N/A', 'N/A', 0, 0)
+    data_tuple = (goal_name, goal_desc, 'N/A', end_date, 0, 0)
     cur.execute(insert, data_tuple)  # Create a row with the given information
     con.commit()  # Insert the new row
 
 
-# Bare-bones delete function.
+# Create a new subgoal.
+def new_subgoal(goal_id, subgoal_name):
+    insert = "INSERT INTO SubGoal (GoalID, SubName, Completion) VALUES (?, ?, ?);"
+    tuple = (goal_id, subgoal_name, 0)
+    cur.execute(insert, tuple)
+    con.commit()
+
+
+# Delete function.
 def delete_goal(goal_id):
     # Delete subgoals first
     cur.execute("DELETE FROM Subgoal WHERE GoalID = ?", (goal_id,))
-
     # Now we can safely delete the goal itself
     cur.execute("DELETE FROM Goal WHERE GoalID = ?", (goal_id,))
     con.commit()
+
+
+# This function will return a list of objects that are created from each row in the database.
+def make_object_list():
+    cur.execute("SELECT * FROM Goal")
+    rows = cur.fetchall()
+    goals = []
+    for row in rows:
+        goal_id = row[0]
+        goals.append(Row(goal_id))
+    return goals

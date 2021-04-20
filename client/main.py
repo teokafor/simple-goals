@@ -1,13 +1,17 @@
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
 import tkinter as gui
+from tkinter import messagebox
 from tkinter import ttk
 from screen.home import HomePage
 from screen.new_goal import NewGoalPage
+from screen.new_subgoal import NewSubGoalPage
 from goal import Goal
+import projectio
 
 # Collection of goals stored on the client
 goals = []
+
 
 class Application(gui.Tk):
 
@@ -26,13 +30,13 @@ class Application(gui.Tk):
 
         # Iterate over our pages.
         # For each page, initialize it, and add it as a frame.
-        for Entry in (HomePage, NewGoalPage):
+        for Entry in (HomePage, NewGoalPage, NewSubGoalPage):
             instance = Entry(container, self)
             self.frames[Entry] = instance
             instance.grid(row=0, column=0, sticky="nsew")
 
         # Show the home frame.
-        self.show_frame(NewGoalPage)
+        self.show_frame(HomePage)
 
     def show_frame(self, entry):
         frame = self.frames[entry]
@@ -46,14 +50,32 @@ class Application(gui.Tk):
         frame = self.frames[NewGoalPage]
         frame.tkraise()
 
+    def delete_goal(self):
+        answer = messagebox.askokcancel('Delete goal?', f'Are you sure you want to delete this goal?')
+        if answer:
+            self.delete_goal_confirm()
+
+    def delete_goal_confirm(self):
+        goal_id = self.frames[HomePage].get_selected_goal_id()
+        projectio.delete_goal(goal_id)
+        self.frames[HomePage].update_goals_listbox()
+
+    def new_subgoal(self):
+        frame = self.frames[NewSubGoalPage]
+        frame.tkraise()
+
     def add_goal(self, title, description, date):
         """Adds a new goal to the local application.
 
         Args:
             goal (Goal): the new Goal to add
         """
-        print("New goal has been added: " + title)
-        goals.append(Goal(title, description, date))
+        projectio.new_goal(title, description, date)  # Create a new row entry.
+        self.frames[HomePage].update_goals_listbox()
+
+    def add_subgoal(self, title):
+        goal_id = self.frames[HomePage].get_selected_goal_id()
+        projectio.new_subgoal(goal_id, title)
 
     def push(self):
         """Pushes local changes to the server.
@@ -62,6 +84,7 @@ class Application(gui.Tk):
     def pull(self):
         """Pulls new changes from the server.
         """    
+
 
 # Main entrypoint
 app = Application()
