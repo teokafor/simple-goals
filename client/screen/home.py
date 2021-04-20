@@ -28,7 +28,7 @@ class HomePage(gui.Frame):
         self.description_label.grid(row=12, column=1)
 
         # Listbox for Goals table
-        self.goals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE)
+        self.goals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE, exportselection=0)
         self.goals_listbox.grid(row=5, column=1)
         self.goals_listbox.bind('<<ListboxSelect>>', self.on_goal_select)
 
@@ -50,7 +50,7 @@ class HomePage(gui.Frame):
         self.new_subgoal.grid(row=10, column=4,sticky='ne')
 
         # Listbox for Subgoals table
-        self.subgoals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE)
+        self.subgoals_listbox = gui.Listbox(self, height=15, width=25, selectmode=gui.SINGLE, exportselection=0)
         self.subgoals_listbox.grid(row=5, column=4)
 
         # Scrollbar for subgoals Listbox
