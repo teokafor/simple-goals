@@ -3,9 +3,9 @@
 import tkinter as gui
 from tkinter import messagebox
 from tkinter import ttk
-from client.screen.home import HomePage
-from client.screen.new_goal import NewGoalPage
-from client.screen.new_subgoal import NewSubGoalPage
+from client.screen_old.home import HomePage
+from client.screen_old.new_goal import NewGoalPage
+from client.screen_old.new_subgoal import NewSubGoalPage
 from client.goal import Goal
 import client.projectio as projectio
 

@@ -1,8 +1,8 @@
 import tkinter as gui
 from tkinter import ttk
-import client.projectio
+from tkcalendar import Calendar
 
-class NewSubGoalPage(gui.Frame):
+class NewGoalPage(gui.Frame):
 
     # Primary HomePage constructor
     def __init__(self, parent, controller):
@@ -21,11 +21,23 @@ class NewSubGoalPage(gui.Frame):
         title_entry.grid(row=2, column=0)
         self.title_entry = title_entry
 
-        # Cancel button in the lower-left hand corner of the screen
+        # Entry widget for a general description of this goal w/ label.
+        description_label = ttk.Label(self, text="Description")
+        description_label.grid(row=3, column=0)
+        description_entry = ttk.Entry(self)
+        description_entry.grid(row=4, column=0)
+        self.description_entry = description_entry
+
+        # Due-date selector
+        calendar = Calendar(self)
+        calendar.grid(row=7, column=0)
+        self.calendar = calendar
+
+        # Cancel button in the lower-left hand corner of the screen_old
         cancel = ttk.Button(self, text="Cancel", command=self.cancel)
         cancel.grid(row=10, column=0)
 
-        # Submit button in the lower-right hand corner of the screen
+        # Submit button in the lower-right hand corner of the screen_old
         submit = ttk.Button(self, text="Submit", command=self.submit)
         submit.grid(row=10, column=3)
 
@@ -33,6 +45,6 @@ class NewSubGoalPage(gui.Frame):
         self.controller.home()
 
     def submit(self):
-        self.controller.add_subgoal(self.title_entry.get())
+        self.controller.add_goal(self.title_entry.get(), self.description_entry.get(), self.calendar.get_date())
         self.cancel()
-
+        
