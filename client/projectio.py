@@ -2,7 +2,7 @@
 import sqlite3
 
 # Initial connection to database
-con = sqlite3.connect('db/main.db')  # Connect to the main database file
+con = sqlite3.connect('client/db/main.db')  # Connect to the main database file
 cur = con.cursor()  # Create a cursor object
 cur.execute("SELECT * FROM Goal")
 rows = cur.fetchall()  # Get the rows from the table

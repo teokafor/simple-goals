@@ -3,11 +3,11 @@
 import tkinter as gui
 from tkinter import messagebox
 from tkinter import ttk
-from screen.home import HomePage
-from screen.new_goal import NewGoalPage
-from screen.new_subgoal import NewSubGoalPage
-from goal import Goal
-import projectio
+from client.screen.home import HomePage
+from client.screen.new_goal import NewGoalPage
+from client.screen.new_subgoal import NewSubGoalPage
+from client.goal import Goal
+import client.projectio as projectio
 
 # Collection of goals stored on the client
 goals = []
