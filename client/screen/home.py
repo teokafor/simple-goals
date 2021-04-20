@@ -23,17 +23,17 @@ class Ui_MainWindow(object):
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(320, 462, 71, 71))
-        self.pushButton.setStyleSheet("border-radius: 35px;\n"
+        self.newGoal = QtWidgets.QPushButton(self.centralwidget)
+        self.newGoal.setGeometry(QtCore.QRect(320, 462, 71, 71))
+        self.newGoal.setStyleSheet("border-radius: 35px;\n"
 "background-color: white;\n"
 "font-size: 50px;\n"
 "padding-bottom: 5px;\n"
 "background-color: #081540;\n"
 "color: white;\n"
 "")
-        self.pushButton.setIconSize(QtCore.QSize(16, 16))
-        self.pushButton.setObjectName("pushButton")
+        self.newGoal.setIconSize(QtCore.QSize(16, 16))
+        self.newGoal.setObjectName("newGoal")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 801, 37))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
@@ -74,7 +74,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Simple Goals"))
-        self.pushButton.setText(_translate("MainWindow", "+"))
+        self.newGoal.setText(_translate("MainWindow", "+"))
         self.todayButton.setText(_translate("MainWindow", "Today"))
         self.weeklyButton.setText(_translate("MainWindow", "Weekly"))
         self.overviewButton.setText(_translate("MainWindow", "Overview"))
