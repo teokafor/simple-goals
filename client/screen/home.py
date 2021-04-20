@@ -1,6 +1,6 @@
 import tkinter as gui
 from tkinter import ttk
-from client import projectio
+from .. import projectio
 
 class HomePage(gui.Frame):
 

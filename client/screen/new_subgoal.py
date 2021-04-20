@@ -1,6 +1,6 @@
 import tkinter as gui
 from tkinter import ttk
-import projectio
+import client.projectio
 
 class NewSubGoalPage(gui.Frame):
 
