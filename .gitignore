@@ -4,3 +4,4 @@ client/screen/__pycache__/*
 client/__pycache__/
 client/screen/__pycache__/new_goal.cpython-37.pyc
 .history/
+.idea/
