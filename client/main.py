@@ -17,6 +17,9 @@ def home():
     """
     HOME.setupUi(ROOT)
 
+    # Click handlers
+    HOME.newGoal.clicked.connect(new_goal)
+
 
 def new_goal():
     """
@@ -26,11 +29,12 @@ def new_goal():
     new_goal_window = NewGoalWindow()
     new_goal_window.setupUi(ROOT)
 
+    # Click handlers
+    new_goal_window.cancelButton.clicked.connect(home)
+
 
 if __name__ == '__main__':
-    # Create an instance of our home window and assign button-click events.
-    HOME.setupUi(ROOT)
-    HOME.newGoal.clicked.connect(new_goal)
+    home()
 
     # Display the root window.
     ROOT.show()
