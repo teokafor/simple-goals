@@ -13,18 +13,113 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #F6F5F9;</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
+   <widget class="QLineEdit" name="titleEdit">
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>120</y>
-      <width>71</width>
-      <height>21</height>
+      <y>100</y>
+      <width>401</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border: none; background-color: white; border-bottom: 1px solid #C9C9C9;
+border-radius: 5px;
+padding: 10px;</string>
+    </property>
     <property name="text">
-     <string>Hello, world!</string>
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Enter a goal title...</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="titleLabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>60</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 20px;</string>
+    </property>
+    <property name="text">
+     <string>Goal Title</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="descriptionLabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>170</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 20px;</string>
+    </property>
+    <property name="text">
+     <string>Description</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cancelButton">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>460</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #B23535;
+color: white;
+border-radius: 5px; font-size: 15px;</string>
+    </property>
+    <property name="text">
+     <string>Cancel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="createGoalButton">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>460</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #35B29D;
+color: white;
+border-radius: 5px; font-size: 15px;</string>
+    </property>
+    <property name="text">
+     <string>Create Goal</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="descriptionEdit">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>220</y>
+      <width>401</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: none; background-color: white; border-bottom: 1px solid #C9C9C9; border-radius: 5px; padding: 10px;</string>
+    </property>
+    <property name="placeholderText">
+     <string>Enter a description for your new goal...</string>
     </property>
    </widget>
   </widget>
@@ -38,7 +133,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

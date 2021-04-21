@@ -15,19 +15,45 @@ class Ui_NewGoalWindow(object):
     def setupUi(self, NewGoalWindow):
         NewGoalWindow.setObjectName("NewGoalWindow")
         NewGoalWindow.resize(800, 550)
+        NewGoalWindow.setStyleSheet("background-color: #F6F5F9;")
         self.centralwidget = QtWidgets.QWidget(NewGoalWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(190, 120, 71, 21))
-        self.label.setObjectName("label")
+        self.titleEdit = QtWidgets.QLineEdit(self.centralwidget)
+        self.titleEdit.setGeometry(QtCore.QRect(190, 100, 401, 31))
+        self.titleEdit.setStyleSheet("border: none; background-color: white; border-bottom: 1px solid #C9C9C9;\n"
+"border-radius: 5px;\n"
+"padding: 10px;")
+        self.titleEdit.setText("")
+        self.titleEdit.setObjectName("titleEdit")
+        self.titleLabel = QtWidgets.QLabel(self.centralwidget)
+        self.titleLabel.setGeometry(QtCore.QRect(190, 60, 91, 16))
+        self.titleLabel.setStyleSheet("font-size: 20px;")
+        self.titleLabel.setObjectName("titleLabel")
+        self.descriptionLabel = QtWidgets.QLabel(self.centralwidget)
+        self.descriptionLabel.setGeometry(QtCore.QRect(190, 170, 101, 31))
+        self.descriptionLabel.setStyleSheet("font-size: 20px;")
+        self.descriptionLabel.setObjectName("descriptionLabel")
+        self.cancelButton = QtWidgets.QPushButton(self.centralwidget)
+        self.cancelButton.setGeometry(QtCore.QRect(30, 460, 131, 41))
+        self.cancelButton.setStyleSheet("background-color: #B23535;\n"
+"color: white;\n"
+"border-radius: 5px; font-size: 15px;")
+        self.cancelButton.setObjectName("cancelButton")
+        self.createGoalButton = QtWidgets.QPushButton(self.centralwidget)
+        self.createGoalButton.setGeometry(QtCore.QRect(640, 460, 131, 41))
+        self.createGoalButton.setStyleSheet("background-color: #35B29D;\n"
+"color: white;\n"
+"border-radius: 5px; font-size: 15px;")
+        self.createGoalButton.setObjectName("createGoalButton")
+        self.descriptionEdit = QtWidgets.QTextEdit(self.centralwidget)
+        self.descriptionEdit.setGeometry(QtCore.QRect(190, 220, 401, 181))
+        self.descriptionEdit.setStyleSheet("border: none; background-color: white; border-bottom: 1px solid #C9C9C9; border-radius: 5px; padding: 10px;")
+        self.descriptionEdit.setObjectName("descriptionEdit")
         NewGoalWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(NewGoalWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         NewGoalWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(NewGoalWindow)
-        self.statusbar.setObjectName("statusbar")
-        NewGoalWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(NewGoalWindow)
         QtCore.QMetaObject.connectSlotsByName(NewGoalWindow)
@@ -35,4 +61,9 @@ class Ui_NewGoalWindow(object):
     def retranslateUi(self, NewGoalWindow):
         _translate = QtCore.QCoreApplication.translate
         NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "MainWindow"))
-        self.label.setText(_translate("NewGoalWindow", "Hello, world!"))
+        self.titleEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a goal title..."))
+        self.titleLabel.setText(_translate("NewGoalWindow", "Goal Title"))
+        self.descriptionLabel.setText(_translate("NewGoalWindow", "Description"))
+        self.cancelButton.setText(_translate("NewGoalWindow", "Cancel"))
+        self.createGoalButton.setText(_translate("NewGoalWindow", "Create Goal"))
+        self.descriptionEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a description for your new goal..."))
