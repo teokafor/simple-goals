@@ -23,7 +23,7 @@ def open_home():
     vbox = HOME.goals
     elements = projectio.make_object_list()
     for entry in elements:
-        button = EntryWidget(entry.get_goal_name())
+        button = EntryWidget(entry, open_home)
         vbox.addWidget(button)
 
     # Click handlers
