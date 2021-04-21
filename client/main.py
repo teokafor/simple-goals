@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 from client import projectio
 from client.screen.home import Ui_MainWindow as HomeWindow
 from client.screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
+from client.widget.entry_widget import EntryWidget
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
@@ -22,7 +23,7 @@ def open_home():
     vbox = HOME.goals
     elements = projectio.make_object_list()
     for entry in elements:
-        button = QPushButton(entry.get_goal_name())
+        button = EntryWidget(entry.get_goal_name())
         vbox.addWidget(button)
 
     # Click handlers
