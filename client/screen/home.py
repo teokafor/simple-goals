@@ -24,10 +24,10 @@ class Ui_MainWindow(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.newGoal = QtWidgets.QPushButton(self.centralwidget)
-        self.newGoal.setGeometry(QtCore.QRect(320, 462, 71, 71))
-        self.newGoal.setStyleSheet("border-radius: 35px;\n"
+        self.newGoal.setGeometry(QtCore.QRect(340, 480, 50, 50))
+        self.newGoal.setStyleSheet("border-radius:25px;\n"
 "background-color: white;\n"
-"font-size: 50px;\n"
+"font-size: 35px;\n"
 "padding-bottom: 5px;\n"
 "background-color: #081540;\n"
 "color: white;\n"
@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         self.newGoal.setIconSize(QtCore.QSize(16, 16))
         self.newGoal.setObjectName("newGoal")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 801, 37))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 801, 51))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
