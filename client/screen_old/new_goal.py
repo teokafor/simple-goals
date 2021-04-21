@@ -42,7 +42,7 @@ class NewGoalPage(gui.Frame):
         submit.grid(row=10, column=3)
 
     def cancel(self):
-        self.controller.home()
+        self.controller.open_home()
 
     def submit(self):
         self.controller.add_goal(self.title_entry.get(), self.description_entry.get(), self.calendar.get_date())

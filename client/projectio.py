@@ -101,7 +101,7 @@ def delete_goal(goal_id):
 
 
 # This function will return a list of objects that are created from each row in the database.
-def make_object_list():
+def make_object_list() -> 'list[Row]':
     cur.execute("SELECT * FROM Goal")
     rows = cur.fetchall()
     goals = []

@@ -144,6 +144,17 @@ padding: 25px;</string>
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>351</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="goals"/>
+   </widget>
   </widget>
  </widget>
  <resources/>

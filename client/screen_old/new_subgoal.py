@@ -30,7 +30,7 @@ class NewSubGoalPage(gui.Frame):
         submit.grid(row=10, column=3)
 
     def cancel(self):
-        self.controller.home()
+        self.controller.open_home()
 
     def submit(self):
         self.controller.add_subgoal(self.title_entry.get())

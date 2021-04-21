@@ -66,6 +66,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.overviewButton)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(30, 70, 351, 351))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.goals = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.goals.setContentsMargins(0, 0, 0, 0)
+        self.goals.setObjectName("goals")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
