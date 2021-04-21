@@ -5,3 +5,4 @@ client/__pycache__/
 client/screen_old/__pycache__/new_goal.cpython-37.pyc
 .history/
 .idea/
+client/db/main.db
