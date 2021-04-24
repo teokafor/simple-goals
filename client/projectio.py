@@ -2,7 +2,7 @@
 import sqlite3
 
 # Initial connection to database
-con = sqlite3.connect('client/db/main.db')  # Connect to the main database file
+con = sqlite3.connect('db/main.db')  # Connect to the main database file
 cur = con.cursor()  # Create a cursor object
 cur.execute("SELECT * FROM Goal")
 rows = cur.fetchall()  # Get the rows from the table
@@ -62,15 +62,6 @@ class Row:
         cur.execute(insert, data_tuple)  # Modify the row linked to GoalID.
         con.commit()
 
-    # Subgoal-related functions:
-    # Retrieve all subgoals associated with this goal.
-    def get_subgoals(self):
-        insert = "SELECT * FROM Subgoal WHERE GoalID = ?"
-        data_tuple = (self.__goal_id,)
-        cur.execute(insert, data_tuple)
-        subgoals = cur.fetchall()
-        return subgoals
-
 
 # General functions not tied to the Row class:
 # This creates an empty goal with an automatically generated ID.
@@ -109,3 +100,11 @@ def make_object_list() -> 'list[Row]':
         goal_id = row[0]
         goals.append(Row(goal_id))
     return goals
+
+# Retrieve all subgoals associated with this goal.
+def get_subgoals(goal_id):
+    insert = "SELECT * FROM Subgoal WHERE GoalID = ?"
+    data_tuple = (goal_id,)
+    cur.execute(insert, data_tuple)
+    subgoals = cur.fetchall()
+    return subgoals

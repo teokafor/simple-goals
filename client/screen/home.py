@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/home.ui'
+# Form implementation generated from reading ui file 'C:\Users\teoka\PycharmProjects\notes\client\ui\home.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -72,6 +72,18 @@ class Ui_MainWindow(object):
         self.goals = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.goals.setContentsMargins(0, 0, 0, 0)
         self.goals.setObjectName("goals")
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(440, 70, 331, 131))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.goalDescription = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.goalDescription.setContentsMargins(0, 0, 0, 0)
+        self.goalDescription.setObjectName("goalDescription")
+        self.verticalLayoutWidget_3 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(440, 230, 331, 191))
+        self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
+        self.subgoals = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
+        self.subgoals.setContentsMargins(0, 0, 0, 0)
+        self.subgoals.setObjectName("subgoals")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)

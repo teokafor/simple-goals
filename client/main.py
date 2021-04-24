@@ -7,6 +7,7 @@ from client import projectio
 from client.screen.home import Ui_MainWindow as HomeWindow
 from client.screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from client.widget.entry_widget import EntryWidget
+from client.widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
@@ -33,6 +34,25 @@ def open_home():
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
 
+
+# This function is run each time a goal is selected. It will update description and fetch subgoals.
+def on_goal_click(goal_id):
+    HOME.setupUi(ROOT)  # If this line isn't here, the program crashes.
+
+    # Create references to the GUI layouts
+    description_layout = HOME.goalDescription
+    subgoals_layout = HOME.subgoals
+
+    # Populate the subgoals layout
+    subgoals = projectio.get_subgoals(goal_id)
+    print('SUBGOALS:')
+    for subgoal in subgoals:
+        button = SubgoalWidget(subgoal)
+        subgoals_layout.addWidget(button)
+
+    print('\nDESCRIPTION:')
+    description = projectio.Row(goal_id).get_goal_desc()
+    print(description)
 
 def new_goal(name, description, date):
     projectio.new_goal(name, description, date)

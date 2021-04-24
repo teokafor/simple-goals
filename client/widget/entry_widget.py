@@ -11,6 +11,13 @@ class EntryWidget(QtWidgets.QWidget):
         projectio.delete_goal(entry.get_goal_id())
         self.callback()
 
+    # On activation, pass this goal's goal id to main.py. This is so we can easily manipulate the GUI.
+    def select(self):
+        entry = self.entry
+        goal_id = entry.get_goal_id()
+        from client import main  # Import statement used here to avoid circular importing.
+        main.on_goal_click(goal_id)
+
     def __init__(self, entry: Row, callback, *args, **kwargs):
         super(EntryWidget, self).__init__(*args, **kwargs)
         self.entry = entry
@@ -27,6 +34,12 @@ class EntryWidget(QtWidgets.QWidget):
         left.addWidget(done)
         left.addWidget(label)
         left.addWidget(edit)
+
+        # Temporary button used to pull up relevant information about a goal.
+        select = QtWidgets.QPushButton("Select")
+        select.setFixedWidth(60)
+        select.clicked.connect(lambda: self.select())
+        left.addWidget(select)
 
         # Delete button on the right-hand side
         delete = QtWidgets.QPushButton("Delete")
