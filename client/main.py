@@ -3,11 +3,11 @@ import sys
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 
-from client import projectio
-from client.screen.home import Ui_MainWindow as HomeWindow
-from client.screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
-from client.widget.entry_widget import EntryWidget
-from client.widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
+import projectio
+from screen.home import Ui_MainWindow as HomeWindow
+from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
+from widget.entry_widget import EntryWidget
+from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()

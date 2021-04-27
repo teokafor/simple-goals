@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
-from client import projectio
-from client.projectio import Row
+import projectio
+from projectio import Row
 
 
 class EntryWidget(QtWidgets.QWidget):
