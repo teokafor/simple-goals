@@ -21,6 +21,14 @@ def open_home():
     """
     HOME.setupUi(ROOT)
 
+    # Button sizes
+    HOME.todayButton.setMinimumHeight(50)
+    HOME.todayButton.setMinimumWidth(100)
+    HOME.weeklyButton.setMinimumHeight(50)
+    HOME.weeklyButton.setMinimumWidth(100)
+    HOME.overviewButton.setMinimumHeight(50)
+    HOME.overviewButton.setMinimumWidth(100)
+
     # Load goals from the local database
     vbox = HOME.goals
 

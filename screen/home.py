@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.todayButton.setMinimumSize(QtCore.QSize(0, 35))
         self.todayButton.setStyleSheet("background-color: white;\n"
 "border: none;\n"
-"padding: 25px;\n"
+"padding: 10px;\n"
 "border-bottom: 1px solid purple;")
         self.todayButton.setObjectName("todayButton")
         self.horizontalLayout.addWidget(self.todayButton)
@@ -54,14 +54,14 @@ class Ui_MainWindow(object):
         self.weeklyButton.setMinimumSize(QtCore.QSize(0, 35))
         self.weeklyButton.setStyleSheet("background-color: white;\n"
 "border: none;\n"
-"padding: 25px;")
+"padding: 10px;")
         self.weeklyButton.setObjectName("weeklyButton")
         self.horizontalLayout.addWidget(self.weeklyButton)
         self.overviewButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.overviewButton.setMinimumSize(QtCore.QSize(0, 35))
         self.overviewButton.setStyleSheet("background-color: white;\n"
 "border: none;\n"
-"padding: 25px;")
+"padding: 10px;")
         self.overviewButton.setObjectName("overviewButton")
         self.horizontalLayout.addWidget(self.overviewButton)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
