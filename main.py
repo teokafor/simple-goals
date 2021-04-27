@@ -1,6 +1,7 @@
 import sys
 
-from PyQt5.QtGui import QFont
+from PyQt5 import QtCore
+from PyQt5.QtGui import QFont, QCursor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 
 import projectio
@@ -28,6 +29,11 @@ def open_home():
     HOME.weeklyButton.setMinimumWidth(100)
     HOME.overviewButton.setMinimumHeight(50)
     HOME.overviewButton.setMinimumWidth(100)
+
+    # Hovering cursor styles
+    children = ROOT.findChildren(QPushButton)
+    for element in children:
+        element.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 
     # Load goals from the local database
     vbox = HOME.goals
