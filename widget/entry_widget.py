@@ -15,7 +15,7 @@ class EntryWidget(QtWidgets.QWidget):
     def select(self):
         entry = self.entry
         goal_id = entry.get_goal_id()
-        from client import main  # Import statement used here to avoid circular importing.
+        import main  # Import statement used here to avoid circular importing.
         main.on_goal_click(goal_id)
 
     def __init__(self, entry: Row, callback, *args, **kwargs):
