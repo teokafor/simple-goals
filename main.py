@@ -54,6 +54,7 @@ def on_goal_click(goal_id):
     description = projectio.Row(goal_id).get_goal_desc()
     print(description)
 
+
 def new_goal(name, description, start, end):
     projectio.new_goal(name, description, start, end)
     open_home()
