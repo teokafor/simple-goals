@@ -15,7 +15,7 @@ class HomePage(gui.Frame):
         self.simple_label.grid(row=0, column=1)
 
         # Add-new-goal button
-        self.new_goal = ttk.Button(self, text="+", width=3, command=self.controller.new_goal)
+        self.new_goal = ttk.Button(self, text="+", width=3, command=self.controller.open_new_goal)
         self.new_goal.grid(row=10, column=1, sticky='ne')
 
         # Delete goal Button

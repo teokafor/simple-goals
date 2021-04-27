@@ -1,7 +1,9 @@
 __pycache__
 __pycache__/*
-client/screen/__pycache__/*
+client/screen_old/__pycache__/*
 client/__pycache__/
-client/screen/__pycache__/new_goal.cpython-37.pyc
+client/screen_old/__pycache__/new_goal.cpython-37.pyc
 .history/
 .idea/
+client/db/main.db
+db/

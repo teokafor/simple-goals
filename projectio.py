@@ -2,7 +2,7 @@
 import sqlite3
 
 # Initial connection to database
-con = sqlite3.connect('client/db/main.db')  # Connect to the main database file
+con = sqlite3.connect('db/main.db')  # Connect to the main database file
 cur = con.cursor()  # Create a cursor object
 cur.execute("SELECT * FROM Goal")
 rows = cur.fetchall()  # Get the rows from the table
@@ -62,23 +62,14 @@ class Row:
         cur.execute(insert, data_tuple)  # Modify the row linked to GoalID.
         con.commit()
 
-    # Subgoal-related functions:
-    # Retrieve all subgoals associated with this goal.
-    def get_subgoals(self):
-        insert = "SELECT * FROM Subgoal WHERE GoalID = ?"
-        data_tuple = (self.__goal_id,)
-        cur.execute(insert, data_tuple)
-        subgoals = cur.fetchall()
-        return subgoals
-
 
 # General functions not tied to the Row class:
 # This creates an empty goal with an automatically generated ID.
-def new_goal(goal_name, goal_desc, end_date):
+def new_goal(goal_name, goal_desc, start_date, end_date):
     cur.execute("SELECT * FROM Goal")
     # Create and commit new row.
     insert = "INSERT INTO Goal (GoalName, GoalDesc, StartDate, EndDate, TimeSpent, Completion) VALUES (?, ?, ?, ?, ?, ?);"
-    data_tuple = (goal_name, goal_desc, 'N/A', end_date, 0, 0)
+    data_tuple = (goal_name, goal_desc, start_date, end_date, 0, 0)
     cur.execute(insert, data_tuple)  # Create a row with the given information
     con.commit()  # Insert the new row
 
@@ -101,7 +92,7 @@ def delete_goal(goal_id):
 
 
 # This function will return a list of objects that are created from each row in the database.
-def make_object_list():
+def make_object_list() -> 'list[Row]':
     cur.execute("SELECT * FROM Goal")
     rows = cur.fetchall()
     goals = []
@@ -109,3 +100,11 @@ def make_object_list():
         goal_id = row[0]
         goals.append(Row(goal_id))
     return goals
+
+# Retrieve all subgoals associated with this goal.
+def get_subgoals(goal_id):
+    insert = "SELECT * FROM Subgoal WHERE GoalID = ?"
+    data_tuple = (goal_id,)
+    cur.execute(insert, data_tuple)
+    subgoals = cur.fetchall()
+    return subgoals
