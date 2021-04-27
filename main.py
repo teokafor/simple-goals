@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion
+from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 
 import projectio
@@ -21,6 +21,10 @@ def open_home():
     This window instance is global, so state will persist between screen changes.
     """
     HOME.setupUi(ROOT)
+
+    e = QWindow.fromWinId(ROOT.winId())
+    print(type(e))
+    e.startSystemMove()
 
     # Button sizes
     HOME.todayButton.setMinimumHeight(50)
