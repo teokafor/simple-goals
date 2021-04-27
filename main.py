@@ -71,6 +71,11 @@ def open_new_goal():
     title = window.titleEdit
     description = window.descriptionEdit
     end_date = window.calendarWidget
+    title.setMinimumWidth(400)
+    description.setMinimumWidth(400)
+    description.setMaximumHeight(50)
+    title.adjustSize()
+    description.adjustSize()
 
     # Set minimum and maximum date range
     min_date = end_date.selectedDate()  # This will also be used for start_date
