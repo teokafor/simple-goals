@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QFont, QCursor
+from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 
 import projectio
@@ -29,6 +29,12 @@ def open_home():
     HOME.weeklyButton.setMinimumWidth(100)
     HOME.overviewButton.setMinimumHeight(50)
     HOME.overviewButton.setMinimumWidth(100)
+
+    # ROUND 
+    path = QPainterPath()
+    path.addRoundedRect(QtCore.QRectF(ROOT.rect()), 10, 10)
+    mask = QRegion(path.toFillPolygon().toPolygon())
+    ROOT.setMask(mask)
 
     # Hovering cursor styles
     children = ROOT.findChildren(QPushButton)
