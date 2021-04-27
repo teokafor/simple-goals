@@ -65,11 +65,11 @@ class Row:
 
 # General functions not tied to the Row class:
 # This creates an empty goal with an automatically generated ID.
-def new_goal(goal_name, goal_desc, end_date):
+def new_goal(goal_name, goal_desc, start_date, end_date):
     cur.execute("SELECT * FROM Goal")
     # Create and commit new row.
     insert = "INSERT INTO Goal (GoalName, GoalDesc, StartDate, EndDate, TimeSpent, Completion) VALUES (?, ?, ?, ?, ?, ?);"
-    data_tuple = (goal_name, goal_desc, 'N/A', end_date, 0, 0)
+    data_tuple = (goal_name, goal_desc, start_date, end_date, 0, 0)
     cur.execute(insert, data_tuple)  # Create a row with the given information
     con.commit()  # Insert the new row
 

@@ -54,8 +54,8 @@ def on_goal_click(goal_id):
     description = projectio.Row(goal_id).get_goal_desc()
     print(description)
 
-def new_goal(name, description, date):
-    projectio.new_goal(name, description, date)
+def new_goal(name, description, start, end):
+    projectio.new_goal(name, description, start, end)
     open_home()
 
 
@@ -70,10 +70,16 @@ def open_new_goal():
     # Obtain elements for reference
     title = window.titleEdit
     description = window.descriptionEdit
+    end_date = window.calendarWidget
+
+    # Set minimum and maximum date range
+    min_date = end_date.selectedDate()  # This will also be used for start_date
+    max_date = end_date.maximumDate()
+    end_date.setDateRange(min_date, max_date)
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
-    window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), ""))
+    window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), min_date.toPyDate(), end_date.selectedDate().toPyDate()))
 
 
 if __name__ == '__main__':
