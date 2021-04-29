@@ -163,7 +163,14 @@ padding: 10px;</string>
       <height>531</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="goals"/>
+    <layout class="QVBoxLayout" name="goals">
+     <property name="spacing">
+      <number>25</number>
+     </property>
+     <property name="leftMargin">
+      <number>25</number>
+     </property>
+    </layout>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
