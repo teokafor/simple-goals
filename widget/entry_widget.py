@@ -1,10 +1,11 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
 
 import projectio
 from projectio import Row
 
 
-class EntryWidget(QtWidgets.QWidget):
+class EntryWidget(QtWidgets.QPushButton):
 
     def remove(self):
         entry = self.entry
@@ -23,6 +24,34 @@ class EntryWidget(QtWidgets.QWidget):
         self.entry = entry
         self.callback = callback
 
+        self.setAccessibleName("entryWidget")
+        self.setMinimumHeight(65)
+        self.setStyleSheet("""
+        [accessibleName="entryWidget"] {
+            border-radius: 15px 15px 0px 0px;
+            border-bottom: 1px solid gray;
+        }
+        
+        [accessibleName="editButton"] {
+            border-radius: 15px 15px 0px 0px;
+        }
+        
+        QWidget {
+            background-color: #E8E8E8;
+        }
+        
+        QCheckBox::indicator {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        QCheckBox::indicator::checked {
+            background-color: green;
+        }
+        """)
+
         # Define the base layout as an HBox.
         layout = QtWidgets.QHBoxLayout()
 
@@ -30,9 +59,12 @@ class EntryWidget(QtWidgets.QWidget):
         left = QtWidgets.QHBoxLayout()
         done = QtWidgets.QCheckBox()
         label = QtWidgets.QLabel(entry.get_goal_name())
-        edit = QtWidgets.QPushButton("Edit")
+        edit = QtWidgets.QPushButton("")
+        edit.setAccessibleName("editButton")
+        edit.setIcon(QIcon("resources/edit.png"))
         left.addWidget(done)
         left.addWidget(label)
+        left.addStretch()
         left.addWidget(edit)
 
         # Temporary button used to pull up relevant information about a goal.
@@ -42,8 +74,19 @@ class EntryWidget(QtWidgets.QWidget):
         left.addWidget(select)
 
         # Delete button on the right-hand side
-        delete = QtWidgets.QPushButton("Delete")
+        delete = QtWidgets.QPushButton("")
         delete.clicked.connect(lambda: self.remove())
+        delete.setIcon(QIcon("resources/delete.png"))
+        delete.setMaximumWidth(38)
+        delete.setMinimumWidth(38)
+        delete.setMaximumHeight(38)
+        delete.setMinimumHeight(38)
+        delete.setStyleSheet("""
+        QWidget {
+            background-color: #B23535;
+            border-radius: 5px;
+        }
+        """)
 
         layout.addLayout(left)
         layout.addWidget(delete)

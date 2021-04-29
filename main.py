@@ -33,10 +33,10 @@ def open_home():
     HOME.overviewButton.setMinimumWidth(100)
 
     # ROUND 
-    path = QPainterPath()
-    path.addRoundedRect(QtCore.QRectF(ROOT.rect()), 10, 10)
-    mask = QRegion(path.toFillPolygon().toPolygon())
-    ROOT.setMask(mask)
+    # path = QPainterPath()
+    # path.addRoundedRect(QtCore.QRectF(ROOT.rect()), 10, 10)
+    # mask = QRegion(path.toFillPolygon().toPolygon())
+    # ROOT.setMask(mask)
 
     # By default, show the goals due today.
     update_goal_list(-1)
