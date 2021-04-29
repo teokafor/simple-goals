@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
 
 import projectio
 from projectio import Row
@@ -42,8 +43,19 @@ class EntryWidget(QtWidgets.QWidget):
         left.addWidget(select)
 
         # Delete button on the right-hand side
-        delete = QtWidgets.QPushButton("Delete")
+        delete = QtWidgets.QPushButton("")
         delete.clicked.connect(lambda: self.remove())
+        delete.setIcon(QIcon("resources/delete.png"))
+        delete.setMaximumWidth(38)
+        delete.setMinimumWidth(38)
+        delete.setMaximumHeight(38)
+        delete.setMinimumHeight(38)
+        delete.setStyleSheet("""
+        QWidget {
+            background-color: #B23535;
+            border-radius: 5px;
+        }
+        """)
 
         layout.addLayout(left)
         layout.addWidget(delete)
