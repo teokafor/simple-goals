@@ -9,6 +9,8 @@ from screen.home import Ui_MainWindow as HomeWindow
 from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from widget.entry_widget import EntryWidget
 from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
+from datetime import datetime
+from datetime import date
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
@@ -36,19 +38,14 @@ def open_home():
     mask = QRegion(path.toFillPolygon().toPolygon())
     ROOT.setMask(mask)
 
-    # Load goals from the local database
-    vbox = HOME.goals
-
-    elements = projectio.make_object_list()
-    for entry in elements:
-        button = EntryWidget(entry, open_home)
-        vbox.addWidget(button)
-
-    vbox.addStretch()
-    cursor_hover()
+    # By default, show the goals due today.
+    update_goal_list(-1)
 
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
+    HOME.todayButton.clicked.connect(lambda: update_goal_list(1))
+    HOME.weeklyButton.clicked.connect(lambda: update_goal_list(2))
+    HOME.overviewButton.clicked.connect(lambda: update_goal_list(3))
 
 
 # This function will find any relevant elements in the current window and change the cursor style.
@@ -61,6 +58,44 @@ def cursor_hover():
 
     for element in elements:
         element.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+
+
+# The date limit will determine what goals are loaded.
+def update_goal_list(date_limit):
+
+    print(date_limit)
+
+    # Load goals from the local database
+    vbox = HOME.goals
+
+    # Clear the current goals before re-instantiating them
+    while HOME.goals.count():
+        child = HOME.goals.takeAt(0)
+        if child.widget():
+            child.widget().deleteLater()
+
+    # Populate the goals list
+    elements = projectio.make_object_list()
+    for entry in elements:
+        today_date = datetime.today()
+        end_date = datetime.strptime(entry.get_end_date(), "%Y-%m-%d")
+        date_difference = (end_date-today_date).days
+
+        if date_limit == 1:  # Due today
+            if date_difference == -1:
+                button = EntryWidget(entry, open_home)
+                vbox.addWidget(button)
+        elif date_limit == 2:  # Due this week
+            if date_difference >= -1 & date_difference <= 7:
+                button = EntryWidget(entry, open_home)
+                vbox.addWidget(button)
+        elif date_limit == 3:  # Due anytime
+            if date_difference >= -1 & date_difference <= 999999:
+                button = EntryWidget(entry, open_home)
+                vbox.addWidget(button)
+
+    vbox.addStretch()
+    cursor_hover()
 
 
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
