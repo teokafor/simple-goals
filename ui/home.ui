@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Simple Goals</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #F6F5F9;</string>
+  </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
   </property>
