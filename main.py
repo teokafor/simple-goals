@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtCore
 from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget
 
 import projectio
 from screen.home import Ui_MainWindow as HomeWindow
@@ -36,11 +36,6 @@ def open_home():
     # mask = QRegion(path.toFillPolygon().toPolygon())
     # ROOT.setMask(mask)
 
-    # Hovering cursor styles
-    children = ROOT.findChildren(QPushButton)
-    for element in children:
-        element.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
-
     # Load goals from the local database
     vbox = HOME.goals
 
@@ -50,9 +45,22 @@ def open_home():
         vbox.addWidget(button)
 
     vbox.addStretch()
+    cursor_hover()
 
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
+
+
+# This function will find any relevant elements in the current window and change the cursor style.
+def cursor_hover():
+    elements = []
+    buttons = ROOT.findChildren(QPushButton)
+    checkboxes = ROOT.findChildren(QCheckBox)
+    calendar = ROOT.findChildren(QCalendarWidget)
+    elements += buttons + checkboxes + calendar
+
+    for element in elements:
+        element.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 
 
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
@@ -74,6 +82,7 @@ def on_goal_click(goal_id):
     description = projectio.Row(goal_id).get_goal_desc()
     print(description)
 
+
 def new_goal(name, description, start, end):
     projectio.new_goal(name, description, start, end)
     open_home()
@@ -87,10 +96,12 @@ def open_new_goal():
     window = NewGoalWindow()
     window.setupUi(ROOT)
 
+    cursor_hover()
+
     # Obtain elements for reference
     title = window.titleEdit
     description = window.descriptionEdit
-    end_date = window.calendarWidget
+    calendar = window.calendarWidget
     title.setMinimumWidth(400)
     description.setMinimumWidth(400)
     description.setMaximumHeight(50)
@@ -98,13 +109,13 @@ def open_new_goal():
     description.adjustSize()
 
     # Set minimum and maximum date range
-    min_date = end_date.selectedDate()  # This will also be used for start_date
-    max_date = end_date.maximumDate()
-    end_date.setDateRange(min_date, max_date)
+    min_date = calendar.selectedDate()  # This will also be used for start_date
+    max_date = calendar.maximumDate()
+    calendar.setDateRange(min_date, max_date)
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
-    window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), min_date.toPyDate(), end_date.selectedDate().toPyDate()))
+    window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), min_date.toPyDate(), calendar.selectedDate().toPyDate()))
 
 
 if __name__ == '__main__':

@@ -1,12 +1,18 @@
 # TODO: close connection to db at some point!
 import sqlite3
 
-# Initial connection to database
-con = sqlite3.connect('db/main.db')  # Connect to the main database file
+# Create the database file, if it does not already exist.
+con = sqlite3.connect('db/main.db')  # Create and connect to the main database file
 cur = con.cursor()  # Create a cursor object
+cur.execute("CREATE TABLE IF NOT EXISTS Goal ('GoalID' INTEGER NOT NULL, 'GoalName' TEXT NOT NULL, 'GoalDesc' TEXT,'StartDate'	TEXT NOT NULL, 'EndDate' TEXT, 'TimeSpent' NUMERIC, 'Completion' NUMERIC, PRIMARY KEY('GoalID'))")
+cur.execute("CREATE TABLE IF NOT EXISTS SubGoal ('GoalID' INTEGER NOT NULL, 'SubName' TEXT NOT NULL, 'Completion' INTEGER NOT NULL, FOREIGN KEY('GoalID') REFERENCES 'Goal' ('GoalID'))")
+con.commit()
+
+# Initial connection to database
 cur.execute("SELECT * FROM Goal")
 rows = cur.fetchall()  # Get the rows from the table
 cur.execute('PRAGMA foreign_keys=ON')  # Enforce foreign keys. Needed to link subgoals to goals table.
+
 
 class Row:
     def __init__(self, goal_id):
