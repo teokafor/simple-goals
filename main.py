@@ -31,10 +31,10 @@ def open_home():
     HOME.overviewButton.setMinimumWidth(100)
 
     # ROUND 
-    path = QPainterPath()
-    path.addRoundedRect(QtCore.QRectF(ROOT.rect()), 10, 10)
-    mask = QRegion(path.toFillPolygon().toPolygon())
-    ROOT.setMask(mask)
+    # path = QPainterPath()
+    # path.addRoundedRect(QtCore.QRectF(ROOT.rect()), 10, 10)
+    # mask = QRegion(path.toFillPolygon().toPolygon())
+    # ROOT.setMask(mask)
 
     # Hovering cursor styles
     children = ROOT.findChildren(QPushButton)
