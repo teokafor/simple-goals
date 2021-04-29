@@ -14,7 +14,7 @@
    <string>Simple Goals</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #F6F5F9;</string>
+   <string notr="true">background-color: #F6F5F9; font-size: 20px;</string>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
