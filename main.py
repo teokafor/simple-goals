@@ -7,10 +7,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, Q
 import projectio
 from screen.home import Ui_MainWindow as HomeWindow
 from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
+from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from widget.entry_widget import EntryWidget
 from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
 from datetime import datetime
-from datetime import date
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
@@ -39,7 +39,7 @@ def open_home():
     # ROOT.setMask(mask)
 
     # By default, show the goals due today.
-    update_goal_list(-1)
+    update_goal_list(1)
 
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
@@ -63,8 +63,6 @@ def cursor_hover():
 # The date limit will determine what goals are loaded.
 def update_goal_list(date_limit):
 
-    print(date_limit)
-
     # Load goals from the local database
     vbox = HOME.goals
 
@@ -86,11 +84,11 @@ def update_goal_list(date_limit):
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
         elif date_limit == 2:  # Due this week
-            if date_difference >= -1 & date_difference <= 7:
+            if -1 <= date_difference <= 7:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
         elif date_limit == 3:  # Due anytime
-            if date_difference >= -1 & date_difference <= 999999:
+            if -1 <= date_difference <= 999999:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
 
@@ -153,6 +151,15 @@ def open_new_goal():
     window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), min_date.toPyDate(), calendar.selectedDate().toPyDate()))
 
 
+def open_edit_goal():
+    window2 = EditGoalWindow()
+    window2.setupUi(ROOT)
+
+    cursor_hover()
+    print('should show edit screen >:/')
+
+
+    # Auto-fill the parameters
 if __name__ == '__main__':
     open_home()
 
