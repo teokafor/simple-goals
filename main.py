@@ -44,6 +44,10 @@ def open_home():
     # By default, show the goals due today.
     update_goal_list(1)
 
+
+    # Make widgets on home screen react to cursor hover
+    cursor_hover()
+
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
     HOME.todayButton.clicked.connect(lambda: update_goal_list(1))
@@ -288,11 +292,7 @@ class EntryWidget(QtWidgets.QPushButton):
         left.addStretch()
         left.addWidget(edit)
 
-        # Temporary button used to pull up relevant information about a goal.
-        select = QtWidgets.QPushButton("Select")
-        select.setFixedWidth(60)
-        select.clicked.connect(self.select)
-        left.addWidget(select)
+        self.clicked.connect(self.select)
 
         # Delete button on the right-hand side
         delete = QtWidgets.QPushButton("")
