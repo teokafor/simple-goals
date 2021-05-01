@@ -10,7 +10,7 @@ con.commit()
 
 # Initial connection to database
 cur.execute("SELECT * FROM Goal")
-rows = cur.fetchall()  # Get the rows from the table
+#rows = cur.fetchall()  # Get the rows from the table
 cur.execute('PRAGMA foreign_keys=ON')  # Enforce foreign keys. Needed to link subgoals to goals table.
 
 

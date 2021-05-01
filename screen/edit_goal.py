@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/new_goal.ui'
+# Form implementation generated from reading ui file 'ui/edit_goal.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -39,12 +39,12 @@ class Ui_NewGoalWindow(object):
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
         self.cancelButton.setObjectName("cancelButton")
-        self.createGoalButton = QtWidgets.QPushButton(self.centralwidget)
-        self.createGoalButton.setGeometry(QtCore.QRect(640, 460, 131, 41))
-        self.createGoalButton.setStyleSheet("background-color: #35B29D;\n"
+        self.modifyGoalButton = QtWidgets.QPushButton(self.centralwidget)
+        self.modifyGoalButton.setGeometry(QtCore.QRect(640, 460, 131, 41))
+        self.modifyGoalButton.setStyleSheet("background-color: #35B29D;\n"
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
-        self.createGoalButton.setObjectName("createGoalButton")
+        self.modifyGoalButton.setObjectName("modifyGoalButton")
         self.descriptionEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.descriptionEdit.setGeometry(QtCore.QRect(190, 220, 401, 41))
         self.descriptionEdit.setStyleSheet("border: none; background-color: white; border-bottom: 1px solid #C9C9C9; border-radius: 5px; padding: 10px;")
@@ -68,5 +68,5 @@ class Ui_NewGoalWindow(object):
         self.titleLabel.setText(_translate("NewGoalWindow", "Goal Title"))
         self.descriptionLabel.setText(_translate("NewGoalWindow", "Description"))
         self.cancelButton.setText(_translate("NewGoalWindow", "Cancel"))
-        self.createGoalButton.setText(_translate("NewGoalWindow", "Create Goal"))
+        self.modifyGoalButton.setText(_translate("NewGoalWindow", "Modify Goal"))
         self.descriptionEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a description for your new goal..."))
