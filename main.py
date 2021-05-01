@@ -8,6 +8,7 @@ import projectio
 from screen.home import Ui_MainWindow as HomeWindow
 from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
+from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
 #from widget.entry_widget import EntryWidget
 from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
 from datetime import datetime
@@ -100,6 +101,11 @@ def new_goal(name, description, start, end):
     open_home()
 
 
+def new_subgoal(goal_id, name):
+    projectio.new_subgoal(goal_id, name)
+    open_home()
+
+
 def modify_goal(goal_id, name, description, end):
     modified = Row(goal_id)
 
@@ -171,6 +177,18 @@ def open_edit_goal(goal_id):
     window.modifyGoalButton.clicked.connect(lambda: modify_goal(goal_id, title.text(), description.toPlainText(), calendar.selectedDate().toPyDate()))
 
 
+def open_new_subgoal(goal_id):
+    window = NewSubGoalWindow()
+    window.setupUi(ROOT)
+    cursor_hover()
+
+    title = window.titleEdit
+
+    # Click handlers
+    window.cancelButton.clicked.connect(open_home)
+    window.createSubgoalButton.clicked.connect(lambda: new_subgoal(goal_id, title.text()))
+
+
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
 def on_goal_click(goal_id):
     # HOME.setupUi(ROOT)  # If this line isn't here, the program crashes.
@@ -189,10 +207,11 @@ def on_goal_click(goal_id):
     description = projectio.Row(goal_id).get_goal_desc()
 
     clear_layout(description_layout)
-
     desc_label = QtWidgets.QLabel(description)
     description_layout.addWidget(desc_label)
-    print(description)
+
+    # TODO: Should only be visible when a goal is selected! (via flag?)
+    HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
 
 
 # This function will remove all widgets from any given layout.

@@ -93,6 +93,17 @@ class Ui_MainWindow(object):
         self.subgoals = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.subgoals.setContentsMargins(0, 0, 0, 0)
         self.subgoals.setObjectName("subgoals")
+        self.newSubgoal = QtWidgets.QPushButton(self.centralwidget)
+        self.newSubgoal.setGeometry(QtCore.QRect(930, 480, 25, 25))
+        self.newSubgoal.setStyleSheet("border-radius:25px;\n"
+"background-color: white;\n"
+"font-size: 35px;\n"
+"padding-bottom: 5px;\n"
+"background-color: #081540;\n"
+"color: white;\n"
+"")
+        self.newSubgoal.setIconSize(QtCore.QSize(16, 16))
+        self.newSubgoal.setObjectName("newSubgoal")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -105,3 +116,4 @@ class Ui_MainWindow(object):
         self.overviewButton.setText(_translate("MainWindow", "Overview"))
         self.todayButton.setText(_translate("MainWindow", "Today"))
         self.weeklyButton.setText(_translate("MainWindow", "Weekly"))
+        self.newSubgoal.setText(_translate("MainWindow", "+"))

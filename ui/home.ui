@@ -194,6 +194,34 @@ padding: 10px;</string>
     </property>
     <layout class="QVBoxLayout" name="subgoals"/>
    </widget>
+   <widget class="QPushButton" name="newSubgoal">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>480</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:25px;
+background-color: white;
+font-size: 35px;
+padding-bottom: 5px;
+background-color: #081540;
+color: white;
+</string>
+    </property>
+    <property name="text">
+     <string>+</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>16</height>
+     </size>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

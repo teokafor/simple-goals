@@ -14,6 +14,5 @@ class SubgoalWidget(QtWidgets.QWidget):
 
         delete = QtWidgets.QPushButton("X")
         delete.setFixedWidth(30)
-        print(self.subgoal[1])
         layout.addWidget(delete)
         self.setLayout(layout)
