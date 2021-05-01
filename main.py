@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QSizePolicy
 
 import projectio
 from screen.home import Ui_MainWindow as HomeWindow
@@ -10,10 +10,10 @@ from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
 #from widget.entry_widget import EntryWidget
-from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
+#from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
 from datetime import datetime
 
-from projectio import Row
+from projectio import Row, SubRow
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
@@ -77,7 +77,7 @@ def update_goal_list(date_limit):
     clear_layout(vbox)
 
     # Populate the goals list
-    elements = projectio.make_object_list()
+    elements = projectio.make_goal_list()
     for entry in elements:
         today_date = datetime.today()
         end_date = datetime.strptime(entry.get_end_date(), "%Y-%m-%d")
@@ -203,7 +203,7 @@ def on_goal_click(goal_id):
 
     # Populate the subgoals layout
     clear_layout(subgoals_layout)
-    subgoals = projectio.get_subgoals(goal_id)
+    subgoals = projectio.make_subgoal_list(goal_id)
     for subgoal in subgoals:
         button = SubgoalWidget(subgoal, open_home)
         subgoals_layout.addWidget(button)
@@ -226,6 +226,7 @@ def clear_layout(layout):
             child.widget().deleteLater()
 
 
+# TODO: SHOULD BE MOVED BACK INTO entry_widget.py!
 class EntryWidget(QtWidgets.QPushButton):
 
     def remove(self):
@@ -293,6 +294,7 @@ class EntryWidget(QtWidgets.QPushButton):
         left.addWidget(edit)
 
         self.clicked.connect(self.select)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         # Delete button on the right-hand side
         delete = QtWidgets.QPushButton("")
@@ -313,6 +315,37 @@ class EntryWidget(QtWidgets.QPushButton):
         layout.addWidget(delete)
         self.setLayout(layout)
 
+
+# TODO: SHOULD BE MOVED BACK INTO subgoal_widget.py!
+class SubgoalWidget(QtWidgets.QWidget):
+
+    def on_check(self, state):
+        pass
+
+    def __init__(self, subgoal: SubRow, callback, *args, **kwargs):
+        super(SubgoalWidget, self).__init__(*args, **kwargs)
+
+        self.subgoal = subgoal
+        self.callback = callback
+
+        layout = QtWidgets.QHBoxLayout()
+
+        done = QtWidgets.QCheckBox()
+        done.clicked.connect(lambda: self.on_check(done.checkState()))
+
+        label = QtWidgets.QLabel(subgoal.get_sub_name())
+
+        edit = QtWidgets.QPushButton('O')
+        edit.setFixedWidth(30)
+
+        delete = QtWidgets.QPushButton("X")
+        delete.setFixedWidth(30)
+
+        layout.addWidget(done)
+        layout.addWidget(label)
+        layout.addWidget(edit)
+        layout.addWidget(delete)
+        self.setLayout(layout)
 
 if __name__ == '__main__':
     open_home()

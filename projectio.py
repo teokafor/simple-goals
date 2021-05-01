@@ -5,8 +5,9 @@ import sqlite3
 con = sqlite3.connect('db/main.db')  # Create and connect to the main database file
 cur = con.cursor()  # Create a cursor object
 cur.execute("CREATE TABLE IF NOT EXISTS Goal ('GoalID' INTEGER NOT NULL, 'GoalName' TEXT NOT NULL, 'GoalDesc' TEXT,'StartDate'	TEXT NOT NULL, 'EndDate' TEXT, 'TimeSpent' NUMERIC, 'Completion' NUMERIC, PRIMARY KEY('GoalID'))")
-cur.execute("CREATE TABLE IF NOT EXISTS SubGoal ('GoalID' INTEGER NOT NULL, 'SubName' TEXT NOT NULL, 'Completion' INTEGER NOT NULL, FOREIGN KEY('GoalID') REFERENCES 'Goal' ('GoalID'))")
+cur.execute("CREATE TABLE IF NOT EXISTS SubGoal ('SubID' INTEGER NOT NULL, 'GoalID' INTEGER NOT NULL, 'SubName' TEXT NOT NULL, 'Completion' INTEGER NOT NULL, FOREIGN KEY('GoalID') REFERENCES 'Goal' ('GoalID'), PRIMARY KEY('SubID'))")
 con.commit()
+
 
 # Initial connection to database
 cur.execute("SELECT * FROM Goal")
@@ -97,8 +98,8 @@ def delete_goal(goal_id):
     con.commit()
 
 
-# This function will return a list of objects that are created from each row in the database.
-def make_object_list() -> 'list[Row]':
+# This function will return a list of goal objects that are created from each row in the Goals table.
+def make_goal_list() -> 'list[Row]':
     cur.execute("SELECT * FROM Goal")
     rows = cur.fetchall()
     goals = []
@@ -107,10 +108,45 @@ def make_object_list() -> 'list[Row]':
         goals.append(Row(goal_id))
     return goals
 
-# Retrieve all subgoals associated with this goal.
-def get_subgoals(goal_id):
-    insert = "SELECT * FROM Subgoal WHERE GoalID = ?"
-    data_tuple = (goal_id,)
-    cur.execute(insert, data_tuple)
-    subgoals = cur.fetchall()
+
+# This function will return a list of subgoal objects that are created from each row in the Subgoals table, with the specified goal id.
+def make_subgoal_list(goal_id) -> 'list[SubRow]':
+    cur.execute("SELECT * FROM Subgoal WHERE GoalID = ?", (goal_id,))
+    rows = cur.fetchall()
+    subgoals = []
+    for row in rows:
+        sub_id = row[0]
+        subgoals.append(SubRow(sub_id, goal_id))
+
     return subgoals
+
+
+class SubRow:
+    def __init__(self, sub_id, goal_id):
+        self.__sub_id = sub_id
+        self.__goal_id = goal_id
+
+        cur.execute("SELECT * FROM Subgoal WHERE SubID = ? AND GoalID = ?", (self.__sub_id, self.__goal_id))
+        row = cur.fetchone()
+
+        self.__sub_name = row[2]
+        self.__sub_completion = row[3]
+
+    # Setters
+    def set_sub_name(self, name):
+        self.__sub_name = name
+
+    def set_sub_completion(self, state):
+        self.__sub_completion = state
+
+    # Getters
+    def get_sub_id(self): return self.__sub_id
+    def get_goal_id(self): return self.__goal_id
+    def get_sub_name(self): return self.__sub_name
+    def get_sub_completion(self): return self.__sub_completion
+
+    # Write setters changes to Subgoal table
+    def update_subrow(self):
+        insert = cur.execute("UPDATE Subgoal SET GoalName = ?, Completion = ? WHERE GoalID = ? AND SubID = ?")
+        tuple = (self.__sub_name, self.__sub_completion, self.__goal_id, self.__sub_id)
+        cur.execute(insert, tuple)
