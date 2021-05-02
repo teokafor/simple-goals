@@ -57,6 +57,9 @@ def open_home():
     # Make widgets on home screen react to cursor hover
     cursor_hover()
 
+    # Hide the new subgoals button by default.
+    HOME.newSubgoal.hide()
+
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
     HOME.todayButton.clicked.connect(lambda: update_goal_list(1))
@@ -235,6 +238,9 @@ def open_edit_subgoal(sub_id, goal_id):
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
 def on_goal_click(goal_id):
 
+    # Re-show the new subgoal button
+    HOME.newSubgoal.show()
+
     # Set the global to the selected goal.
     global last_goal_id
     last_goal_id = goal_id
@@ -258,7 +264,6 @@ def on_goal_click(goal_id):
 
     cursor_hover()
 
-    # TODO: Should only be visible when a goal is selected! (via flag?)
     HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
 
 
