@@ -9,6 +9,7 @@ from screen.home import Ui_MainWindow as HomeWindow
 from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
+from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
 #from widget.entry_widget import EntryWidget
 #from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
 from datetime import datetime
@@ -109,14 +110,17 @@ def new_subgoal(goal_id, name):
     projectio.new_subgoal(goal_id, name)
     open_home()
 
-
 def modify_goal(goal_id, name, description, end):
     modified = Row(goal_id)
-
     modified.set_goal_name(name)
     modified.set_goal_desc(description)
     modified.set_end_date(end)
+    open_home()
 
+
+def modify_subgoal(sub_id, goal_id, name):
+    subgoal = SubRow(sub_id, goal_id)
+    subgoal.set_sub_name(name)
     open_home()
 
 
@@ -191,6 +195,21 @@ def open_new_subgoal(goal_id):
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
     window.createSubgoalButton.clicked.connect(lambda: new_subgoal(goal_id, title.text()))
+
+
+def open_edit_subgoal(sub_id, goal_id):
+    window = EditSubGoalWindow()
+    window.setupUi(ROOT)
+    cursor_hover()
+
+    current_subgoal = SubRow(sub_id, goal_id)
+
+    title = window.titleEdit
+
+    title.setText(current_subgoal.get_sub_name())
+
+    window.cancelButton.clicked.connect(open_home)
+    window.modifySubgoalButton.clicked.connect(lambda: modify_subgoal(sub_id, goal_id, title.text()))
 
 
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
@@ -325,6 +344,9 @@ class SubgoalWidget(QtWidgets.QWidget):
         self.subgoal.set_sub_completion(state)
         # TODO: Update this goal's completion rate
 
+    def edit(self):
+        open_edit_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
+
     def remove(self):
         projectio.delete_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
         on_goal_click(self.subgoal.get_goal_id())
@@ -349,6 +371,7 @@ class SubgoalWidget(QtWidgets.QWidget):
         # Edit button
         edit = QtWidgets.QPushButton('O')
         edit.setFixedWidth(30)
+        edit.clicked.connect(self.edit)
 
         # Delete button
         delete = QtWidgets.QPushButton("X")
