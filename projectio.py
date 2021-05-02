@@ -98,6 +98,11 @@ def delete_goal(goal_id):
     con.commit()
 
 
+def delete_subgoal(sub_id, goal_id):
+    cur.execute("DELETE FROM Subgoal WHERE SubID = ? AND GoalID = ?", (sub_id, goal_id))
+    con.commit()
+
+
 # This function will return a list of goal objects that are created from each row in the Goals table.
 def make_goal_list() -> 'list[Row]':
     cur.execute("SELECT * FROM Goal")

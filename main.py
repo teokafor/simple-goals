@@ -44,7 +44,7 @@ def open_home():
     # By default, show the goals due today.
     update_goal_list(1)
 
-
+    print('open_goal CALLED')
     # Make widgets on home screen react to cursor hover
     cursor_hover()
 
@@ -325,6 +325,10 @@ class SubgoalWidget(QtWidgets.QWidget):
         self.subgoal.set_sub_completion(state)
         # TODO: Update this goal's completion rate
 
+    def remove(self):
+        projectio.delete_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
+        on_goal_click(self.subgoal.get_goal_id())
+
     def __init__(self, subgoal: SubRow, callback, *args, **kwargs):
         super(SubgoalWidget, self).__init__(*args, **kwargs)
 
@@ -333,19 +337,25 @@ class SubgoalWidget(QtWidgets.QWidget):
 
         layout = QtWidgets.QHBoxLayout()
 
-        done = QtWidgets.QCheckBox()
+        # Checkbox
         database_state = subgoal.get_sub_completion()
+        done = QtWidgets.QCheckBox()
         done.setCheckState(database_state)  # Activate the checkbox if it's flagged in the database
         done.clicked.connect(lambda: self.on_check(done.checkState()))
 
+        # Subgoal name
         label = QtWidgets.QLabel(subgoal.get_sub_name())
 
+        # Edit button
         edit = QtWidgets.QPushButton('O')
         edit.setFixedWidth(30)
 
+        # Delete button
         delete = QtWidgets.QPushButton("X")
         delete.setFixedWidth(30)
+        delete.clicked.connect(self.remove)
 
+        # Add widgets to layout
         layout.addWidget(done)
         layout.addWidget(label)
         layout.addWidget(edit)
