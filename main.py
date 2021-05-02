@@ -23,6 +23,9 @@ HOME = HomeWindow()
 # Global variable keeps track of what date tab was last open
 date_tab = 0
 
+# Global variable keeps track of what goal was last selected
+last_goal_id = 0
+
 def open_home():
     """
     Opens the "Home" window.
@@ -44,11 +47,13 @@ def open_home():
     # mask = QRegion(path.toFillPolygon().toPolygon())
     # ROOT.setMask(mask)
 
-    # Load whatever tab was selected last.
+    # Load whatever tab was selected last (if a goal has been selected yet)
     global date_tab
-    update_goal_list(date_tab)
+    if date_tab != 0:
+        update_goal_list(date_tab)
+    else:  # If no goal has been selected yet, load today's goals.
+        update_goal_list(1)
 
-    print('open_goal CALLED')
     # Make widgets on home screen react to cursor hover
     cursor_hover()
 
@@ -110,11 +115,14 @@ def update_goal_list(date_limit):
 def new_goal(name, description, start, end):
     projectio.new_goal(name, description, start, end)
     open_home()
+    on_goal_click(last_goal_id)
 
 
 def new_subgoal(goal_id, name):
     projectio.new_subgoal(goal_id, name)
     open_home()
+    on_goal_click(last_goal_id)
+
 
 def modify_goal(goal_id, name, description, end):
     modified = Row(goal_id)
@@ -122,12 +130,14 @@ def modify_goal(goal_id, name, description, end):
     modified.set_goal_desc(description)
     modified.set_end_date(end)
     open_home()
+    on_goal_click(last_goal_id)
 
 
 def modify_subgoal(sub_id, goal_id, name):
     subgoal = SubRow(sub_id, goal_id)
     subgoal.set_sub_name(name)
     open_home()
+    on_goal_click(last_goal_id)
 
 
 def open_new_goal():
@@ -157,6 +167,7 @@ def open_new_goal():
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
+    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
     window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), min_date.toPyDate(), calendar.selectedDate().toPyDate()))
 
 
@@ -188,6 +199,7 @@ def open_edit_goal(goal_id):
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
+    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
     window.modifyGoalButton.clicked.connect(lambda: modify_goal(goal_id, title.text(), description.toPlainText(), calendar.selectedDate().toPyDate()))
 
 
@@ -200,6 +212,7 @@ def open_new_subgoal(goal_id):
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
+    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
     window.createSubgoalButton.clicked.connect(lambda: new_subgoal(goal_id, title.text()))
 
 
@@ -215,12 +228,16 @@ def open_edit_subgoal(sub_id, goal_id):
     title.setText(current_subgoal.get_sub_name())
 
     window.cancelButton.clicked.connect(open_home)
+    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
     window.modifySubgoalButton.clicked.connect(lambda: modify_subgoal(sub_id, goal_id, title.text()))
 
 
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
 def on_goal_click(goal_id):
-    # HOME.setupUi(ROOT)  # If this line isn't here, the program crashes.
+
+    # Set the global to the selected goal.
+    global last_goal_id
+    last_goal_id = goal_id
 
     # Create references to the GUI layouts
     description_layout = HOME.goalDescription
@@ -258,8 +275,14 @@ class EntryWidget(QtWidgets.QPushButton):
 
     def remove(self):
         entry = self.entry
-        projectio.delete_goal(entry.get_goal_id())
+        goal_id = entry.get_goal_id()
+        projectio.delete_goal(goal_id)
         self.callback()
+
+        # Prevents the program from attempting to load a non-existent goal, thus causing it to crash.
+        if goal_id != last_goal_id:
+            on_goal_click(last_goal_id)
+
 
     def edit(self):
         entry = self.entry
