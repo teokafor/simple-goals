@@ -20,6 +20,8 @@ APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
 HOME = HomeWindow()
 
+# Global variable keeps track of what date tab was last open
+date_tab = 0
 
 def open_home():
     """
@@ -42,8 +44,9 @@ def open_home():
     # mask = QRegion(path.toFillPolygon().toPolygon())
     # ROOT.setMask(mask)
 
-    # By default, show the goals due today.
-    update_goal_list(1)
+    # Load whatever tab was selected last.
+    global date_tab
+    update_goal_list(date_tab)
 
     print('open_goal CALLED')
     # Make widgets on home screen react to cursor hover
@@ -70,6 +73,9 @@ def cursor_hover():
 
 # The date limit will determine what goals are loaded.
 def update_goal_list(date_limit):
+    # Set the date tab to whatever tab was selected last
+    global date_tab
+    date_tab = date_limit
 
     # Load goals from the local database
     vbox = HOME.goals
