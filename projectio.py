@@ -81,7 +81,7 @@ def new_goal(goal_name, goal_desc, start_date, end_date):
     con.commit()  # Insert the new row
 
 
-# Create a new subgoal.
+# Create a new subgoal in the table.
 def new_subgoal(goal_id, subgoal_name):
     insert = "INSERT INTO SubGoal (GoalID, SubName, Completion) VALUES (?, ?, ?);"
     tuple = (goal_id, subgoal_name, 0)
@@ -135,9 +135,11 @@ class SubRow:
     # Setters
     def set_sub_name(self, name):
         self.__sub_name = name
+        self.update_subrow()
 
     def set_sub_completion(self, state):
         self.__sub_completion = state
+        self.update_subrow()
 
     # Getters
     def get_sub_id(self): return self.__sub_id
@@ -147,6 +149,7 @@ class SubRow:
 
     # Write setters changes to Subgoal table
     def update_subrow(self):
-        insert = cur.execute("UPDATE Subgoal SET GoalName = ?, Completion = ? WHERE GoalID = ? AND SubID = ?")
+        insert = "UPDATE Subgoal SET SubName = ?, Completion = ? WHERE GoalID = ? AND SubID = ?"
         tuple = (self.__sub_name, self.__sub_completion, self.__goal_id, self.__sub_id)
         cur.execute(insert, tuple)
+        con.commit()

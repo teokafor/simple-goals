@@ -214,6 +214,8 @@ def on_goal_click(goal_id):
     desc_label = QtWidgets.QLabel(description)
     description_layout.addWidget(desc_label)
 
+    cursor_hover()
+
     # TODO: Should only be visible when a goal is selected! (via flag?)
     HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
 
@@ -320,7 +322,8 @@ class EntryWidget(QtWidgets.QPushButton):
 class SubgoalWidget(QtWidgets.QWidget):
 
     def on_check(self, state):
-        pass
+        self.subgoal.set_sub_completion(state)
+        # TODO: Update this goal's completion rate
 
     def __init__(self, subgoal: SubRow, callback, *args, **kwargs):
         super(SubgoalWidget, self).__init__(*args, **kwargs)
@@ -331,6 +334,8 @@ class SubgoalWidget(QtWidgets.QWidget):
         layout = QtWidgets.QHBoxLayout()
 
         done = QtWidgets.QCheckBox()
+        database_state = subgoal.get_sub_completion()
+        done.setCheckState(database_state)  # Activate the checkbox if it's flagged in the database
         done.clicked.connect(lambda: self.on_check(done.checkState()))
 
         label = QtWidgets.QLabel(subgoal.get_sub_name())
