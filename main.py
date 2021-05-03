@@ -24,7 +24,7 @@ HOME = HomeWindow()
 date_tab = 0
 
 # Global variable keeps track of what goal was last selected
-last_goal_id = 0
+last_goal_id = -1
 
 def open_home():
     """
@@ -240,31 +240,40 @@ def on_goal_click(goal_id):
 
     # Re-show the new subgoal button
     HOME.newSubgoal.show()
+    HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
 
     # Set the global to the selected goal.
     global last_goal_id
     last_goal_id = goal_id
 
-    # Create references to the GUI layouts
-    description_layout = HOME.goalDescription
-    subgoals_layout = HOME.subgoals
+    # Don't run the rest of the function if no goal is currently selected.
+    goals = projectio.make_goal_list()
+    goal_exists = False
+    for goal in goals:
+        if last_goal_id == goal.get_goal_id():
+            goal_exists = True
+            last_goal_id = goal.get_goal_id()
 
-    # Populate the subgoals layout
-    clear_layout(subgoals_layout)
-    subgoals = projectio.make_subgoal_list(goal_id)
-    for subgoal in subgoals:
-        button = SubgoalWidget(subgoal, open_home)
-        subgoals_layout.addWidget(button)
+    if goal_exists:
+        # Create references to the GUI layouts
+        description_layout = HOME.goalDescription
+        subgoals_layout = HOME.subgoals
 
-    description = projectio.Row(goal_id).get_goal_desc()
+        # Populate the subgoals layout
+        clear_layout(subgoals_layout)
+        subgoals = projectio.make_subgoal_list(goal_id)
+        for subgoal in subgoals:
+            button = SubgoalWidget(subgoal, open_home)
+            subgoals_layout.addWidget(button)
 
-    clear_layout(description_layout)
-    desc_label = QtWidgets.QLabel(description)
-    description_layout.addWidget(desc_label)
+        description = projectio.Row(goal_id).get_goal_desc()
 
-    cursor_hover()
+        clear_layout(description_layout)
+        desc_label = QtWidgets.QLabel(description)
+        description_layout.addWidget(desc_label)
 
-    HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
+        cursor_hover()
+
 
 
 # This function will remove all widgets from any given layout.
