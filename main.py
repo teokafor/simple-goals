@@ -287,9 +287,7 @@ def open_edit_subgoal(sub_id, goal_id):
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
 def on_goal_click(goal_id):
 
-    # Re-show the new subgoal button
-    HOME.newSubgoal.show()
-    HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
+
 
     # Set the global to the selected goal.
     global last_goal_id
@@ -304,6 +302,10 @@ def on_goal_click(goal_id):
             last_goal_id = goal.get_goal_id()
 
     if goal_exists:
+        # Re-show the new subgoal button
+        HOME.newSubgoal.show()
+        HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
+
         # Create references to the GUI layouts
         description_layout = HOME.goalDescription
         subgoals_layout = HOME.subgoals
