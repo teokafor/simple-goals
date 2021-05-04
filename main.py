@@ -66,6 +66,45 @@ def open_home():
     HOME.weeklyButton.clicked.connect(lambda: update_goal_list(2))
     HOME.overviewButton.clicked.connect(lambda: update_goal_list(3))
 
+    HOME.todayButton.setCheckable(True)
+    HOME.todayButton.setStyleSheet("""
+    QWidget {
+        background-color: white;
+        border: none;
+        padding: 10px;
+    }
+        
+    QWidget:checked {
+        border-bottom: 2px solid purple;
+    }
+    """)
+
+    HOME.weeklyButton.setCheckable(True)
+    HOME.weeklyButton.setStyleSheet("""
+        QWidget {
+            background-color: white;
+            border: none;
+            padding: 10px;
+        }
+        
+        QWidget:checked {
+            border-bottom: 2px solid purple;
+        }
+        """)
+
+    HOME.overviewButton.setCheckable(True)
+    HOME.overviewButton.setStyleSheet("""
+        QWidget {
+            background-color: white;
+            border: none;
+            padding: 10px;
+        }
+        
+        QWidget:checked {
+            border-bottom: 2px solid purple;
+        }
+        """)
+
 
 # This function will find any relevant elements in the current window and change the cursor style.
 def cursor_hover():
@@ -102,14 +141,23 @@ def update_goal_list(date_limit):
             if date_difference == -1:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
+                HOME.todayButton.setChecked(True)
+                HOME.weeklyButton.setChecked(False)
+                HOME.overviewButton.setChecked(False)
         elif date_limit == 2:  # Due this week
             if -1 <= date_difference <= 7:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
+                HOME.todayButton.setChecked(False)
+                HOME.weeklyButton.setChecked(True)
+                HOME.overviewButton.setChecked(False)
         elif date_limit == 3:  # Due anytime
             if -1 <= date_difference <= 999999:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
+                HOME.todayButton.setChecked(False)
+                HOME.weeklyButton.setChecked(False)
+                HOME.overviewButton.setChecked(True)
 
     vbox.addStretch()
     cursor_hover()
