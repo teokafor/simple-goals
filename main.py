@@ -561,5 +561,6 @@ if __name__ == '__main__':
     open_home()
 
     # Display the root window.
+    ROOT.setFixedSize(1000,708)
     ROOT.show()
     sys.exit(APPLICATION.exec_())
