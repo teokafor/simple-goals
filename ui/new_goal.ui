@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>550</height>
+    <width>1000</width>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
    <widget class="QLineEdit" name="titleEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>100</y>
+      <x>300</x>
+      <y>70</y>
       <width>401</width>
       <height>31</height>
      </rect>
@@ -41,8 +41,8 @@ padding: 10px;</string>
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>60</y>
+      <x>300</x>
+      <y>30</y>
       <width>91</width>
       <height>16</height>
      </rect>
@@ -57,8 +57,8 @@ padding: 10px;</string>
    <widget class="QLabel" name="descriptionLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>170</y>
+      <x>300</x>
+      <y>140</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -73,8 +73,8 @@ padding: 10px;</string>
    <widget class="QPushButton" name="cancelButton">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>460</y>
+      <x>40</x>
+      <y>610</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -91,8 +91,8 @@ border-radius: 5px; font-size: 15px;</string>
    <widget class="QPushButton" name="createGoalButton">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>460</y>
+      <x>830</x>
+      <y>610</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -109,14 +109,26 @@ border-radius: 5px; font-size: 15px;</string>
    <widget class="QTextEdit" name="descriptionEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>220</y>
+      <x>300</x>
+      <y>190</y>
       <width>401</width>
-      <height>41</height>
+      <height>121</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>120</height>
+     </size>
     </property>
     <property name="styleSheet">
      <string notr="true">border: none; background-color: white; border-bottom: 1px solid #C9C9C9; border-radius: 5px; padding: 10px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="markdown">
+     <string/>
     </property>
     <property name="placeholderText">
      <string>Enter a description for your new goal...</string>
@@ -125,11 +137,26 @@ border-radius: 5px; font-size: 15px;</string>
    <widget class="QCalendarWidget" name="calendarWidget">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>290</y>
-      <width>312</width>
-      <height>183</height>
+      <x>280</x>
+      <y>340</y>
+      <width>451</width>
+      <height>311</height>
      </rect>
+    </property>
+    <property name="gridVisible">
+     <bool>true</bool>
+    </property>
+    <property name="horizontalHeaderFormat">
+     <enum>QCalendarWidget::ShortDayNames</enum>
+    </property>
+    <property name="verticalHeaderFormat">
+     <enum>QCalendarWidget::NoVerticalHeader</enum>
+    </property>
+    <property name="navigationBarVisible">
+     <bool>true</bool>
+    </property>
+    <property name="dateEditEnabled">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -138,8 +165,8 @@ border-radius: 5px; font-size: 15px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>21</height>
+     <width>1000</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

@@ -67,6 +67,7 @@ def open_home():
     HOME.overviewButton.clicked.connect(lambda: update_goal_list(3))
 
     HOME.todayButton.setCheckable(True)
+    HOME.todayButton.setChecked(True)
     HOME.todayButton.setStyleSheet("""
     QWidget {
         background-color: white;
