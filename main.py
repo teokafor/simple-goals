@@ -298,6 +298,8 @@ class EntryWidget(QtWidgets.QPushButton):
             if goal_id != last_goal_id:
                 on_goal_click(last_goal_id)
 
+    def on_check(self, state):
+        self.entry.set_completion(state)
 
     def edit(self):
         entry = self.entry
@@ -348,8 +350,11 @@ class EntryWidget(QtWidgets.QPushButton):
         # The left-hand side (everything but the delete button) is an inner HBox.
         left = QtWidgets.QHBoxLayout()
         done = QtWidgets.QCheckBox()
+        checkbox_state = self.entry.get_completion()
+        done.setCheckState(checkbox_state)
+        done.clicked.connect(lambda: self.on_check(done.checkState()))
         label = QtWidgets.QLabel(entry.get_goal_name())
-        my_label_test = QtWidgets.QLabel(f'{entry.get_completion()}')
+        my_label_test = QtWidgets.QLabel(f'{update_completion(entry.get_goal_id())}')
         edit = QtWidgets.QPushButton("")
         edit.setAccessibleName("editButton")
         edit.setIcon(QIcon("resources/edit.png"))
@@ -381,9 +386,8 @@ class EntryWidget(QtWidgets.QPushButton):
         layout.addWidget(delete)
         self.setLayout(layout)
 
-        update_completion(self.entry.get_goal_id())
 
-
+# This function updates the completion percentage for each goal.
 def update_completion(goal_id):
     subgoals = projectio.make_subgoal_list(goal_id)
 
@@ -394,8 +398,7 @@ def update_completion(goal_id):
         total += 1
     goal_completion = sum / total
 
-    goal = Row(goal_id)
-    goal.set_completion(goal_completion)
+    return goal_completion
 
 
 # TODO: SHOULD BE MOVED BACK INTO subgoal_widget.py!
@@ -403,8 +406,6 @@ class SubgoalWidget(QtWidgets.QWidget):
 
     def on_check(self, state):
         self.subgoal.set_sub_completion(state)
-        update_completion(self.subgoal.get_goal_id())
-        # TODO: Update this goal's completion rate
 
     def edit(self):
         open_edit_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
@@ -457,7 +458,6 @@ class DeleteWidget(QtWidgets.QWidget):
 
         message_box = QMessageBox.question(self, f'Delete {self.goal_name}?', f'Are you sure you want to delete {self.goal_name}?')
         if message_box == QMessageBox.Yes:
-            # TODO: Add extra condition here that will set proper goal id's if selections are off.
             self.delete_flag = True
         else:  # Probably not necessary.
             self.delete_flag = False
