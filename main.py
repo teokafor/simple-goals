@@ -21,7 +21,7 @@ ROOT = QMainWindow()
 HOME = HomeWindow()
 
 # Global variable keeps track of what date tab was last open
-date_tab = 0
+date_tab = 1
 
 # Global variable keeps track of what goal was last selected
 last_goal_id = -1
@@ -349,12 +349,14 @@ class EntryWidget(QtWidgets.QPushButton):
         left = QtWidgets.QHBoxLayout()
         done = QtWidgets.QCheckBox()
         label = QtWidgets.QLabel(entry.get_goal_name())
+        my_label_test = QtWidgets.QLabel(f'{entry.get_completion()}')
         edit = QtWidgets.QPushButton("")
         edit.setAccessibleName("editButton")
         edit.setIcon(QIcon("resources/edit.png"))
         edit.clicked.connect(self.edit)
         left.addWidget(done)
         left.addWidget(label)
+        left.addWidget(my_label_test)
         left.addStretch()
         left.addWidget(edit)
 
@@ -379,12 +381,29 @@ class EntryWidget(QtWidgets.QPushButton):
         layout.addWidget(delete)
         self.setLayout(layout)
 
+        update_completion(self.entry.get_goal_id())
+
+
+def update_completion(goal_id):
+    subgoals = projectio.make_subgoal_list(goal_id)
+
+    sum = total = 0
+    for subgoal in subgoals:
+        if subgoal.get_sub_completion() == 2:
+            sum += 1
+        total += 1
+    goal_completion = sum / total
+
+    goal = Row(goal_id)
+    goal.set_completion(goal_completion)
+
 
 # TODO: SHOULD BE MOVED BACK INTO subgoal_widget.py!
 class SubgoalWidget(QtWidgets.QWidget):
 
     def on_check(self, state):
         self.subgoal.set_sub_completion(state)
+        update_completion(self.subgoal.get_goal_id())
         # TODO: Update this goal's completion rate
 
     def edit(self):
@@ -427,6 +446,7 @@ class SubgoalWidget(QtWidgets.QWidget):
         layout.addWidget(edit)
         layout.addWidget(delete)
         self.setLayout(layout)
+
 
 # TODO: SHOULD BE MOVED INTO A SCRIPT OF ITS OWN!
 class DeleteWidget(QtWidgets.QWidget):
