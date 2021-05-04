@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox
 
 import projectio
 from screen.home import Ui_MainWindow as HomeWindow
@@ -289,13 +289,14 @@ class EntryWidget(QtWidgets.QPushButton):
 
     def remove(self):
         entry = self.entry
-        goal_id = entry.get_goal_id()
-        projectio.delete_goal(goal_id)
-        self.callback()
-
-        # Prevents the program from attempting to load a non-existent goal, thus causing it to crash.
-        if goal_id != last_goal_id:
-            on_goal_click(last_goal_id)
+        message = DeleteWidget(entry.get_goal_name())
+        if message.delete_flag:
+            goal_id = entry.get_goal_id()
+            projectio.delete_goal(goal_id)
+            self.callback()
+            # Prevents the program from attempting to load a non-existent goal, thus causing it to crash.
+            if goal_id != last_goal_id:
+                on_goal_click(last_goal_id)
 
 
     def edit(self):
@@ -358,11 +359,10 @@ class EntryWidget(QtWidgets.QPushButton):
         left.addWidget(edit)
 
         self.clicked.connect(self.select)
-        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         # Delete button on the right-hand side
         delete = QtWidgets.QPushButton("")
-        delete.clicked.connect(lambda: self.remove())
+        delete.clicked.connect(self.remove)
         delete.setIcon(QIcon("resources/delete.png"))
         delete.setMaximumWidth(38)
         delete.setMinimumWidth(38)
@@ -427,6 +427,21 @@ class SubgoalWidget(QtWidgets.QWidget):
         layout.addWidget(edit)
         layout.addWidget(delete)
         self.setLayout(layout)
+
+# TODO: SHOULD BE MOVED INTO A SCRIPT OF ITS OWN!
+class DeleteWidget(QtWidgets.QWidget):
+    def __init__(self, goal_name, *args, **kwargs):
+        super(DeleteWidget, self).__init__(*args, **kwargs)
+        self.goal_name = goal_name
+        self.delete_flag = False
+
+        message_box = QMessageBox.question(self, f'Delete {self.goal_name}?', f'Are you sure you want to delete {self.goal_name}?')
+        if message_box == QMessageBox.Yes:
+            # TODO: Add extra condition here that will set proper goal id's if selections are off.
+            self.delete_flag = True
+        else:  # Probably not necessary.
+            self.delete_flag = False
+
 
 if __name__ == '__main__':
     open_home()
