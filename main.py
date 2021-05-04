@@ -534,6 +534,7 @@ class SubgoalWidget(QtWidgets.QPushButton):
 
         layout.addWidget(done)
         layout.addWidget(label)
+        layout.addStretch()
         layout.addWidget(edit)
         layout.addWidget(delete)
         self.setLayout(layout)
