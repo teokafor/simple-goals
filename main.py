@@ -406,7 +406,7 @@ def update_completion(goal_id):
 
 
 # TODO: SHOULD BE MOVED BACK INTO subgoal_widget.py!
-class SubgoalWidget(QtWidgets.QWidget):
+class SubgoalWidget(QtWidgets.QPushButton):
 
     def on_check(self, state):
         self.subgoal.set_sub_completion(state)
@@ -423,6 +423,33 @@ class SubgoalWidget(QtWidgets.QWidget):
 
         self.subgoal = subgoal
         self.callback = callback
+        self.setAccessibleName("entryWidget")
+        self.setMinimumHeight(65)
+        self.setStyleSheet("""
+                [accessibleName="entryWidget"] {
+                    border-radius: 15px 15px 0px 0px;
+                    border-bottom: 1px solid gray;
+                }
+
+                [accessibleName="editButton"] {
+                    border-radius: 15px 15px 0px 0px;
+                }
+
+                QWidget {
+                    background-color: #E8E8E8;
+                }
+
+                QCheckBox::indicator {
+                    width: 30px;
+                    height: 30px;
+                    background-color: white;
+                    border-radius: 5px;
+                }
+
+                QCheckBox::indicator::checked {
+                    background-color: green;
+                }
+                """)
 
         layout = QtWidgets.QHBoxLayout()
 
@@ -436,16 +463,27 @@ class SubgoalWidget(QtWidgets.QWidget):
         label = QtWidgets.QLabel(subgoal.get_sub_name())
 
         # Edit button
-        edit = QtWidgets.QPushButton('O')
+        edit = QtWidgets.QPushButton('')
+        edit.setAccessibleName("editButton")
+        edit.setIcon(QIcon("resources/edit.png"))
         edit.setFixedWidth(30)
         edit.clicked.connect(self.edit)
 
         # Delete button
-        delete = QtWidgets.QPushButton("X")
-        delete.setFixedWidth(30)
+        delete = QtWidgets.QPushButton('')
         delete.clicked.connect(self.remove)
+        delete.setIcon(QIcon("resources/delete.png"))
+        delete.setMaximumWidth(38)
+        delete.setMinimumWidth(38)
+        delete.setMaximumHeight(38)
+        delete.setMinimumHeight(38)
+        delete.setStyleSheet("""
+               QWidget {
+                   background-color: #B23535;
+                   border-radius: 5px;
+               }
+               """)
 
-        # Add widgets to layout
         layout.addWidget(done)
         layout.addWidget(label)
         layout.addWidget(edit)
