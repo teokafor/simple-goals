@@ -396,7 +396,11 @@ def update_completion(goal_id):
         if subgoal.get_sub_completion() == 2:
             sum += 1
         total += 1
-    goal_completion = sum / total
+
+    if total > 0:
+        goal_completion = sum / total
+    else:
+        goal_completion = 0
 
     return goal_completion
 
