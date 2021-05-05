@@ -11,7 +11,7 @@ from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
 from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
 #from widget.entry_widget import EntryWidget
-#from widget.subgoal_widget import SubgoalWidget  # Maybe merge this into entry_widget later?
+#from widget.subgoal_widget import SubgoalWidget
 from datetime import datetime
 
 from projectio import Row, SubRow
@@ -165,31 +165,61 @@ def update_goal_list(date_limit):
 
 
 def new_goal(name, description, start, end):
-    projectio.new_goal(name, description, start, end)
-    open_home()
-    on_goal_click(last_goal_id)
+    error_exists = invalid_input([name, description])
+
+    if not error_exists:
+        projectio.new_goal(name, description, start, end)
+        open_home()
+        on_goal_click(last_goal_id)
 
 
 def new_subgoal(goal_id, name):
-    projectio.new_subgoal(goal_id, name)
-    open_home()
-    on_goal_click(last_goal_id)
+    error_exists = invalid_input([name])
+
+    if not error_exists:
+        projectio.new_subgoal(goal_id, name)
+        open_home()
+        on_goal_click(last_goal_id)
 
 
 def modify_goal(goal_id, name, description, end):
-    modified = Row(goal_id)
-    modified.set_goal_name(name)
-    modified.set_goal_desc(description)
-    modified.set_end_date(end)
-    open_home()
-    on_goal_click(last_goal_id)
+    error_exists = invalid_input([name, description])
+
+    if not error_exists:
+        modified = Row(goal_id)
+        modified.set_goal_name(name)
+        modified.set_goal_desc(description)
+        modified.set_end_date(end)
+        open_home()
+        on_goal_click(last_goal_id)
 
 
 def modify_subgoal(sub_id, goal_id, name):
-    subgoal = SubRow(sub_id, goal_id)
-    subgoal.set_sub_name(name)
-    open_home()
-    on_goal_click(last_goal_id)
+    error_exists = invalid_input([name])
+
+    if not error_exists:
+        subgoal = SubRow(sub_id, goal_id)
+        subgoal.set_sub_name(name)
+        open_home()
+        on_goal_click(last_goal_id)
+
+
+# This function receives a list of string inputs and determines if they are valid inputs.
+def invalid_input(input_list):
+    error_flag = False
+    for item in input_list:
+        if item == '':
+            error_flag = True
+    if error_flag:
+        InvalidWidget()
+        return error_flag
+
+
+# Display a warning message if inputs are found to be invalid.
+class InvalidWidget(QtWidgets.QWidget):
+    def __init__(self, *args, **kwargs):
+        super(InvalidWidget, self).__init__(*args, **kwargs)
+        QMessageBox.warning(self, 'Error!', f'Input fields cannot be left blank.\nPlease try again.')
 
 
 def open_new_goal():
@@ -286,9 +316,6 @@ def open_edit_subgoal(sub_id, goal_id):
 
 # This function is run each time a goal is selected. It will update description and fetch subgoals.
 def on_goal_click(goal_id):
-
-
-
     # Set the global to the selected goal.
     global last_goal_id
     last_goal_id = goal_id
