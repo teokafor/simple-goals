@@ -62,7 +62,7 @@ class Ui_NewGoalWindow(object):
         self.calendarWidget.setObjectName("calendarWidget")
         NewGoalWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(NewGoalWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menubar.setObjectName("menubar")
         NewGoalWindow.setMenuBar(self.menubar)
 
@@ -71,7 +71,7 @@ class Ui_NewGoalWindow(object):
 
     def retranslateUi(self, NewGoalWindow):
         _translate = QtCore.QCoreApplication.translate
-        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "MainWindow"))
+        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "Create a New Goal"))
         self.titleEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a goal title..."))
         self.titleLabel.setText(_translate("NewGoalWindow", "Goal Title"))
         self.descriptionLabel.setText(_translate("NewGoalWindow", "Description"))

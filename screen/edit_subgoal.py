@@ -52,7 +52,7 @@ class Ui_NewGoalWindow(object):
 
     def retranslateUi(self, NewGoalWindow):
         _translate = QtCore.QCoreApplication.translate
-        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "MainWindow"))
+        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "Edit Subgoal"))
         self.titleEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a subgoal title..."))
         self.titleLabel.setText(_translate("NewGoalWindow", "Subgoal Title"))
         self.cancelButton.setText(_translate("NewGoalWindow", "Cancel"))
