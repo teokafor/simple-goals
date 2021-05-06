@@ -149,23 +149,28 @@ def update_goal_list(date_limit):
             if date_difference == -1:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
-                HOME.todayButton.setChecked(True)
-                HOME.weeklyButton.setChecked(False)
-                HOME.overviewButton.setChecked(False)
         elif date_limit == DUE_WEEKLY:  # Due this week
             if -1 <= date_difference <= 7:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
-                HOME.todayButton.setChecked(False)
-                HOME.weeklyButton.setChecked(True)
-                HOME.overviewButton.setChecked(False)
         elif date_limit == DUE_ANY:  # Due anytime
             if -1 <= date_difference <= 999999:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
-                HOME.todayButton.setChecked(False)
-                HOME.weeklyButton.setChecked(False)
-                HOME.overviewButton.setChecked(True)
+
+    # Update button selection status
+    if date_limit == DUE_TODAY:
+        HOME.todayButton.setChecked(True)
+        HOME.weeklyButton.setChecked(False)
+        HOME.overviewButton.setChecked(False)
+    elif date_limit == DUE_WEEKLY:
+        HOME.todayButton.setChecked(False)
+        HOME.weeklyButton.setChecked(True)
+        HOME.overviewButton.setChecked(False)
+    elif date_limit == DUE_ANY:
+        HOME.todayButton.setChecked(False)
+        HOME.weeklyButton.setChecked(False)
+        HOME.overviewButton.setChecked(True)
 
     vbox.addStretch()
     cursor_hover()
