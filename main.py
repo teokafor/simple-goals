@@ -27,6 +27,11 @@ date_tab = 1
 last_goal_id = -1
 
 
+DUE_TODAY = 1
+DUE_WEEKLY = 2
+DUE_ANY = 3
+
+
 def open_home():
     """
     Opens the "Home" window.
@@ -63,9 +68,9 @@ def open_home():
 
     # Click handlers
     HOME.newGoal.clicked.connect(open_new_goal)
-    HOME.todayButton.clicked.connect(lambda: update_goal_list(1))
-    HOME.weeklyButton.clicked.connect(lambda: update_goal_list(2))
-    HOME.overviewButton.clicked.connect(lambda: update_goal_list(3))
+    HOME.todayButton.clicked.connect(lambda: update_goal_list(DUE_TODAY))
+    HOME.weeklyButton.clicked.connect(lambda: update_goal_list(DUE_WEEKLY))
+    HOME.overviewButton.clicked.connect(lambda: update_goal_list(DUE_ANY))
 
     HOME.todayButton.setCheckable(True)
     HOME.todayButton.setChecked(True)
@@ -140,21 +145,21 @@ def update_goal_list(date_limit):
         end_date = datetime.strptime(entry.get_end_date(), "%Y-%m-%d")
         date_difference = (end_date-today_date).days
 
-        if date_limit == 1:  # Due today
+        if date_limit == DUE_TODAY:  # Due today
             if date_difference == -1:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
                 HOME.todayButton.setChecked(True)
                 HOME.weeklyButton.setChecked(False)
                 HOME.overviewButton.setChecked(False)
-        elif date_limit == 2:  # Due this week
+        elif date_limit == DUE_WEEKLY:  # Due this week
             if -1 <= date_difference <= 7:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
                 HOME.todayButton.setChecked(False)
                 HOME.weeklyButton.setChecked(True)
                 HOME.overviewButton.setChecked(False)
-        elif date_limit == 3:  # Due anytime
+        elif date_limit == DUE_ANY:  # Due anytime
             if -1 <= date_difference <= 999999:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
