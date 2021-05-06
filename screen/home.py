@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.subgoalScrollArea.setObjectName("subgoalScrollArea")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 451, 321))
-        self.scrollAreaWidgetContents_2.setMinimumSize(QtCore.QSize(0, 100))
+        self.scrollAreaWidgetContents_2.setMinimumSize(QtCore.QSize(0, 0))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_2.setObjectName("verticalLayout_2")

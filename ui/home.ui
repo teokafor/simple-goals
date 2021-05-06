@@ -349,7 +349,7 @@ color: white;
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>100</height>
+        <height>0</height>
        </size>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
