@@ -358,7 +358,7 @@ def on_goal_click(goal_id):
 
         # Container widgets
         widget = HOME.subgoalWidget
-
+        desc_widget = HOME.descriptionWidget
 
         # Create references to the GUI layouts
         description_layout = HOME.goalDescription
@@ -389,6 +389,14 @@ def on_goal_click(goal_id):
         desc_label = QtWidgets.QLabel(description)
         desc_label.setWordWrap(True)
         description_layout.addWidget(desc_label)
+
+        # Scroll area for description
+        desc_widget.setLayout(description_layout)
+        desc_scroll_area = HOME.descriptionScrollArea
+        desc_scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        desc_scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        desc_scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(ROOT.parentWidget())
 
 
 
