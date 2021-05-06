@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QIcon
+from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QIcon, QFontDatabase
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox
 
 import projectio
@@ -25,6 +25,7 @@ date_tab = 1
 
 # Global variable keeps track of what goal was last selected
 last_goal_id = -1
+
 
 def open_home():
     """
@@ -580,14 +581,20 @@ class DeleteWidget(QtWidgets.QWidget):
         message_box = QMessageBox.question(self, f'Delete {self.goal_name}?', f'Are you sure you want to delete {self.goal_name}?')
         if message_box == QMessageBox.Yes:
             self.delete_flag = True
-        else:  # Probably not necessary.
-            self.delete_flag = False
 
 
 if __name__ == '__main__':
+    # Set custom font.
+    font_id = QFontDatabase.addApplicationFont('resources/roboto-light.ttf')
+    font_db = QFontDatabase()
+    font_styles = font_db.styles('Roboto')
+    font_families = QFontDatabase.applicationFontFamilies(font_id)
+    font = font_db.font(font_families[0], font_styles[0], 12)
+    APPLICATION.setFont(font)
+
     open_home()
 
     # Display the root window.
-    ROOT.setFixedSize(1000,708)
+    ROOT.setFixedSize(1000, 708)
     ROOT.show()
     sys.exit(APPLICATION.exec_())
