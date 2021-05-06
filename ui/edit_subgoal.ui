@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>550</height>
+    <width>1000</width>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,10 +20,10 @@
    <widget class="QLineEdit" name="titleEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>220</y>
+      <x>300</x>
+      <y>320</y>
       <width>401</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -41,10 +41,10 @@ padding: 10px;</string>
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>180</y>
+      <x>300</x>
+      <y>280</y>
       <width>141</width>
-      <height>16</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -57,8 +57,8 @@ padding: 10px;</string>
    <widget class="QPushButton" name="cancelButton">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>460</y>
+      <x>40</x>
+      <y>610</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -75,8 +75,8 @@ border-radius: 5px; font-size: 15px;</string>
    <widget class="QPushButton" name="modifySubgoalButton">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>460</y>
+      <x>830</x>
+      <y>610</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -96,7 +96,7 @@ border-radius: 5px; font-size: 15px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1000</width>
      <height>21</height>
     </rect>
    </property>

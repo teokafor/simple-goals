@@ -14,36 +14,36 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_NewGoalWindow(object):
     def setupUi(self, NewGoalWindow):
         NewGoalWindow.setObjectName("NewGoalWindow")
-        NewGoalWindow.resize(800, 550)
+        NewGoalWindow.resize(1000, 708)
         NewGoalWindow.setStyleSheet("background-color: #F6F5F9;")
         self.centralwidget = QtWidgets.QWidget(NewGoalWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.titleEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.titleEdit.setGeometry(QtCore.QRect(190, 220, 401, 31))
+        self.titleEdit.setGeometry(QtCore.QRect(300, 320, 401, 41))
         self.titleEdit.setStyleSheet("border: none; background-color: white; border-bottom: 1px solid #C9C9C9;\n"
 "border-radius: 5px;\n"
 "padding: 10px;")
         self.titleEdit.setText("")
         self.titleEdit.setObjectName("titleEdit")
         self.titleLabel = QtWidgets.QLabel(self.centralwidget)
-        self.titleLabel.setGeometry(QtCore.QRect(190, 180, 141, 16))
+        self.titleLabel.setGeometry(QtCore.QRect(300, 280, 141, 31))
         self.titleLabel.setStyleSheet("font-size: 20px;")
         self.titleLabel.setObjectName("titleLabel")
         self.cancelButton = QtWidgets.QPushButton(self.centralwidget)
-        self.cancelButton.setGeometry(QtCore.QRect(30, 460, 131, 41))
+        self.cancelButton.setGeometry(QtCore.QRect(40, 610, 131, 41))
         self.cancelButton.setStyleSheet("background-color: #B23535;\n"
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
         self.cancelButton.setObjectName("cancelButton")
         self.modifySubgoalButton = QtWidgets.QPushButton(self.centralwidget)
-        self.modifySubgoalButton.setGeometry(QtCore.QRect(640, 460, 131, 41))
+        self.modifySubgoalButton.setGeometry(QtCore.QRect(830, 610, 131, 41))
         self.modifySubgoalButton.setStyleSheet("background-color: #35B29D;\n"
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
         self.modifySubgoalButton.setObjectName("modifySubgoalButton")
         NewGoalWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(NewGoalWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menubar.setObjectName("menubar")
         NewGoalWindow.setMenuBar(self.menubar)
 
