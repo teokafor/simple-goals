@@ -636,6 +636,12 @@ class DeleteWidget(QtWidgets.QWidget):
             self.delete_flag = True
 
 
+# Close the database before quitting.
+def quit_program():
+    APPLICATION.exec_()
+    projectio.close_database()
+
+
 if __name__ == '__main__':
     # Set custom font.
     font_id = QFontDatabase.addApplicationFont('resources/roboto-light.ttf')
@@ -650,4 +656,4 @@ if __name__ == '__main__':
     # Display the root window.
     ROOT.setFixedSize(1000, 708)
     ROOT.show()
-    sys.exit(APPLICATION.exec_())
+    sys.exit(quit_program())

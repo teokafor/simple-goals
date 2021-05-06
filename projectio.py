@@ -1,4 +1,3 @@
-# TODO: close connection to db at some point!
 import sqlite3
 
 # Create the database file, if it does not already exist.
@@ -124,6 +123,11 @@ def make_subgoal_list(goal_id) -> 'list[SubRow]':
         subgoals.append(SubRow(sub_id, goal_id))
 
     return subgoals
+
+
+def close_database():
+    con.close()
+    print('Database connection closed.')
 
 
 class SubRow:
