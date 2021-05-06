@@ -131,6 +131,9 @@ def update_goal_list(date_limit):
     global date_tab
     date_tab = date_limit
 
+    # Container widget
+    widget = HOME.widgetTest
+
     # Load goals from the local database
     vbox = HOME.goals
     vbox.setSizeConstraint(QLayout.SetFixedSize)
@@ -157,6 +160,14 @@ def update_goal_list(date_limit):
             if -1 <= date_difference <= 999999:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
+
+    widget.setLayout(vbox)
+    scroll_area = HOME.scrollArea
+    scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+    scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+    scroll_area.setWidgetResizable(True)
+    scroll_area.setWidget(ROOT.parentWidget())
+
 
     # Update button selection status
     if date_limit == DUE_TODAY:
@@ -345,6 +356,10 @@ def on_goal_click(goal_id):
         HOME.newSubgoal.show()
         HOME.newSubgoal.clicked.connect(lambda: open_new_subgoal(goal_id))
 
+        # Container widgets
+        widget = HOME.subgoalWidget
+
+
         # Create references to the GUI layouts
         description_layout = HOME.goalDescription
         description_layout.setContentsMargins(-2,-2,-2,-2)
@@ -360,11 +375,16 @@ def on_goal_click(goal_id):
             button = SubgoalWidget(subgoal, open_home)
             subgoals_layout.addWidget(button)
 
+        # Set up the scroll area for subgoals
+        widget.setLayout(subgoals_layout)
+        scroll_area = HOME.subgoalScrollArea
+        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(ROOT.parentWidget())
+
         description = projectio.Row(goal_id).get_goal_desc()
 
-
-        scroll_area = HOME.scrollArea
-      #  scroll_area.ensureVisible(50, 20, 20, 20)
         clear_layout(description_layout)
         desc_label = QtWidgets.QLabel(description)
         desc_label.setWordWrap(True)
