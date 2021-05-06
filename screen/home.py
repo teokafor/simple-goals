@@ -100,6 +100,7 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
         self.subgoals = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.subgoals.setContentsMargins(0, 0, 0, 0)
+        self.subgoals.setSpacing(25)
         self.subgoals.setObjectName("subgoals")
         self.newSubgoal = QtWidgets.QPushButton(self.centralwidget)
         self.newSubgoal.setGeometry(QtCore.QRect(930, 480, 25, 25))

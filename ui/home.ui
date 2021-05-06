@@ -210,7 +210,11 @@ padding: 10px;</string>
       <height>191</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="subgoals"/>
+    <layout class="QVBoxLayout" name="subgoals">
+     <property name="spacing">
+      <number>25</number>
+     </property>
+    </layout>
    </widget>
    <widget class="QPushButton" name="newSubgoal">
     <property name="geometry">
