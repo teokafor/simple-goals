@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QIcon, QFontDatabase
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox, QSizePolicy, QLayout
 
 import projectio
 from screen.home import Ui_MainWindow as HomeWindow
@@ -128,6 +128,7 @@ def update_goal_list(date_limit):
 
     # Load goals from the local database
     vbox = HOME.goals
+    vbox.setSizeConstraint(QLayout.SetFixedSize)
 
     # Clear the current goals before re-instantiating them
     clear_layout(vbox)
@@ -338,6 +339,9 @@ def on_goal_click(goal_id):
         description_layout = HOME.goalDescription
         subgoals_layout = HOME.subgoals
 
+        # Allow for equal subgoal spacing
+        subgoals_layout.setSizeConstraint(QLayout.SetFixedSize)
+
         # Populate the subgoals layout
         clear_layout(subgoals_layout)
         subgoals = projectio.make_subgoal_list(goal_id)
@@ -347,9 +351,15 @@ def on_goal_click(goal_id):
 
         description = projectio.Row(goal_id).get_goal_desc()
 
+
+        scroll_area = HOME.scrollArea
+        scroll_area.ensureVisible(50, 20, 20, 20)
+
         clear_layout(description_layout)
         desc_label = QtWidgets.QLabel(description)
         description_layout.addWidget(desc_label)
+
+
 
         cursor_hover()
 
@@ -396,7 +406,8 @@ class EntryWidget(QtWidgets.QPushButton):
         self.callback = callback
 
         self.setAccessibleName("entryWidget")
-        self.setMinimumHeight(65)
+        self.setMinimumHeight(60)
+        self.setMinimumWidth(410)
         self.setStyleSheet("""
         [accessibleName="entryWidget"] {
             border-radius: 15px 15px 0px 0px;
@@ -503,7 +514,8 @@ class SubgoalWidget(QtWidgets.QPushButton):
         self.subgoal = subgoal
         self.callback = callback
         self.setAccessibleName("entryWidget")
-        self.setMinimumHeight(65)
+        self.setMinimumHeight(60)
+        self.setMinimumWidth(410)
         self.setStyleSheet("""
                 [accessibleName="entryWidget"] {
                     border-radius: 15px 15px 0px 0px;
