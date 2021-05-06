@@ -337,6 +337,7 @@ def on_goal_click(goal_id):
 
         # Create references to the GUI layouts
         description_layout = HOME.goalDescription
+        description_layout.setContentsMargins(-2,-2,-2,-2)
         subgoals_layout = HOME.subgoals
 
         # Allow for equal subgoal spacing
@@ -353,10 +354,10 @@ def on_goal_click(goal_id):
 
 
         scroll_area = HOME.scrollArea
-        scroll_area.ensureVisible(50, 20, 20, 20)
-
+      #  scroll_area.ensureVisible(50, 20, 20, 20)
         clear_layout(description_layout)
         desc_label = QtWidgets.QLabel(description)
+        desc_label.setWordWrap(True)
         description_layout.addWidget(desc_label)
 
 
@@ -430,7 +431,8 @@ class EntryWidget(QtWidgets.QPushButton):
         }
 
         QCheckBox::indicator::checked {
-            background-color: green;
+            background-color: #35B29D;
+            background-image: url(resources/checked.png);
         }
         """)
 
@@ -538,7 +540,8 @@ class SubgoalWidget(QtWidgets.QPushButton):
                 }
 
                 QCheckBox::indicator::checked {
-                    background-color: green;
+                    background-color: #35B29D;
+                    background-image: url(resources/checked.png);
                 }
                 """)
 
