@@ -30,6 +30,7 @@ last_goal_id = -1
 DUE_TODAY = 1
 DUE_WEEKLY = 2
 DUE_ANY = 3
+DUE_PAST = 4
 
 
 def open_home():
@@ -41,11 +42,15 @@ def open_home():
 
     # Button sizes
     HOME.todayButton.setMinimumHeight(50)
-    HOME.todayButton.setMinimumWidth(100)
+    HOME.todayButton.setMinimumWidth(125)
     HOME.weeklyButton.setMinimumHeight(50)
-    HOME.weeklyButton.setMinimumWidth(100)
+    HOME.weeklyButton.setMinimumWidth(125)
     HOME.overviewButton.setMinimumHeight(50)
-    HOME.overviewButton.setMinimumWidth(100)
+    HOME.overviewButton.setMinimumWidth(125)
+
+    HOME.pastButton.setMinimumHeight(50)
+    HOME.pastButton.setMinimumWidth(125)
+    HOME.filler.setStyleSheet("""QWidget {background-color: white;}""")
 
     # ROUND 
     # path = QPainterPath()
@@ -71,6 +76,7 @@ def open_home():
     HOME.todayButton.clicked.connect(lambda: update_goal_list(DUE_TODAY))
     HOME.weeklyButton.clicked.connect(lambda: update_goal_list(DUE_WEEKLY))
     HOME.overviewButton.clicked.connect(lambda: update_goal_list(DUE_ANY))
+    HOME.pastButton.clicked.connect(lambda: update_goal_list(DUE_PAST))
 
     HOME.todayButton.setCheckable(True)
     HOME.todayButton.setChecked(True)
@@ -112,6 +118,18 @@ def open_home():
         }
         """)
 
+    HOME.pastButton.setCheckable(True)
+    HOME.pastButton.setStyleSheet("""
+        QWidget {
+            background-color: white;
+            border: none;
+            padding: 10px;
+        }
+        
+        QWidget:checked {
+            border-bottom: 2px solid purple;
+        }
+        """)
 
 # This function will find any relevant elements in the current window and change the cursor style.
 def cursor_hover():
@@ -160,6 +178,10 @@ def update_goal_list(date_limit):
             if -1 <= date_difference <= 999999:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
+        elif date_limit == DUE_PAST:  # Due date has passed
+            if date_difference < -1:
+                button = EntryWidget(entry, open_home)
+                vbox.addWidget(button)
 
     widget.setLayout(vbox)
     scroll_area = HOME.scrollArea
@@ -174,14 +196,22 @@ def update_goal_list(date_limit):
         HOME.todayButton.setChecked(True)
         HOME.weeklyButton.setChecked(False)
         HOME.overviewButton.setChecked(False)
+        HOME.pastButton.setChecked(False)
     elif date_limit == DUE_WEEKLY:
         HOME.todayButton.setChecked(False)
         HOME.weeklyButton.setChecked(True)
         HOME.overviewButton.setChecked(False)
+        HOME.pastButton.setChecked(False)
     elif date_limit == DUE_ANY:
         HOME.todayButton.setChecked(False)
         HOME.weeklyButton.setChecked(False)
         HOME.overviewButton.setChecked(True)
+        HOME.pastButton.setChecked(False)
+    elif date_limit == DUE_PAST:
+        HOME.todayButton.setChecked(False)
+        HOME.weeklyButton.setChecked(False)
+        HOME.overviewButton.setChecked(False)
+        HOME.pastButton.setChecked(True)
 
     vbox.addStretch()
     cursor_hover()
