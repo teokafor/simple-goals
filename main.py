@@ -198,7 +198,7 @@ def update_goal_list(date_limit):
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
         elif date_limit == DUE_WEEKLY:  # Due this week
-            if -1 <= date_difference <= 7:
+            if -1 <= date_difference <= 6:
                 button = EntryWidget(entry, open_home)
                 vbox.addWidget(button)
         elif date_limit == DUE_ANY:  # Due anytime
