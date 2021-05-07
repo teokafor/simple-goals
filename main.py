@@ -131,6 +131,33 @@ def open_home():
         }
         """)
 
+    date_tab_style()
+
+
+def date_tab_style():
+    # Update button selection status
+    if date_tab == DUE_TODAY:
+        HOME.todayButton.setChecked(True)
+        HOME.weeklyButton.setChecked(False)
+        HOME.overviewButton.setChecked(False)
+        HOME.pastButton.setChecked(False)
+    elif date_tab == DUE_WEEKLY:
+        HOME.todayButton.setChecked(False)
+        HOME.weeklyButton.setChecked(True)
+        HOME.overviewButton.setChecked(False)
+        HOME.pastButton.setChecked(False)
+    elif date_tab == DUE_ANY:
+        HOME.todayButton.setChecked(False)
+        HOME.weeklyButton.setChecked(False)
+        HOME.overviewButton.setChecked(True)
+        HOME.pastButton.setChecked(False)
+    elif date_tab == DUE_PAST:
+        HOME.todayButton.setChecked(False)
+        HOME.weeklyButton.setChecked(False)
+        HOME.overviewButton.setChecked(False)
+        HOME.pastButton.setChecked(True)
+
+
 # This function will find any relevant elements in the current window and change the cursor style.
 def cursor_hover():
     elements = []
@@ -190,28 +217,7 @@ def update_goal_list(date_limit):
     scroll_area.setWidgetResizable(True)
     scroll_area.setWidget(ROOT.parentWidget())
 
-
-    # Update button selection status
-    if date_limit == DUE_TODAY:
-        HOME.todayButton.setChecked(True)
-        HOME.weeklyButton.setChecked(False)
-        HOME.overviewButton.setChecked(False)
-        HOME.pastButton.setChecked(False)
-    elif date_limit == DUE_WEEKLY:
-        HOME.todayButton.setChecked(False)
-        HOME.weeklyButton.setChecked(True)
-        HOME.overviewButton.setChecked(False)
-        HOME.pastButton.setChecked(False)
-    elif date_limit == DUE_ANY:
-        HOME.todayButton.setChecked(False)
-        HOME.weeklyButton.setChecked(False)
-        HOME.overviewButton.setChecked(True)
-        HOME.pastButton.setChecked(False)
-    elif date_limit == DUE_PAST:
-        HOME.todayButton.setChecked(False)
-        HOME.weeklyButton.setChecked(False)
-        HOME.overviewButton.setChecked(False)
-        HOME.pastButton.setChecked(True)
+    date_tab_style()
 
     vbox.addStretch()
     cursor_hover()
@@ -570,6 +576,7 @@ class SubgoalWidget(QtWidgets.QPushButton):
 
     def on_check(self, state):
         self.subgoal.set_sub_completion(state)
+        update_goal_list(date_tab)
 
     def edit(self):
         open_edit_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
