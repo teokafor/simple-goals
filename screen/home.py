@@ -83,8 +83,8 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.newSubgoal = QtWidgets.QPushButton(self.centralwidget)
-        self.newSubgoal.setGeometry(QtCore.QRect(930, 560, 25, 25))
-        self.newSubgoal.setStyleSheet("border-radius:25px;\n"
+        self.newSubgoal.setGeometry(QtCore.QRect(940, 560, 30, 30))
+        self.newSubgoal.setStyleSheet("border-radius: 5px;\n"
 "background-color: white;\n"
 "font-size: 35px;\n"
 "padding-bottom: 5px;\n"
@@ -195,6 +195,12 @@ class Ui_MainWindow(object):
         self.filler = QtWidgets.QWidget(self.centralwidget)
         self.filler.setGeometry(QtCore.QRect(510, -2, 521, 51))
         self.filler.setObjectName("filler")
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(540, 560, 391, 31))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.endDateLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.endDateLayout.setContentsMargins(0, 0, 0, 0)
+        self.endDateLayout.setObjectName("endDateLayout")
         self.newGoal.raise_()
         self.horizontalLayoutWidget.raise_()
         self.newSubgoal.raise_()
@@ -203,6 +209,7 @@ class Ui_MainWindow(object):
         self.descriptionWidget.raise_()
         self.filler.raise_()
         self.line.raise_()
+        self.verticalLayoutWidget.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)

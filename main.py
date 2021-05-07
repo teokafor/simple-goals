@@ -401,6 +401,12 @@ def on_goal_click(goal_id):
         description_layout.setContentsMargins(-2,-2,-2,-2)
         subgoals_layout = HOME.subgoals
 
+        # Set the end date
+        end_date_layout = HOME.endDateLayout
+        clear_layout(end_date_layout)
+        end_date = QtWidgets.QLabel(f'Due: {projectio.Row(goal_id).get_end_date()}')
+        end_date_layout.addWidget(end_date)
+
         # Allow for equal subgoal spacing
         subgoals_layout.setSizeConstraint(QLayout.SetFixedSize)
 
