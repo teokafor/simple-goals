@@ -477,14 +477,38 @@ class EntryWidget(QtWidgets.QPushButton):
 
     # On activation, pass this goal's goal id to main.py. This is so we can easily manipulate the GUI.
     def select(self):
+        #print(f'Goal {self.entry.get_goal_id()} has been selected.')
         entry = self.entry
         goal_id = entry.get_goal_id()
         on_goal_click(goal_id)
+
+
+        # Move selected goal forwards to indicate its selection
+        last_exists = False
+        index = HOME.goals.count()
+        while index >= 2:
+            child = HOME.goals.itemAt(index - 2)
+            if child.widget():
+                child = child.widget()
+                if child.is_out:
+                    last_entry = child  # THE CHOSEN ONE, HUZZAH HUZZAH
+                    last_exists = True
+            index -= 1
+
+        if last_exists:  # Only move last entry backwards if it exists
+            last_entry_position = last_entry.pos()
+            last_entry.move(last_entry_position.x() - 10, last_entry_position.y())
+            last_entry.is_out = False
+
+        current_position = self.pos()
+        self.move(current_position.x() + 10, current_position.y())
+        self.is_out = True
 
     def __init__(self, entry: Row, callback, *args, **kwargs):
         super(EntryWidget, self).__init__(*args, **kwargs)
         self.entry = entry
         self.callback = callback
+        self.is_out = False  # Determines whether the widget should move backwards or forwards.
 
         self.setAccessibleName("entryWidget")
         self.setMinimumHeight(60)
