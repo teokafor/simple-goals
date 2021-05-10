@@ -10,15 +10,16 @@ from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
 from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
-#from widget.entry_widget import EntryWidget
-#from widget.subgoal_widget import SubgoalWidget
 from datetime import datetime
 
 from projectio import Row, SubRow
+from widget.entry_widget import EntryWidget
+from widget.invalid_widget import InvalidWidget
+from widget.subgoal_widget import SubgoalWidget
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
-HOME = HomeWindow()
+HOME = HomeWindow(ROOT)
 
 # Global variable keeps track of what date tab was last open
 date_tab = 1
@@ -33,280 +34,15 @@ DUE_ANY = 3
 DUE_PAST = 4
 
 
-# CLASSES:
-
-# A widget representation of a row from the Goals table.
-class EntryWidget(QtWidgets.QPushButton):
-    def __init__(self, entry: Row, callback, *args, **kwargs):
-        super(EntryWidget, self).__init__(*args, **kwargs)
-        self.entry = entry
-        self.callback = callback
-        self.latest_selection = False  # Determines whether the widget should darkened or not
-        self.percentage = update_completion(self.entry.get_goal_id())
-        self.qss = """
-        [accessibleName="entryWidget"] {
-            border-radius: 15px 15px 0px 0px;
-            border-bottom: 1px solid gray;
-        }
-
-        [accessibleName="editButton"] {
-            border-radius: 15px 15px 0px 0px;
-            background-color: rgba(255, 255, 255, 0);
-        }
-
-        QWidget {
-            background-color: #E8E8E8;
-        }
-
-        QWidget[selected = "0"] {
-            background-color: #E8E8E8;
-        }
-
-        QWidget[selected = "1"] {
-            background-color: #B8B8B8;
-        }
-
-        QLabel {
-            background-color: rgba(255, 255, 255, 0);
-        }
-
-        QCheckBox::indicator {
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            background-color: white;
-        }
-
-        QCheckBox::indicator::checked {
-            background-color: #35B29D;
-            background-image: url(resources/checked.png);
-        }
-
-        QCheckBox {
-            background-color: rgba(255, 255, 255, 0);
-        }
-        """
-
-        self.setAccessibleName("entryWidget")
-        self.setMinimumHeight(60)
-        self.setMinimumWidth(410)
-        self.setStyleSheet(self.qss)
-
-        # Define the base layout as an HBox.
-        layout = QtWidgets.QHBoxLayout()
-
-        # The left-hand side (everything but the delete button) is an inner HBox.
-        left = QtWidgets.QHBoxLayout()
-        done = QtWidgets.QCheckBox()
-        checkbox_state = self.entry.get_completion()
-        done.setCheckState(checkbox_state)
-        done.clicked.connect(lambda: self.on_check(done.checkState()))
-        label = QtWidgets.QLabel(entry.get_goal_name())
-        self.percent_label = QtWidgets.QLabel(f'{self.percentage * 100:.2f}%')
-        edit = QtWidgets.QPushButton("")
-        edit.setAccessibleName("editButton")
-        edit.setIcon(QIcon("resources/edit.png"))
-        edit.clicked.connect(self.edit)
-        left.addWidget(done)
-        left.addWidget(label)
-        left.addWidget(self.percent_label)
-        left.addStretch()
-        left.addWidget(edit)
-
-        self.clicked.connect(self.select)
-
-        # Delete button on the right-hand side
-        delete = QtWidgets.QPushButton("")
-        delete.clicked.connect(self.remove)
-        delete.setIcon(QIcon("resources/delete.png"))
-        delete.setMaximumWidth(38)
-        delete.setMinimumWidth(38)
-        delete.setMaximumHeight(38)
-        delete.setMinimumHeight(38)
-        delete.setStyleSheet("""
-        QWidget {
-            background-color: #B23535;
-            border-radius: 5px;
-        }
-        """)
-
-        layout.addLayout(left)
-        layout.addWidget(delete)
-        self.setLayout(layout)
-
-# EntryWidget methods:
-
-    # Called when the delete button is clicked.
-    def remove(self):
-        entry = self.entry
-        message = DeleteWidget(entry.get_goal_name())
-        if message.delete_flag:
-            goal_id = entry.get_goal_id()
-            projectio.delete_goal(goal_id)
-            self.callback()
-            # Prevents the program from attempting to load a non-existent goal, thus causing it to crash.
-            if goal_id != last_goal_id:
-                on_goal_click(last_goal_id)
-
-    # Called when the checkbox is toggled.
-    def on_check(self, state):
-        self.entry.set_completion(state)
-
-    # Called when the edit button is pressed.
-    def edit(self):
-        entry = self.entry
-        open_edit_goal(entry.get_goal_id())
-
-    # Called when a subgoal of this goal has its checkbox toggled.
-    def update_percent_label(self, percentage):
-        self.percent_label.clear()
-        self.percentage = percentage
-        self.percent_label.setText(f'{percentage * 100:.2f}%')
-
-    # Called when the body of the widget is pressed. It will update subgoals, description, and highlights.
-    def select(self):
-        entry = self.entry
-        goal_id = entry.get_goal_id()
-        on_goal_click(goal_id)
-
-
-
-# A widget representation of an individual subgoal from the SubGoals table.
-class SubgoalWidget(QtWidgets.QPushButton):
-    def __init__(self, subgoal: SubRow, callback, *args, **kwargs):
-        super(SubgoalWidget, self).__init__(*args, **kwargs)
-
-        self.subgoal = subgoal
-        self.callback = callback
-        self.state = self.subgoal.get_sub_completion()
-        self.setAccessibleName("entryWidget")
-        self.setMinimumHeight(60)
-        self.setMinimumWidth(410)
-        self.setStyleSheet("""
-                [accessibleName="entryWidget"] {
-                    border-radius: 15px 15px 0px 0px;
-                    border-bottom: 1px solid gray;
-                }
-
-                [accessibleName="editButton"] {
-                    border-radius: 15px 15px 0px 0px;
-                }
-
-                QWidget {
-                    background-color: #E8E8E8;
-                }
-
-                QCheckBox::indicator {
-                    width: 30px;
-                    height: 30px;
-                    background-color: white;
-                    border-radius: 5px;
-                }
-
-                QCheckBox::indicator::checked {
-                    background-color: #35B29D;
-                    background-image: url(resources/checked.png);
-                }
-                """)
-
-        layout = QtWidgets.QHBoxLayout()
-
-        # Checkbox
-        database_state = subgoal.get_sub_completion()
-        done = QtWidgets.QCheckBox()
-        done.setCheckState(database_state)  # Activate the checkbox if it's flagged in the database
-        done.clicked.connect(lambda: self.on_check(done.checkState()))
-
-        # Subgoal name
-        label = QtWidgets.QLabel(subgoal.get_sub_name())
-
-        # Edit button
-        edit = QtWidgets.QPushButton('')
-        edit.setAccessibleName("editButton")
-        edit.setIcon(QIcon("resources/edit.png"))
-        edit.setFixedWidth(30)
-        edit.clicked.connect(self.edit)
-
-        # Delete button
-        delete = QtWidgets.QPushButton('')
-        delete.clicked.connect(self.remove)
-        delete.setIcon(QIcon("resources/delete.png"))
-        delete.setMaximumWidth(38)
-        delete.setMinimumWidth(38)
-        delete.setMaximumHeight(38)
-        delete.setMinimumHeight(38)
-        delete.setStyleSheet("""
-               QWidget {
-                   background-color: #B23535;
-                   border-radius: 5px;
-               }
-               """)
-
-        layout.addWidget(done)
-        layout.addWidget(label)
-        layout.addStretch()
-        layout.addWidget(edit)
-        layout.addWidget(delete)
-        self.setLayout(layout)
-
-# SubgoalWidget methods:
-
-    # This method updates the completion rate of this subgoal in the database. It also calls the corresponding EntryWidget to update its label.
-    def on_check(self, state):
-        self.state = state
-        self.subgoal.set_sub_completion(state)
-        goal_id = self.subgoal.get_goal_id()
-
-        # Only manipulate the currently selected goal. The old system would re-instance all goals.
-        index = HOME.goals.count()
-        while index >= 2:
-            child = HOME.goals.itemAt(index - 2)
-            if child.widget():
-                child = child.widget()
-                if child.entry.get_goal_id() == goal_id:
-                    correct_entry = child
-            index -= 1
-        correct_entry.update_percent_label(update_completion(goal_id))
-
-    # This method is called when the edit button is pressed.
-    def edit(self):
-        open_edit_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
-
-    # This method is called when the delete button is pressed.
-    def remove(self):
-        projectio.delete_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
-        on_goal_click(self.subgoal.get_goal_id())
-        self.on_check(self.state)
-
-
-# Objects of this class are only created if inputs are invalid. Displays a warning message on creation.
-class InvalidWidget(QtWidgets.QWidget):
-    def __init__(self, *args, **kwargs):
-        super(InvalidWidget, self).__init__(*args, **kwargs)
-        QMessageBox.warning(self, 'Error!', f'Input fields cannot be left blank.\nPlease try again.')
-
-
-# Objects of this class are instantiated from the delete method in EntryWidget.
-class DeleteWidget(QtWidgets.QWidget):
-    def __init__(self, goal_name, *args, **kwargs):
-        super(DeleteWidget, self).__init__(*args, **kwargs)
-        self.goal_name = goal_name
-        self.delete_flag = False
-
-        message_box = QMessageBox.question(self, f'Delete {self.goal_name}?', f'Are you sure you want to delete {self.goal_name}?')
-        if message_box == QMessageBox.Yes:
-            self.delete_flag = True
-
-
-# SCREENS:
-
 # This screen displays the main window.
 def open_home():
     """
     Opens the "Home" window.
-    This window instance is global, so state will persist between screen changes.
     """
-    HOME.setupUi(ROOT)
+
+    # Home is GCed when we swap away from it, so we re-initialize the instance now.
+    global HOME
+    HOME = HomeWindow(ROOT)
 
     # Button sizes
     HOME.todayButton.setMinimumHeight(50)
@@ -402,8 +138,7 @@ def open_new_goal():
     Opens a new "Add Goal" window.
     A new instance is created each time this method is called, which means user-entered values will not persist.
     """
-    window = NewGoalWindow()
-    window.setupUi(ROOT)
+    window = NewGoalWindow(ROOT)
 
     cursor_hover()
 
@@ -430,8 +165,7 @@ def open_new_goal():
 
 # This function opens the edit goal screen.
 def open_edit_goal(goal_id):
-    window = EditGoalWindow()
-    window.setupUi(ROOT)
+    window = EditGoalWindow(ROOT)
 
     cursor_hover()
     current_row = Row(goal_id)
@@ -463,8 +197,7 @@ def open_edit_goal(goal_id):
 
 # This function calls the new subgoal screen.
 def open_new_subgoal(goal_id):
-    window = NewSubGoalWindow()
-    window.setupUi(ROOT)
+    window = NewSubGoalWindow(ROOT)
     cursor_hover()
 
     title = window.titleEdit
@@ -477,8 +210,7 @@ def open_new_subgoal(goal_id):
 
 # This function calls the edit subgoal screen.
 def open_edit_subgoal(sub_id, goal_id):
-    window = EditSubGoalWindow()
-    window.setupUi(ROOT)
+    window = EditSubGoalWindow(ROOT)
     cursor_hover()
 
     current_subgoal = SubRow(sub_id, goal_id)

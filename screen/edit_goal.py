@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_NewGoalWindow(object):
-    def setupUi(self, NewGoalWindow):
+    def __init__(self, NewGoalWindow):
         NewGoalWindow.setObjectName("NewGoalWindow")
         NewGoalWindow.resize(1000, 708)
         NewGoalWindow.setStyleSheet("background-color: #F6F5F9;")
