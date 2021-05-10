@@ -441,9 +441,7 @@ def on_goal_click(goal_id):
         scroll_area.setWidget(ROOT.parentWidget())
 
 
-
         cursor_hover()
-
 
 
 # This function will remove all widgets from any given layout.
@@ -475,45 +473,48 @@ class EntryWidget(QtWidgets.QPushButton):
         entry = self.entry
         open_edit_goal(entry.get_goal_id())
 
+    def update_percent_label(self, percentage):
+        self.percent_label.clear()
+        self.percentage = percentage
+        self.percent_label.setText(f'{percentage * 100:.2f}%')
+
     # On activation, pass this goal's goal id to main.py. This is so we can easily manipulate the GUI.
     def select(self):
-        #print(f'Goal {self.entry.get_goal_id()} has been selected.')
         entry = self.entry
         goal_id = entry.get_goal_id()
         on_goal_click(goal_id)
 
-
-        # Move selected goal forwards to indicate its selection
+        # Highlight selected goal to indicate its selection
         last_exists = False
         index = HOME.goals.count()
         while index >= 2:
             child = HOME.goals.itemAt(index - 2)
             if child.widget():
                 child = child.widget()
-                if child.is_out:
-                    last_entry = child  # THE CHOSEN ONE, HUZZAH HUZZAH
+                if child.latest_selection:
+                    last_entry = child
                     last_exists = True
             index -= 1
-
-        if last_exists:  # Only move last entry backwards if it exists
-            last_entry_position = last_entry.pos()
-            last_entry.move(last_entry_position.x() - 10, last_entry_position.y())
-            last_entry.is_out = False
-
-        current_position = self.pos()
-        self.move(current_position.x() + 10, current_position.y())
-        self.is_out = True
+        if last_exists:  # Only darken last entry backwards if it exists
+            last_entry.setStyleSheet(last_entry.qss)
+            last_entry.setProperty("selected", 0)
+            last_entry.style().unpolish(last_entry)
+            last_entry.style().polish(last_entry)
+            last_entry.latest_selection = False
+        # Set the clicked button to dark grey
+        self.setStyleSheet(self.qss)
+        self.setProperty("selected", 1)
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.latest_selection = True
 
     def __init__(self, entry: Row, callback, *args, **kwargs):
         super(EntryWidget, self).__init__(*args, **kwargs)
         self.entry = entry
         self.callback = callback
-        self.is_out = False  # Determines whether the widget should move backwards or forwards.
-
-        self.setAccessibleName("entryWidget")
-        self.setMinimumHeight(60)
-        self.setMinimumWidth(410)
-        self.setStyleSheet("""
+        self.latest_selection = False  # Determines whether the widget should darkened or not
+        self.percentage = update_completion(self.entry.get_goal_id())
+        self.qss = """
         [accessibleName="entryWidget"] {
             border-radius: 15px 15px 0px 0px;
             border-bottom: 1px solid gray;
@@ -521,24 +522,46 @@ class EntryWidget(QtWidgets.QPushButton):
 
         [accessibleName="editButton"] {
             border-radius: 15px 15px 0px 0px;
+            background-color: rgba(255, 255, 255, 0);
         }
-
+    
         QWidget {
             background-color: #E8E8E8;
         }
 
+        QWidget[selected = "0"] {
+            background-color: #E8E8E8;
+        }
+        
+        QWidget[selected = "1"] {
+            background-color: #B8B8B8;
+        }
+        
+        QLabel {
+            background-color: rgba(255, 255, 255, 0);
+        }
+               
         QCheckBox::indicator {
             width: 30px;
             height: 30px;
-            background-color: white;
             border-radius: 5px;
+            background-color: white;
         }
 
         QCheckBox::indicator::checked {
             background-color: #35B29D;
             background-image: url(resources/checked.png);
         }
-        """)
+        
+        QCheckBox {
+            background-color: rgba(255, 255, 255, 0);
+        }
+        """
+
+        self.setAccessibleName("entryWidget")
+        self.setMinimumHeight(60)
+        self.setMinimumWidth(410)
+        self.setStyleSheet(self.qss)
 
         # Define the base layout as an HBox.
         layout = QtWidgets.QHBoxLayout()
@@ -550,14 +573,14 @@ class EntryWidget(QtWidgets.QPushButton):
         done.setCheckState(checkbox_state)
         done.clicked.connect(lambda: self.on_check(done.checkState()))
         label = QtWidgets.QLabel(entry.get_goal_name())
-        my_label_test = QtWidgets.QLabel(f'{update_completion(entry.get_goal_id())}')
+        self.percent_label = QtWidgets.QLabel(f'{self.percentage * 100:.2f}%')
         edit = QtWidgets.QPushButton("")
         edit.setAccessibleName("editButton")
         edit.setIcon(QIcon("resources/edit.png"))
         edit.clicked.connect(self.edit)
         left.addWidget(done)
         left.addWidget(label)
-        left.addWidget(my_label_test)
+        left.addWidget(self.percent_label)
         left.addStretch()
         left.addWidget(edit)
 
@@ -606,7 +629,19 @@ class SubgoalWidget(QtWidgets.QPushButton):
 
     def on_check(self, state):
         self.subgoal.set_sub_completion(state)
-        update_goal_list(date_tab)
+        goal_id = self.subgoal.get_goal_id()
+
+        # Only manipulate the currently selected goal. The old system would re-instance all goals.
+        index = HOME.goals.count()
+        while index >= 2:
+            child = HOME.goals.itemAt(index - 2)
+            if child.widget():
+                child = child.widget()
+                if child.entry.get_goal_id() == goal_id:
+                    correct_entry = child
+            index -= 1
+        correct_entry.update_percent_label(update_completion(goal_id))
+
 
     def edit(self):
         open_edit_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
