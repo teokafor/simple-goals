@@ -21,7 +21,7 @@ from widget.subgoal_widget import SubgoalWidget
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
-HOME = HomeWindow()
+HOME = HomeWindow(ROOT)
 
 # Global variable keeps track of what date tab was last open
 date_tab = 1
@@ -40,9 +40,11 @@ DUE_PAST = 4
 def open_home():
     """
     Opens the "Home" window.
-    This window instance is global, so state will persist between screen changes.
     """
-    HOME.setupUi(ROOT)
+
+    # Home is GCed when we swap away from it, so we re-initialize the instance now.
+    global HOME
+    HOME = HomeWindow(ROOT)
 
     # Button sizes
     HOME.todayButton.setMinimumHeight(50)
@@ -138,8 +140,7 @@ def open_new_goal():
     Opens a new "Add Goal" window.
     A new instance is created each time this method is called, which means user-entered values will not persist.
     """
-    window = NewGoalWindow()
-    window.setupUi(ROOT)
+    window = NewGoalWindow(ROOT)
 
     cursor_hover()
 
@@ -166,8 +167,7 @@ def open_new_goal():
 
 # This function opens the edit goal screen.
 def open_edit_goal(goal_id):
-    window = EditGoalWindow()
-    window.setupUi(ROOT)
+    window = EditGoalWindow(ROOT)
 
     cursor_hover()
     current_row = Row(goal_id)
@@ -199,8 +199,7 @@ def open_edit_goal(goal_id):
 
 # This function calls the new subgoal screen.
 def open_new_subgoal(goal_id):
-    window = NewSubGoalWindow()
-    window.setupUi(ROOT)
+    window = NewSubGoalWindow(ROOT)
     cursor_hover()
 
     title = window.titleEdit
@@ -213,8 +212,7 @@ def open_new_subgoal(goal_id):
 
 # This function calls the edit subgoal screen.
 def open_edit_subgoal(sub_id, goal_id):
-    window = EditSubGoalWindow()
-    window.setupUi(ROOT)
+    window = EditSubGoalWindow(ROOT)
     cursor_hover()
 
     current_subgoal = SubRow(sub_id, goal_id)
