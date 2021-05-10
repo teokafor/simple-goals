@@ -10,8 +10,6 @@ from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
 from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
-#from widget.entry_widget import EntryWidget
-#from widget.subgoal_widget import SubgoalWidget
 from datetime import datetime
 
 from projectio import Row, SubRow
@@ -275,7 +273,7 @@ def on_goal_click(goal_id):
         # Set up the scroll area for subgoals
         widget.setLayout(subgoals_layout)
         scroll_area = HOME.subgoalScrollArea
-        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
@@ -290,10 +288,29 @@ def on_goal_click(goal_id):
         # Scroll area for description
         desc_widget.setLayout(description_layout)
         desc_scroll_area = HOME.descriptionScrollArea
-        desc_scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        desc_scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         desc_scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         desc_scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
+
+        # Find this goal's EntryWidget object
+        entry_widgets = get_entry_widget(goal_id)
+
+        # If it exists, unpaint the last selected item
+        if entry_widgets[1]:
+            entry_widgets[1].setStyleSheet(entry_widgets[1].qss)
+            entry_widgets[1].setProperty("selected", 0)
+            entry_widgets[1].style().unpolish(entry_widgets[1])
+            entry_widgets[1].style().polish(entry_widgets[1])
+            entry_widgets[1].latest_selection = False
+
+        # Set the clicked button to dark grey
+        if entry_widgets[0]:
+            entry_widgets[0].setStyleSheet(entry_widgets[0].qss)
+            entry_widgets[0].setProperty("selected", 1)
+            entry_widgets[0].style().unpolish(entry_widgets[0])
+            entry_widgets[0].style().polish(entry_widgets[0])
+            entry_widgets[0].latest_selection = True
 
         cursor_hover()
 
@@ -377,13 +394,14 @@ def update_goal_list(date_limit):
 
     widget.setLayout(vbox)
     scroll_area = HOME.scrollArea
-    scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+    scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
     scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
     scroll_area.setWidgetResizable(True)
     scroll_area.setWidget(ROOT.parentWidget())
 
     date_tab_style()
     vbox.addStretch()
+    on_goal_click(last_goal_id)
     cursor_hover()
 
 
@@ -466,6 +484,23 @@ def update_completion(goal_id):
         goal_completion = 0
 
     return goal_completion
+
+
+# This function finds an EntryWidget object in the goals layout.
+def get_entry_widget(goal_id):
+    index = HOME.goals.count()
+    current_last_list = [None, None]  # Retrieves the currently selected widget and the last selected widget.
+    while index >= 2:
+        child = HOME.goals.itemAt(index - 2)
+        if child.widget():
+            child = child.widget()
+            if child.entry.get_goal_id() == goal_id:
+                current_last_list[0] = child
+            elif child.latest_selection:
+                current_last_list[1] = child
+
+        index -= 1
+    return current_last_list
 
 
 # Close the database before quitting.
