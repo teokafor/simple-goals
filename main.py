@@ -557,6 +557,9 @@ def on_goal_click(goal_id):
             button = SubgoalWidget(subgoal, open_home)
             subgoals_layout.addWidget(button)
 
+        # Add spacers for top-alignment
+        subgoals_layout.addStretch()
+
         # Set up the scroll area for subgoals
         widget.setLayout(subgoals_layout)
         scroll_area = HOME.subgoalScrollArea
@@ -571,6 +574,9 @@ def on_goal_click(goal_id):
         desc_label = QtWidgets.QLabel(description)
         desc_label.setWordWrap(True)
         description_layout.addWidget(desc_label)
+
+        # Add spacers for top-alignment
+        description_layout.addStretch()
 
         # Scroll area for description
         desc_widget.setLayout(description_layout)
