@@ -42,6 +42,9 @@
       <height>50</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string/>
+    </property>
     <property name="styleSheet">
      <string notr="true">border-radius:25px;
 background-color: white;
@@ -239,6 +242,9 @@ color: white;
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
@@ -247,7 +253,7 @@ color: white;
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>451</width>
+        <width>434</width>
         <height>511</height>
        </rect>
       </property>
@@ -255,7 +261,7 @@ color: white;
        <item>
         <layout class="QVBoxLayout" name="goals">
          <property name="spacing">
-          <number>25</number>
+          <number>5</number>
          </property>
          <property name="leftMargin">
           <number>0</number>

@@ -26,6 +26,7 @@ class Ui_MainWindow(object):
         self.line.setObjectName("line")
         self.newGoal = QtWidgets.QPushButton(self.centralwidget)
         self.newGoal.setGeometry(QtCore.QRect(430, 630, 50, 50))
+        self.newGoal.setToolTip("")
         self.newGoal.setStyleSheet("border-radius:25px;\n"
 "background-color: white;\n"
 "font-size: 35px;\n"
@@ -106,16 +107,17 @@ class Ui_MainWindow(object):
         self.scrollArea.setMinimumSize(QtCore.QSize(0, 100))
         self.scrollArea.setAcceptDrops(False)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 451, 511))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 434, 511))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
         self.goals = QtWidgets.QVBoxLayout()
         self.goals.setContentsMargins(0, -1, -1, -1)
-        self.goals.setSpacing(25)
+        self.goals.setSpacing(5)
         self.goals.setObjectName("goals")
         self.verticalLayout.addLayout(self.goals)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)

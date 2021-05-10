@@ -46,7 +46,6 @@ class EntryWidget(QtWidgets.QPushButton):
         self.qss = """
         [accessibleName="entryWidget"] {
             border-radius: 15px 15px 0px 0px;
-            border-bottom: 1px solid gray;
         }
 
         [accessibleName="editButton"] {
@@ -55,15 +54,15 @@ class EntryWidget(QtWidgets.QPushButton):
         }
 
         QWidget {
-            background-color: #E8E8E8;
+            background-color: white;
         }
 
         QWidget[selected = "0"] {
-            background-color: #E8E8E8;
+            background-color: white;
         }
 
         QWidget[selected = "1"] {
-            background-color: #B8B8B8;
+            background-color: #E8E4EF;
         }
 
         QLabel {
@@ -71,10 +70,12 @@ class EntryWidget(QtWidgets.QPushButton):
         }
 
         QCheckBox::indicator {
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            background-color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            border: 1px solid blue;
+            margin-left: 10px;
+            margin-right: 5px;
         }
 
         QCheckBox::indicator::checked {
