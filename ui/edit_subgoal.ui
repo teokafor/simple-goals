@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create a New Goal</string>
+   <string>Edit Subgoal</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #F6F5F9;</string>
@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>70</y>
+      <y>320</y>
       <width>401</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -35,31 +35,15 @@ padding: 10px;</string>
      <string/>
     </property>
     <property name="placeholderText">
-     <string>Enter a goal title...</string>
+     <string>Enter a subgoal title...</string>
     </property>
    </widget>
    <widget class="QLabel" name="titleLabel">
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>30</y>
-      <width>91</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font-size: 20px;</string>
-    </property>
-    <property name="text">
-     <string>Goal Title</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="descriptionLabel">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>140</y>
-      <width>101</width>
+      <y>280</y>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
@@ -67,7 +51,7 @@ padding: 10px;</string>
      <string notr="true">font-size: 20px;</string>
     </property>
     <property name="text">
-     <string>Description</string>
+     <string>Subgoal Title</string>
     </property>
    </widget>
    <widget class="QPushButton" name="cancelButton">
@@ -88,7 +72,7 @@ border-radius: 5px; font-size: 15px;</string>
      <string>Cancel</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="createGoalButton">
+   <widget class="QPushButton" name="modifySubgoalButton">
     <property name="geometry">
      <rect>
       <x>830</x>
@@ -103,60 +87,7 @@ color: white;
 border-radius: 5px; font-size: 15px;</string>
     </property>
     <property name="text">
-     <string>Create Goal</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="descriptionEdit">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>190</y>
-      <width>401</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>120</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none; background-color: white; border-bottom: 1px solid #C9C9C9; border-radius: 5px; padding: 10px;</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="markdown">
-     <string/>
-    </property>
-    <property name="placeholderText">
-     <string>Enter a description for your new goal...</string>
-    </property>
-   </widget>
-   <widget class="QCalendarWidget" name="calendarWidget">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>340</y>
-      <width>451</width>
-      <height>311</height>
-     </rect>
-    </property>
-    <property name="gridVisible">
-     <bool>true</bool>
-    </property>
-    <property name="horizontalHeaderFormat">
-     <enum>QCalendarWidget::ShortDayNames</enum>
-    </property>
-    <property name="verticalHeaderFormat">
-     <enum>QCalendarWidget::NoVerticalHeader</enum>
-    </property>
-    <property name="navigationBarVisible">
-     <bool>true</bool>
-    </property>
-    <property name="dateEditEnabled">
-     <bool>true</bool>
+     <string>Modify Subgoal</string>
     </property>
    </widget>
   </widget>
