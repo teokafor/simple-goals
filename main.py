@@ -564,7 +564,7 @@ def on_goal_click(goal_id):
         # Set up the scroll area for subgoals
         widget.setLayout(subgoals_layout)
         scroll_area = HOME.subgoalScrollArea
-        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
@@ -579,7 +579,7 @@ def on_goal_click(goal_id):
         # Scroll area for description
         desc_widget.setLayout(description_layout)
         desc_scroll_area = HOME.descriptionScrollArea
-        desc_scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        desc_scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         desc_scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         desc_scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
@@ -666,7 +666,7 @@ def update_goal_list(date_limit):
 
     widget.setLayout(vbox)
     scroll_area = HOME.scrollArea
-    scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+    scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
     scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
     scroll_area.setWidgetResizable(True)
     scroll_area.setWidget(ROOT.parentWidget())
