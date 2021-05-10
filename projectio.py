@@ -10,10 +10,9 @@ con.commit()
 
 # Initial connection to database
 cur.execute("SELECT * FROM Goal")
-#rows = cur.fetchall()  # Get the rows from the table
 cur.execute('PRAGMA foreign_keys=ON')  # Enforce foreign keys. Needed to link subgoals to goals table.
 
-
+# Objects of this class will represent an individual row present in the Goals table.
 class Row:
     def __init__(self, goal_id):
         self.__goal_id = goal_id
@@ -62,6 +61,7 @@ class Row:
     def get_time_spent(self): return self.__time_spent
     def get_completion(self): return self.__completion
 
+    # This method is called each time a variable is set.
     def update_row(self):
         insert = "UPDATE Goal SET GoalName = ?, GoalDesc = ?, StartDate = ?, EndDate = ?, TimeSpent = ?, Completion = ? WHERE GoalID = ? ;"
         data_tuple = (self.__goal_name, self.__goal_desc, self.__start_date, self.__end_date, self.__time_spent, self.__completion, self.__goal_id)
@@ -69,75 +69,13 @@ class Row:
         con.commit()
 
 
-# General functions not tied to the Row class:
-# This creates an empty goal with an automatically generated ID.
-def new_goal(goal_name, goal_desc, start_date, end_date):
-    cur.execute("SELECT * FROM Goal")
-    # Create and commit new row.
-    insert = "INSERT INTO Goal (GoalName, GoalDesc, StartDate, EndDate, TimeSpent, Completion) VALUES (?, ?, ?, ?, ?, ?);"
-    data_tuple = (goal_name, goal_desc, start_date, end_date, 0, 0)
-    cur.execute(insert, data_tuple)  # Create a row with the given information
-    con.commit()  # Insert the new row
-
-
-# Create a new subgoal in the table.
-def new_subgoal(goal_id, subgoal_name):
-    insert = "INSERT INTO SubGoal (GoalID, SubName, Completion) VALUES (?, ?, ?);"
-    tuple = (goal_id, subgoal_name, 0)
-    cur.execute(insert, tuple)
-    con.commit()
-
-
-# Delete function.
-def delete_goal(goal_id):
-    # Delete subgoals first
-    cur.execute("DELETE FROM Subgoal WHERE GoalID = ?", (goal_id,))
-    # Now we can safely delete the goal itself
-    cur.execute("DELETE FROM Goal WHERE GoalID = ?", (goal_id,))
-    con.commit()
-
-
-def delete_subgoal(sub_id, goal_id):
-    cur.execute("DELETE FROM Subgoal WHERE SubID = ? AND GoalID = ?", (sub_id, goal_id))
-    con.commit()
-
-
-# This function will return a list of goal objects that are created from each row in the Goals table.
-def make_goal_list() -> 'list[Row]':
-    cur.execute("SELECT * FROM Goal")
-    rows = cur.fetchall()
-    goals = []
-    for row in rows:
-        goal_id = row[0]
-        goals.append(Row(goal_id))
-    return goals
-
-
-# This function will return a list of subgoal objects that are created from each row in the Subgoals table, with the specified goal id.
-def make_subgoal_list(goal_id) -> 'list[SubRow]':
-    cur.execute("SELECT * FROM Subgoal WHERE GoalID = ?", (goal_id,))
-    rows = cur.fetchall()
-    subgoals = []
-    for row in rows:
-        sub_id = row[0]
-        subgoals.append(SubRow(sub_id, goal_id))
-
-    return subgoals
-
-
-def close_database():
-    con.close()
-    print('Database connection closed.')
-
-
+# Objects of this class represent a row present in the SubGoals table. A matching goal id is required.
 class SubRow:
     def __init__(self, sub_id, goal_id):
         self.__sub_id = sub_id
         self.__goal_id = goal_id
-
         cur.execute("SELECT * FROM Subgoal WHERE SubID = ? AND GoalID = ?", (self.__sub_id, self.__goal_id))
         row = cur.fetchone()
-
         self.__sub_name = row[2]
         self.__sub_completion = row[3]
 
@@ -162,3 +100,66 @@ class SubRow:
         tuple = (self.__sub_name, self.__sub_completion, self.__goal_id, self.__sub_id)
         cur.execute(insert, tuple)
         con.commit()
+
+
+# General functions not tied to either class:
+
+# This adds a goal to the Goals table.
+def new_goal(goal_name, goal_desc, start_date, end_date):
+    cur.execute("SELECT * FROM Goal")
+    # Create and commit new row.
+    insert = "INSERT INTO Goal (GoalName, GoalDesc, StartDate, EndDate, TimeSpent, Completion) VALUES (?, ?, ?, ?, ?, ?);"
+    data_tuple = (goal_name, goal_desc, start_date, end_date, 0, 0)
+    cur.execute(insert, data_tuple)  # Create a row with the given information
+    con.commit()  # Insert the new row
+
+
+# Add a new subgoal to the SubGoals table.
+def new_subgoal(goal_id, subgoal_name):
+    insert = "INSERT INTO SubGoal (GoalID, SubName, Completion) VALUES (?, ?, ?);"
+    tuple = (goal_id, subgoal_name, 0)
+    cur.execute(insert, tuple)
+    con.commit()
+
+
+# Deletes a goal (and its potential subgoals) from the Goals (and SubGoals) table
+def delete_goal(goal_id):
+    # Delete subgoals first
+    cur.execute("DELETE FROM Subgoal WHERE GoalID = ?", (goal_id,))
+    # Now we can safely delete the goal itself
+    cur.execute("DELETE FROM Goal WHERE GoalID = ?", (goal_id,))
+    con.commit()
+
+
+# Deletes a single subgoal from the SubGoals table.
+def delete_subgoal(sub_id, goal_id):
+    cur.execute("DELETE FROM Subgoal WHERE SubID = ? AND GoalID = ?", (sub_id, goal_id))
+    con.commit()
+
+
+# This function will return a list of goal objects that are created from each row in the Goals table.
+def make_goal_list() -> 'list[Row]':
+    cur.execute("SELECT * FROM Goal")
+    rows = cur.fetchall()
+    goals = []
+    for row in rows:
+        goal_id = row[0]
+        goals.append(Row(goal_id))
+    return goals
+
+
+# This function will return a list of subgoal objects that are created from each row in the Subgoals table, with the specified goal id.
+def make_subgoal_list(goal_id) -> 'list[SubRow]':
+    cur.execute("SELECT * FROM Subgoal WHERE GoalID = ?", (goal_id,))
+    rows = cur.fetchall()
+    subgoals = []
+    for row in rows:
+        sub_id = row[0]
+        subgoals.append(SubRow(sub_id, goal_id))
+    return subgoals
+
+
+# This function is called from main.py right before the application is about to close.
+def close_database():
+    con.close()
+    print('Database connection closed.')
