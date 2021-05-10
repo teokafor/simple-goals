@@ -573,11 +573,12 @@ def on_goal_click(goal_id):
             entry_widgets[1].latest_selection = False
 
         # Set the clicked button to dark grey
-        entry_widgets[0].setStyleSheet(entry_widgets[0].qss)
-        entry_widgets[0].setProperty("selected", 1)
-        entry_widgets[0].style().unpolish(entry_widgets[0])
-        entry_widgets[0].style().polish(entry_widgets[0])
-        entry_widgets[0].latest_selection = True
+        if entry_widgets[0]:
+            entry_widgets[0].setStyleSheet(entry_widgets[0].qss)
+            entry_widgets[0].setProperty("selected", 1)
+            entry_widgets[0].style().unpolish(entry_widgets[0])
+            entry_widgets[0].style().polish(entry_widgets[0])
+            entry_widgets[0].latest_selection = True
 
         cursor_hover()
 
@@ -668,6 +669,7 @@ def update_goal_list(date_limit):
 
     date_tab_style()
     vbox.addStretch()
+    on_goal_click(last_goal_id)
     cursor_hover()
 
 
