@@ -169,29 +169,6 @@ class EntryWidget(QtWidgets.QPushButton):
         goal_id = entry.get_goal_id()
         on_goal_click(goal_id)
 
-        # Highlight selected goal to indicate its selection
-        last_exists = False
-        index = HOME.goals.count()
-        while index >= 2:
-            child = HOME.goals.itemAt(index - 2)
-            if child.widget():
-                child = child.widget()
-                if child.latest_selection:
-                    last_entry = child
-                    last_exists = True
-            index -= 1
-        if last_exists:  # Only darken last entry backwards if it exists
-            last_entry.setStyleSheet(last_entry.qss)
-            last_entry.setProperty("selected", 0)
-            last_entry.style().unpolish(last_entry)
-            last_entry.style().polish(last_entry)
-            last_entry.latest_selection = False
-        # Set the clicked button to dark grey
-        self.setStyleSheet(self.qss)
-        self.setProperty("selected", 1)
-        self.style().unpolish(self)
-        self.style().polish(self)
-        self.latest_selection = True
 
 
 # A widget representation of an individual subgoal from the SubGoals table.
@@ -584,6 +561,24 @@ def on_goal_click(goal_id):
         desc_scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
 
+        # Find this goal's EntryWidget object
+        entry_widgets = get_entry_widget(goal_id)
+
+        # If it exists, unpaint the last selected item
+        if entry_widgets[1]:
+            entry_widgets[1].setStyleSheet(entry_widgets[1].qss)
+            entry_widgets[1].setProperty("selected", 0)
+            entry_widgets[1].style().unpolish(entry_widgets[1])
+            entry_widgets[1].style().polish(entry_widgets[1])
+            entry_widgets[1].latest_selection = False
+
+        # Set the clicked button to dark grey
+        entry_widgets[0].setStyleSheet(entry_widgets[0].qss)
+        entry_widgets[0].setProperty("selected", 1)
+        entry_widgets[0].style().unpolish(entry_widgets[0])
+        entry_widgets[0].style().polish(entry_widgets[0])
+        entry_widgets[0].latest_selection = True
+
         cursor_hover()
 
 
@@ -755,6 +750,23 @@ def update_completion(goal_id):
         goal_completion = 0
 
     return goal_completion
+
+
+# This function finds an EntryWidget object in the goals layout.
+def get_entry_widget(goal_id):
+    index = HOME.goals.count()
+    current_last_list = [None, None]  # Retrieves the currently selected widget and the last selected widget.
+    while index >= 2:
+        child = HOME.goals.itemAt(index - 2)
+        if child.widget():
+            child = child.widget()
+            if child.entry.get_goal_id() == goal_id:
+                current_last_list[0] = child
+            elif child.latest_selection:
+                current_last_list[1] = child
+
+        index -= 1
+    return current_last_list
 
 
 # Close the database before quitting.
