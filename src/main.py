@@ -1,4 +1,5 @@
 import os
+import pathlib
 import sys
 from datetime import datetime
 
@@ -911,14 +912,43 @@ def quit_program():
     projectio.close_database()
 
 
+WINDOWS = "win32"
+LINUX = "linux"
+OSX = "darwin"
+
+
+def get_root_data_directory():
+    global WINDOWS, LINUX, OSX
+
+    # Retrieve the user's home directory.
+    home = pathlib.Path.home()
+
+    # Append the OS-specific data directory to the user's home directory.
+    if sys.platform == WINDOWS:
+        return home / "Appdata/Roaming"
+    elif sys.platform == LINUX:
+        return home / ".local/share"
+    elif sys.platform == OSX:
+        return home / "Library/Application Support"
+
+
+def get_application_data_folder():
+    return os.path.join(get_root_data_directory(), "simple-goals")
+
+
+def get_database_location():
+    return os.path.join(get_application_data_folder(), "data.db")
+
+
 if __name__ == '__main__':
+    print(get_application_data_folder())
     # Ensure the /db/ folder exists, then initialize the db file.
     try:
-        os.mkdir("db")
+        os.makedirs(get_application_data_folder())
     except FileExistsError:
         pass
 
-    projectio.initialize()
+    projectio.initialize(get_database_location())
 
     # Set custom font.
     # TODO: how do we load .ttf/resources from the bundled .exe?

@@ -4,12 +4,12 @@ con = None
 cur = None
 
 
-def initialize():
+def initialize(database_location):
     global con
     global cur
 
     # Create the database file, if it does not already exist.
-    con = sqlite3.connect('db/main.db')  # Create and connect to the main database file
+    con = sqlite3.connect(database_location)  # Create and connect to the main database file
     cur = con.cursor()  # Create a cursor object
     cur.execute(
         "CREATE TABLE IF NOT EXISTS Goal ('GoalID' INTEGER NOT NULL, 'GoalName' TEXT NOT NULL, 'GoalDesc' TEXT,'StartDate'	TEXT NOT NULL, 'EndDate' TEXT, 'TimeSpent' NUMERIC, 'Completion' NUMERIC, PRIMARY KEY('GoalID'))")
