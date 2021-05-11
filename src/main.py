@@ -4,6 +4,7 @@ import sys
 from datetime import datetime
 
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QRunnable
 from PyQt5.QtGui import QCursor, QIcon, QFontDatabase
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox, QLayout
 
@@ -45,7 +46,8 @@ class EntryWidget(QtWidgets.QPushButton):
         self.percentage = update_completion(self.entry.get_goal_id())
         self.qss = """
         [accessibleName="entryWidget"] {
-            border-radius: 15px 15px 0px 0px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
         }
 
         [accessibleName="editButton"] {
@@ -94,8 +96,29 @@ class EntryWidget(QtWidgets.QPushButton):
         self.setMinimumWidth(410)
         self.setStyleSheet(self.qss)
 
-        # Define the base layout as an HBox.
-        layout = QtWidgets.QHBoxLayout()
+        # Base is a VBox with a HBox on the top and a progress widget on the bottom.
+        base_layout = QtWidgets.QVBoxLayout()
+        top_layout = QtWidgets.QHBoxLayout()
+
+        self.progress_bar = QtWidgets.QProgressBar()
+        self.progress_bar.setContentsMargins(0, 0, 0, 0)
+        self.progress_bar.setMaximumHeight(5)
+        self.progress_bar.setTextVisible(False)
+        self.progress_bar.setStyleSheet("""
+        QProgressBar::chunk {
+            background-color: #30cf7a;
+        }
+        
+        QProgressBar {
+            background-color: transparent;
+            border: none;
+        }
+        """)
+
+        top_layout.setContentsMargins(5, 5, 5, 5)
+        base_layout.setContentsMargins(0, -15, 0, 0)
+        base_layout.addLayout(top_layout)
+        base_layout.addWidget(self.progress_bar)
 
         # The left-hand side (everything but the delete button) is an inner HBox.
         left = QtWidgets.QHBoxLayout()
@@ -104,14 +127,12 @@ class EntryWidget(QtWidgets.QPushButton):
         done.setCheckState(checkbox_state)
         done.clicked.connect(lambda: self.on_check(done.checkState()))
         label = QtWidgets.QLabel(entry.get_goal_name())
-        self.percent_label = QtWidgets.QLabel(f'{self.percentage * 100:.2f}%')
         edit = QtWidgets.QPushButton("")
         edit.setAccessibleName("editButton")
         edit.setIcon(QIcon("resources/edit.png"))
         edit.clicked.connect(self.edit)
         left.addWidget(done)
         left.addWidget(label)
-        left.addWidget(self.percent_label)
         left.addStretch()
         left.addWidget(edit)
 
@@ -132,9 +153,12 @@ class EntryWidget(QtWidgets.QPushButton):
         }
         """)
 
-        layout.addLayout(left)
-        layout.addWidget(delete)
-        self.setLayout(layout)
+        top_layout.addLayout(left)
+        top_layout.addWidget(delete)
+        self.setLayout(base_layout)
+
+        # Initialize the percent label with the appropriate starting values.
+        self.progress_bar.setValue(update_completion(entry.get_goal_id()) * 100)
 
     def remove(self):
 
@@ -177,9 +201,7 @@ class EntryWidget(QtWidgets.QPushButton):
 
         :param percentage: a value in the range of [0, 1] representing the completion progress of this goal
         """
-        self.percent_label.clear()
-        self.percentage = percentage
-        self.percent_label.setText(f'{percentage * 100:.2f}%')
+        self.progress_bar.setValue(percentage * 100)
 
     def select(self):
         """
