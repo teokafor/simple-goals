@@ -345,7 +345,7 @@ padding: 10px;</string>
        <item>
         <layout class="QVBoxLayout" name="subgoals">
          <property name="spacing">
-          <number>25</number>
+          <number>5</number>
          </property>
         </layout>
        </item>

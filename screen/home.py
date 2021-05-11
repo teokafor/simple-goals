@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.subgoals = QtWidgets.QVBoxLayout()
-        self.subgoals.setSpacing(25)
+        self.subgoals.setSpacing(5)
         self.subgoals.setObjectName("subgoals")
         self.verticalLayout_2.addLayout(self.subgoals)
         self.subgoalScrollArea.setWidget(self.scrollAreaWidgetContents_2)
