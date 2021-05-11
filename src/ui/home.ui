@@ -36,7 +36,6 @@
      <string notr="true">border-radius:25px;
 background-color: white;
 font-size: 35px;
-padding-bottom: 5px;
 background-color: #081540;
 color: white;
 </string>
@@ -473,7 +472,6 @@ padding: 10px;</string>
       <string notr="true">border-radius: 5px;
 background-color: white;
 font-size: 35px;
-padding-bottom: 5px;
 background-color: #081540;
 color: white;
 </string>

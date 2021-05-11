@@ -25,7 +25,6 @@ class Ui_MainWindow(object):
         self.newGoal.setStyleSheet("border-radius:25px;\n"
 "background-color: white;\n"
 "font-size: 35px;\n"
-"padding-bottom: 5px;\n"
 "background-color: #081540;\n"
 "color: white;\n"
 "")
@@ -203,7 +202,6 @@ class Ui_MainWindow(object):
         self.newSubgoal.setStyleSheet("border-radius: 5px;\n"
 "background-color: white;\n"
 "font-size: 35px;\n"
-"padding-bottom: 5px;\n"
 "background-color: #081540;\n"
 "color: white;\n"
 "")
