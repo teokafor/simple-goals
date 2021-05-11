@@ -813,12 +813,16 @@ if __name__ == '__main__':
     projectio.initialize()
 
     # Set custom font.
-    font_id = QFontDatabase.addApplicationFont('resources/roboto-light.ttf')
-    font_db = QFontDatabase()
-    font_styles = font_db.styles('Roboto')
-    font_families = QFontDatabase.applicationFontFamilies(font_id)
-    font = font_db.font(font_families[0], font_styles[0], 12)
-    APPLICATION.setFont(font)
+    # TODO: how do we load .ttf/resources from the bundled .exe?
+    try:
+        font_id = QFontDatabase.addApplicationFont('resources/roboto-light.ttf')
+        font_db = QFontDatabase()
+        font_styles = font_db.styles('Roboto')
+        font_families = QFontDatabase.applicationFontFamilies(font_id)
+        font = font_db.font(font_families[0], font_styles[0], 12)
+        APPLICATION.setFont(font)
+    except Exception:
+        pass
 
     open_home()
 
