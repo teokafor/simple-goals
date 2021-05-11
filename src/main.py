@@ -1,21 +1,18 @@
 import os
 import sys
-
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QFont, QCursor, QPainterPath, QRegion, QIcon, QFontDatabase
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox, QSizePolicy, QLayout
-
-import projectio
-from screen.home import Ui_MainWindow as HomeWindow
-from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
-from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
-from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
-from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
-#from widget.entry_widget import EntryWidget
-#from widget.subgoal_widget import SubgoalWidget
 from datetime import datetime
 
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtGui import QCursor, QIcon, QFontDatabase
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox, QLayout
+
 from projectio import Row, SubRow
+from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
+from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
+from screen.home import Ui_MainWindow as HomeWindow
+from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
+from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
+import projectio
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()

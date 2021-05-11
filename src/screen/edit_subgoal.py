@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/new_subgoal.ui'
+# Form implementation generated from reading ui file 'src/ui/edit_subgoal.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -35,12 +35,12 @@ class Ui_NewGoalWindow(object):
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
         self.cancelButton.setObjectName("cancelButton")
-        self.createSubgoalButton = QtWidgets.QPushButton(self.centralwidget)
-        self.createSubgoalButton.setGeometry(QtCore.QRect(830, 610, 131, 41))
-        self.createSubgoalButton.setStyleSheet("background-color: #35B29D;\n"
+        self.modifySubgoalButton = QtWidgets.QPushButton(self.centralwidget)
+        self.modifySubgoalButton.setGeometry(QtCore.QRect(830, 610, 131, 41))
+        self.modifySubgoalButton.setStyleSheet("background-color: #35B29D;\n"
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
-        self.createSubgoalButton.setObjectName("createSubgoalButton")
+        self.modifySubgoalButton.setObjectName("modifySubgoalButton")
         NewGoalWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(NewGoalWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
@@ -52,8 +52,8 @@ class Ui_NewGoalWindow(object):
 
     def retranslateUi(self, NewGoalWindow):
         _translate = QtCore.QCoreApplication.translate
-        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "New Subgoal"))
+        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "Edit Subgoal"))
         self.titleEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a subgoal title..."))
         self.titleLabel.setText(_translate("NewGoalWindow", "Subgoal Title"))
         self.cancelButton.setText(_translate("NewGoalWindow", "Cancel"))
-        self.createSubgoalButton.setText(_translate("NewGoalWindow", "Create Subgoal"))
+        self.modifySubgoalButton.setText(_translate("NewGoalWindow", "Modify Subgoal"))

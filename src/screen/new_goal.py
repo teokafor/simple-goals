@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/edit_goal.ui'
+# Form implementation generated from reading ui file 'src/ui/new_goal.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -39,15 +39,18 @@ class Ui_NewGoalWindow(object):
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
         self.cancelButton.setObjectName("cancelButton")
-        self.modifyGoalButton = QtWidgets.QPushButton(self.centralwidget)
-        self.modifyGoalButton.setGeometry(QtCore.QRect(830, 610, 131, 41))
-        self.modifyGoalButton.setStyleSheet("background-color: #35B29D;\n"
+        self.createGoalButton = QtWidgets.QPushButton(self.centralwidget)
+        self.createGoalButton.setGeometry(QtCore.QRect(830, 610, 131, 41))
+        self.createGoalButton.setStyleSheet("background-color: #35B29D;\n"
 "color: white;\n"
 "border-radius: 5px; font-size: 15px;")
-        self.modifyGoalButton.setObjectName("modifyGoalButton")
+        self.createGoalButton.setObjectName("createGoalButton")
         self.descriptionEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.descriptionEdit.setGeometry(QtCore.QRect(300, 190, 401, 121))
+        self.descriptionEdit.setMinimumSize(QtCore.QSize(0, 120))
         self.descriptionEdit.setStyleSheet("border: none; background-color: white; border-bottom: 1px solid #C9C9C9; border-radius: 5px; padding: 10px;")
+        self.descriptionEdit.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.descriptionEdit.setMarkdown("")
         self.descriptionEdit.setObjectName("descriptionEdit")
         self.calendarWidget = QtWidgets.QCalendarWidget(self.centralwidget)
         self.calendarWidget.setGeometry(QtCore.QRect(280, 340, 451, 311))
@@ -68,10 +71,10 @@ class Ui_NewGoalWindow(object):
 
     def retranslateUi(self, NewGoalWindow):
         _translate = QtCore.QCoreApplication.translate
-        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "Edit Goal"))
+        NewGoalWindow.setWindowTitle(_translate("NewGoalWindow", "Create a New Goal"))
         self.titleEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a goal title..."))
         self.titleLabel.setText(_translate("NewGoalWindow", "Goal Title"))
         self.descriptionLabel.setText(_translate("NewGoalWindow", "Description"))
         self.cancelButton.setText(_translate("NewGoalWindow", "Cancel"))
-        self.modifyGoalButton.setText(_translate("NewGoalWindow", "Modify Goal"))
+        self.createGoalButton.setText(_translate("NewGoalWindow", "Create Goal"))
         self.descriptionEdit.setPlaceholderText(_translate("NewGoalWindow", "Enter a description for your new goal..."))
