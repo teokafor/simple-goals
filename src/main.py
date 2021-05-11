@@ -158,7 +158,7 @@ class EntryWidget(QtWidgets.QPushButton):
         self.setLayout(base_layout)
 
         # Initialize the percent label with the appropriate starting values.
-        self.progress_bar.setValue(update_completion(entry.get_goal_id()) * 100)
+        self.progress_bar.setValue(int(update_completion(entry.get_goal_id()) * 100))
 
     def remove(self):
 
@@ -201,7 +201,7 @@ class EntryWidget(QtWidgets.QPushButton):
 
         :param percentage: a value in the range of [0, 1] representing the completion progress of this goal
         """
-        self.progress_bar.setValue(percentage * 100)
+        self.progress_bar.setValue(int(percentage * 100))
 
     def select(self):
         """
@@ -231,7 +231,7 @@ class SubgoalWidget(QtWidgets.QPushButton):
         self.setStyleSheet("""
                 [accessibleName="entryWidget"] {
             border-radius: 15px 15px 0px 0px;
-            background-color: #f7f5fb;
+            background-color: #E8E4EF;
         }
 
         [accessibleName="editButton"] {
