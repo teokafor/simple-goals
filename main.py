@@ -188,6 +188,7 @@ class SubgoalWidget(QtWidgets.QPushButton):
         self.setStyleSheet("""
                 [accessibleName="entryWidget"] {
             border-radius: 15px 15px 0px 0px;
+            background-color: #E8E4EF;
         }
 
         [accessibleName="editButton"] {
@@ -548,6 +549,7 @@ def on_goal_click(goal_id):
         end_date_layout = HOME.endDateLayout
         clear_layout(end_date_layout)
         end_date = QtWidgets.QLabel(f'Due: {projectio.Row(goal_id).get_end_date()}')
+        end_date.setStyleSheet("""QWidget {background-color: white;}""")
         end_date_layout.addWidget(end_date)
 
         # Allow for equal subgoal spacing

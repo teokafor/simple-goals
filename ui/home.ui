@@ -404,9 +404,16 @@ padding: 10px;</string>
         <height>191</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;</string>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QVBoxLayout" name="goalDescription"/>
+        <layout class="QVBoxLayout" name="goalDescription">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -418,7 +425,7 @@ padding: 10px;</string>
       <x>510</x>
       <y>-2</y>
       <width>521</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
    </widget>
