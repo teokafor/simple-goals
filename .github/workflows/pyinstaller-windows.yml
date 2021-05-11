@@ -17,9 +17,8 @@ jobs:
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: src
-        spec: simple-goals
 
     - uses: actions/upload-artifact@v2
       with:
         name: simple-goals
-        path: src/dist/simple-goals # or path/to/artifact
+        path: src/dist/windows # or path/to/artifact

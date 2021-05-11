@@ -1,3 +1,3 @@
 import os
 
-os.system("pyinstaller simple-goals.spec --noconfirm")
+os.system("pyinstaller build.spec --noconfirm")
