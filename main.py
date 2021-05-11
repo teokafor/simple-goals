@@ -222,7 +222,8 @@ class SubgoalWidget(QtWidgets.QPushButton):
 
         QCheckBox::indicator::checked {
             background-color: #35B29D;
-            background-image: url(resources/checked.png);
+            background-image: url(resources/checked_20px.png);
+            background-position: center;
         }
 
         QCheckBox {
