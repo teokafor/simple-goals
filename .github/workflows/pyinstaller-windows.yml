@@ -1,11 +1,11 @@
 name: Package exe with PyInstaller - Windows
 
 on:
+  release:
+    types: [ published, created, edited ]
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+    tags:
+      - '*'
 jobs:
   build:
 
