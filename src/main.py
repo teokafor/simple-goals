@@ -6,13 +6,13 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QCursor, QIcon, QFontDatabase
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QCheckBox, QCalendarWidget, QMessageBox, QLayout
 
+import projectio
 from projectio import Row, SubRow
 from screen.edit_goal import Ui_NewGoalWindow as EditGoalWindow
 from screen.edit_subgoal import Ui_NewGoalWindow as EditSubGoalWindow
 from screen.home import Ui_MainWindow as HomeWindow
 from screen.new_goal import Ui_NewGoalWindow as NewGoalWindow
 from screen.new_subgoal import Ui_NewGoalWindow as NewSubGoalWindow
-import projectio
 
 APPLICATION = QApplication(sys.argv)
 ROOT = QMainWindow()
@@ -31,10 +31,11 @@ DUE_ANY = 3
 DUE_PAST = 4
 
 
-# CLASSES:
-
-# A widget representation of a row from the Goals table.
 class EntryWidget(QtWidgets.QPushButton):
+    """
+    A widget representation of a goal entry from the goals table.
+    """
+
     def __init__(self, entry: Row, callback, *args, **kwargs):
         super(EntryWidget, self).__init__(*args, **kwargs)
         self.entry = entry
@@ -134,10 +135,14 @@ class EntryWidget(QtWidgets.QPushButton):
         layout.addWidget(delete)
         self.setLayout(layout)
 
-# EntryWidget methods:
-
-    # Called when the delete button is clicked.
     def remove(self):
+
+        """
+        Calling this method will pause the thread with a delete confirmation dialog box.
+        If the dialog is accepted, this entry will self-delete itself from the tracker inside main.py,
+            and disappear from the widget list on the main UI screen.
+        """
+
         entry = self.entry
         message = DeleteWidget(entry.get_goal_name())
         if message.delete_flag:
@@ -146,33 +151,51 @@ class EntryWidget(QtWidgets.QPushButton):
             self.callback()
             # Prevents the program from attempting to load a non-existent goal, thus causing it to crash.
             if goal_id != last_goal_id:
-                on_goal_click(last_goal_id)
+                display_goal(last_goal_id)
 
-    # Called when the checkbox is toggled.
     def on_check(self, state):
+        """
+        Called when the left-hand check-box of this entry widget is pressed.
+        By default, this calls this widget entries' set_completion method, which saves the new state to disk.
+
+        :param state: True if the check-box is pressed in, otherwise False
+        """
         self.entry.set_completion(state)
 
-    # Called when the edit button is pressed.
     def edit(self):
+        """
+        Called when the right-hand edit button is pressed.
+        By default, this opens the Edit Goal screen to configure the details of this entry.
+        """
         entry = self.entry
         open_edit_goal(entry.get_goal_id())
 
-    # Called when a subgoal of this goal has its checkbox toggled.
     def update_percent_label(self, percentage):
+        """
+        Updates the percentage display of this EntryWidget.
+
+        :param percentage: a value in the range of [0, 1] representing the completion progress of this goal
+        """
         self.percent_label.clear()
         self.percentage = percentage
         self.percent_label.setText(f'{percentage * 100:.2f}%')
 
-    # Called when the body of the widget is pressed. It will update subgoals, description, and highlights.
     def select(self):
+        """
+        Called when the general body of this EntryWidget is pressed.
+        By default, this method updates coloring to showcase the new selection status,
+            and unselects all other widgets.
+        """
         entry = self.entry
         goal_id = entry.get_goal_id()
-        on_goal_click(goal_id)
+        display_goal(goal_id)
 
 
-
-# A widget representation of an individual subgoal from the SubGoals table.
 class SubgoalWidget(QtWidgets.QPushButton):
+    """
+    A widget representation of an individual subgoal from the SubGoals table.
+    """
+
     def __init__(self, subgoal: SubRow, callback, *args, **kwargs):
         super(SubgoalWidget, self).__init__(*args, **kwargs)
 
@@ -269,7 +292,7 @@ class SubgoalWidget(QtWidgets.QPushButton):
         layout.addWidget(delete)
         self.setLayout(layout)
 
-# SubgoalWidget methods:
+    # SubgoalWidget methods:
 
     # This method updates the completion rate of this subgoal in the database. It also calls the corresponding EntryWidget to update its label.
     def on_check(self, state):
@@ -288,39 +311,58 @@ class SubgoalWidget(QtWidgets.QPushButton):
             index -= 1
         correct_entry.update_percent_label(update_completion(goal_id))
 
-    # This method is called when the edit button is pressed.
     def edit(self):
+        """
+        Called when this widget's edit button is clicked.
+        By default, this method opens the 'Edit Subgoal' page with details from this widget.
+        """
+
         open_edit_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
 
     # This method is called when the delete button is pressed.
     def remove(self):
+        """
+        Called when this widget's delete button is clicked.
+        By default, this removes the subgoal from disk, and then updates the parent.
+        """
         projectio.delete_subgoal(self.subgoal.get_sub_id(), self.subgoal.get_goal_id())
-        on_goal_click(self.subgoal.get_goal_id())
+        display_goal(self.subgoal.get_goal_id())
         self.on_check(self.state)
 
 
-# Objects of this class are only created if inputs are invalid. Displays a warning message on creation.
 class InvalidWidget(QtWidgets.QWidget):
+    """
+    This widget represents an error dialog box which appears when an input field for a goal is invalid.
+    """
+
     def __init__(self, *args, **kwargs):
         super(InvalidWidget, self).__init__(*args, **kwargs)
         QMessageBox.warning(self, 'Error!', f'Input fields cannot be left blank.\nPlease try again.')
 
 
-# Objects of this class are instantiated from the delete method in EntryWidget.
 class DeleteWidget(QtWidgets.QWidget):
+    """
+    This widget represents a dialog box that confirms whether the user wants to delete a specified goal.
+    """
+
     def __init__(self, goal_name, *args, **kwargs):
+        """
+        Primary constructor for DeleteWidget.
+
+        :param goal_name: the name of the goal that is being deleted. Displayed in the dialog box this widget provides.
+        """
         super(DeleteWidget, self).__init__(*args, **kwargs)
         self.goal_name = goal_name
         self.delete_flag = False
 
-        message_box = QMessageBox.question(self, f'Delete {self.goal_name}?', f'Are you sure you want to delete {self.goal_name}?')
+        message_box = QMessageBox.question(self, f'Delete {self.goal_name}?',
+                                           f'Are you sure you want to delete {self.goal_name}?')
         if message_box == QMessageBox.Yes:
             self.delete_flag = True
 
 
 # SCREENS:
 
-# This screen displays the main window.
 def open_home():
     """
     Opens the "Home" window.
@@ -348,7 +390,7 @@ def open_home():
         update_goal_list(1)
 
     # Make widgets on home screen react to cursor hover
-    cursor_hover()
+    setup_hover()
 
     # Hide the new subgoals button by default.
     HOME.newSubgoal.hide()
@@ -413,10 +455,9 @@ def open_home():
         }
         """)
 
-    date_tab_style()
+    update_filter_highlights()
 
 
-# This function displays the new goal screen.
 def open_new_goal():
     """
     Opens a new "Add Goal" window.
@@ -425,7 +466,7 @@ def open_new_goal():
     window = NewGoalWindow()
     window.setupUi(ROOT)
 
-    cursor_hover()
+    setup_hover()
 
     # Obtain elements for reference
     title = window.titleEdit
@@ -444,16 +485,25 @@ def open_new_goal():
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
-    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
-    window.createGoalButton.clicked.connect(lambda: new_goal(title.text(), description.toPlainText(), min_date.toPyDate(), calendar.selectedDate().toPyDate()))
+    window.cancelButton.clicked.connect(lambda: display_goal(last_goal_id))
+    window.createGoalButton.clicked.connect(
+        lambda: submit_new_goal(title.text(), description.toPlainText(), min_date.toPyDate(),
+                                calendar.selectedDate().toPyDate()))
 
 
-# This function opens the edit goal screen.
 def open_edit_goal(goal_id):
+    """
+    Opens the edit goal screen.
+    The goal_id parameter passed into this method is used to determine
+    what information to fill the edit goal screen with, and what ID to replace when writing to disk.
+
+    :param goal_id: ID of the goal to edit
+    """
+
     window = EditGoalWindow()
     window.setupUi(ROOT)
 
-    cursor_hover()
+    setup_hover()
     current_row = Row(goal_id)
 
     # Obtain elements for reference
@@ -477,29 +527,40 @@ def open_edit_goal(goal_id):
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
-    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
-    window.modifyGoalButton.clicked.connect(lambda: modify_goal(goal_id, title.text(), description.toPlainText(), calendar.selectedDate().toPyDate()))
+    window.cancelButton.clicked.connect(lambda: display_goal(last_goal_id))
+    window.modifyGoalButton.clicked.connect(
+        lambda: modify_goal(goal_id, title.text(), description.toPlainText(), calendar.selectedDate().toPyDate()))
 
 
-# This function calls the new subgoal screen.
 def open_new_subgoal(goal_id):
+    """
+    Opens the 'New Subgoal' screen, which allows users to add a single sub-task for a goal.
+
+    :param goal_id: the ID of the goal being modified
+    """
     window = NewSubGoalWindow()
     window.setupUi(ROOT)
-    cursor_hover()
+    setup_hover()
 
     title = window.titleEdit
 
     # Click handlers
     window.cancelButton.clicked.connect(open_home)
-    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
+    window.cancelButton.clicked.connect(lambda: display_goal(last_goal_id))
     window.createSubgoalButton.clicked.connect(lambda: new_subgoal(goal_id, title.text()))
 
 
-# This function calls the edit subgoal screen.
 def open_edit_subgoal(sub_id, goal_id):
+    """
+    Opens the 'Edit Subgoal' screen. This screen is identical in functionality to the one opened by open_new_subgoal.
+
+    :param sub_id: ID of the subgoal to modify
+    :param goal_id: ID of the parent of the subgoal being modified
+    """
+
     window = EditSubGoalWindow()
     window.setupUi(ROOT)
-    cursor_hover()
+    setup_hover()
 
     current_subgoal = SubRow(sub_id, goal_id)
 
@@ -508,14 +569,24 @@ def open_edit_subgoal(sub_id, goal_id):
     title.setText(current_subgoal.get_sub_name())
 
     window.cancelButton.clicked.connect(open_home)
-    window.cancelButton.clicked.connect(lambda: on_goal_click(last_goal_id))
+    window.cancelButton.clicked.connect(lambda: display_goal(last_goal_id))
     window.modifySubgoalButton.clicked.connect(lambda: modify_subgoal(sub_id, goal_id, title.text()))
 
 
 # Functions related to screens:
 
-# This function is run each time a goal is selected. It will update description and fetch subgoals.
-def on_goal_click(goal_id):
+def display_goal(goal_id):
+    """
+    This method updates the main screen to display information from the given goal ID.
+    Most buttons that refresh the state of the home page, and all general EntryWidget
+    icons on the left, will call this method when pressed.
+
+    By default, this method updates details on the right-hand side of the screen.
+    This includes text labels, sub-goals, and the subgoal button.
+
+    :param goal_id: the ID of the goal to display
+    """
+
     # Set the global to the selected goal.
     global last_goal_id
     last_goal_id = goal_id
@@ -539,7 +610,7 @@ def on_goal_click(goal_id):
 
         # Create references to the GUI layouts
         description_layout = HOME.goalDescription
-        description_layout.setContentsMargins(-2,-2,-2,-2)
+        description_layout.setContentsMargins(-2, -2, -2, -2)
         subgoals_layout = HOME.subgoals
 
         # Set the end date
@@ -607,12 +678,17 @@ def on_goal_click(goal_id):
             entry_widgets[0].style().polish(entry_widgets[0])
             entry_widgets[0].latest_selection = True
 
-        cursor_hover()
+        setup_hover()
 
 
-# This function will highlight the currently selected date tab. Called when the home screen is displayed and on tab selection.
-def date_tab_style():
-    # Update button selection status
+def update_filter_highlights():
+    """
+    Each filter (Today, Weekly, Any, Overview) located at the top of the screen has a colored highlight under it.
+    The colored highlight being 'enabled' (or visible) represents a selected state.
+    This method is responsible for refreshing these hints, and should be called when a relevant change is made to the
+    application's state.
+    """
+
     if date_tab == DUE_TODAY:
         HOME.todayButton.setChecked(True)
         HOME.weeklyButton.setChecked(False)
@@ -635,8 +711,14 @@ def date_tab_style():
         HOME.pastButton.setChecked(True)
 
 
-# This function will find any relevant elements in the current window and change the cursor style appropriately.
-def cursor_hover():
+def setup_hover():
+    """
+    Configures the cursor settings of all Button, Checkbox, and Calendar, elements in the current screen, which
+    results in the pointing hand (selection) cursor being displayed on mouse-over.
+
+    This method should be called after the main window changes, or after any widgets are modified.
+    """
+
     elements = []
     buttons = ROOT.findChildren(QPushButton)
     checkboxes = ROOT.findChildren(QCheckBox)
@@ -668,7 +750,7 @@ def update_goal_list(date_limit):
     for entry in elements:
         today_date = datetime.today()
         end_date = datetime.strptime(entry.get_end_date(), "%Y-%m-%d")
-        date_difference = (end_date-today_date).days
+        date_difference = (end_date - today_date).days
 
         if date_limit == DUE_TODAY:  # Due today
             if date_difference == -1:
@@ -694,58 +776,83 @@ def update_goal_list(date_limit):
     scroll_area.setWidgetResizable(True)
     scroll_area.setWidget(ROOT.parentWidget())
 
-    date_tab_style()
+    update_filter_highlights()
     vbox.addStretch()
-    on_goal_click(last_goal_id)
-    cursor_hover()
+    display_goal(last_goal_id)
+    setup_hover()
 
 
-# Called by open_new_goal()
-def new_goal(name, description, start, end):
-    error_exists = invalid_input([name, description])
+def submit_new_goal(name, description, start, end):
+    """
+    Called when the finalize/submit button in the 'New Goal' menu is pressed.
 
+    This method will first sanitize the 'New Goal' input boxes.
+    If either box is empty, an error dialog will appear and prevent further execution.
+    If the sanitization passes, this method will save the new goal information to disk, open the home-menu, and then
+    display details about the new goal.
+    """
+
+    error_exists = check_input([name, description])
+
+    # If no error was reported by the sanitization check, save the goal to disk, & go back to the home screen.
     if not error_exists:
         projectio.new_goal(name, description, start, end)
         open_home()
-        on_goal_click(last_goal_id)
+        display_goal(last_goal_id)
 
 
-# Called by open_new_subgoal()
 def new_subgoal(goal_id, name):
-    error_exists = invalid_input([name])
+    """
+    Called when the finalize/submit button in the 'New Subgoal' menu is pressed.
 
+    This method will first sanitize the 'New Subgoal' input boxes.
+    If te primary input box is empty, an error dialog will appear and prevent further execution.
+    If the sanitization passes, this method will save the subgoal information to disk, and refresh the home-menu.
+    """
+
+    error_exists = check_input([name])
+
+    # If no error was reported by the sanitization check, save the goal to disk, & refresh the home screen.
     if not error_exists:
         projectio.new_subgoal(goal_id, name)
         open_home()
-        on_goal_click(last_goal_id)
+        display_goal(last_goal_id)
 
 
-# Called by open_edit_goal()
 def modify_goal(goal_id, name, description, end):
-    error_exists = invalid_input([name, description])
+    """
+    Called when the finalize/submit button is pressed in the 'Edit Goal' screen.
 
+    By default, this method sanitizes the input boxes to ensure the user has entered non-empty & valid data.
+    If the validation passes, the modified data is saved to disk, the home-screen is opened, and the
+    newly modified data is displayed.
+    """
+
+    error_exists = check_input([name, description])
+
+    # If no error was reported by the sanitization check, save the modified goal to disk, & re-open the home-screen.
     if not error_exists:
         modified = Row(goal_id)
         modified.set_goal_name(name)
         modified.set_goal_desc(description)
         modified.set_end_date(end)
         open_home()
-        on_goal_click(last_goal_id)
+        display_goal(last_goal_id)
 
 
 # Called by open_edit_subgoal()
 def modify_subgoal(sub_id, goal_id, name):
-    error_exists = invalid_input([name])
+    error_exists = check_input([name])
 
     if not error_exists:
         subgoal = SubRow(sub_id, goal_id)
         subgoal.set_sub_name(name)
         open_home()
-        on_goal_click(last_goal_id)
+        display_goal(last_goal_id)
 
 
 # When called (by trying to create/modify a goal/subgoal) this function will determine if string inputs are valid.
-def invalid_input(input_list):
+def check_input(input_list):
     error_flag = False
     for item in input_list:
         if item == '':
