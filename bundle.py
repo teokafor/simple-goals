@@ -1,3 +1,3 @@
 import os
 
-os.system("pyinstaller main.py -n Notes")
+os.system("pyinstaller main.py -n Notes --noconfirm")
