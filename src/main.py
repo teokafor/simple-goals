@@ -102,7 +102,7 @@ class EntryWidget(QtWidgets.QPushButton):
 
         self.progress_bar = QtWidgets.QProgressBar()
         self.progress_bar.setContentsMargins(0, 0, 0, 0)
-        self.progress_bar.setMaximumHeight(5)
+        self.progress_bar.setMaximumHeight(2)
         self.progress_bar.setTextVisible(False)
         self.progress_bar.setStyleSheet("""
         QProgressBar::chunk {
