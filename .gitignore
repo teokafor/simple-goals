@@ -8,7 +8,6 @@ client/screen_old/__pycache__/new_goal.cpython-37.pyc
 client/db/main.db
 db/
 /build/
-*.spec
 /dist/
 /dist/*
 dist/

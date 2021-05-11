@@ -1,3 +1,3 @@
 import os
 
-os.system("pyinstaller main.py -n Notes --noconfirm")
+os.system("pyinstaller simple-goals.spec --noconfirm")
