@@ -131,7 +131,7 @@ class Ui_MainWindow(object):
         self.subgoalScrollArea_nw.setWidget(self.scrollAreaWidgetContents_200)
         self.subgoalScrollArea = QtWidgets.QScrollArea(self.subgoalWidget)
         self.subgoalScrollArea.setEnabled(True)
-        self.subgoalScrollArea.setGeometry(QtCore.QRect(0, 0, 451, 321))
+        self.subgoalScrollArea.setGeometry(QtCore.QRect(0, 0, 451, 301))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.subgoalScrollArea.setWidgetResizable(True)
         self.subgoalScrollArea.setObjectName("subgoalScrollArea")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 451, 321))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 451, 301))
         self.scrollAreaWidgetContents_2.setMinimumSize(QtCore.QSize(0, 0))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
@@ -183,7 +183,7 @@ class Ui_MainWindow(object):
         self.filler.setGeometry(QtCore.QRect(510, -2, 521, 51))
         self.filler.setObjectName("filler")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(530, 640, 421, 31))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(530, 640, 171, 31))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.endDateLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.endDateLayout.setContentsMargins(0, 0, 0, 0)
@@ -193,7 +193,7 @@ class Ui_MainWindow(object):
         self.widget.setStyleSheet("background-color: white;")
         self.widget.setObjectName("widget")
         self.newSubgoal = QtWidgets.QPushButton(self.widget)
-        self.newSubgoal.setGeometry(QtCore.QRect(450, 650, 30, 30))
+        self.newSubgoal.setGeometry(QtCore.QRect(430, 650, 30, 30))
         self.newSubgoal.setStyleSheet("border-radius: 5px;\n"
 "background-color: white;\n"
 "font-size: 35px;\n"
