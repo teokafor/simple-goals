@@ -129,7 +129,7 @@ class EntryWidget(QtWidgets.QPushButton):
         label = QtWidgets.QLabel(entry.get_goal_name())
         edit = QtWidgets.QPushButton("")
         edit.setAccessibleName("editButton")
-        edit.setIcon(QIcon("resources/edit.png"))
+        edit.setIcon(QIcon(get_resource_path("edit.png")))
         edit.clicked.connect(self.edit)
         left.addWidget(done)
         left.addWidget(label)
@@ -141,7 +141,7 @@ class EntryWidget(QtWidgets.QPushButton):
         # Delete button on the right-hand side
         delete = QtWidgets.QPushButton("")
         delete.clicked.connect(self.remove)
-        delete.setIcon(QIcon("resources/delete.png"))
+        delete.setIcon(QIcon(get_resource_path("delete.png")))
         delete.setMaximumWidth(38)
         delete.setMinimumWidth(38)
         delete.setMaximumHeight(38)

@@ -16,7 +16,7 @@ a = Analysis(['main.py'],
              cipher=block_cipher,
              noarchive=False)
 
-a.datas += [('roboto-light.ttf','resources\\roboto-light.ttf', "DATA")]
+a.datas += [('roboto-light.ttf','resources\\roboto-light.ttf', "DATA"), ('edit.png','resources\\edit.png', "DATA"), ('delete.png','resources\\delete.png', "DATA")]
 
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
