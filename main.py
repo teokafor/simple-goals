@@ -805,7 +805,11 @@ def quit_program():
 
 if __name__ == '__main__':
     # Ensure the /db/ folder exists, then initialize the db file.
-    os.mkdir("db")
+    try:
+        os.mkdir("db")
+    except FileExistsError:
+        pass
+
     projectio.initialize()
 
     # Set custom font.
