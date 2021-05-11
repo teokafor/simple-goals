@@ -7,3 +7,9 @@ client/screen_old/__pycache__/new_goal.cpython-37.pyc
 .idea/
 client/db/main.db
 db/
+/build/
+main.spec
+/dist/
+/dist/*
+dist/
+base_library.zip
