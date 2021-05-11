@@ -912,6 +912,19 @@ def quit_program():
     projectio.close_database()
 
 
+def get_resource_path(resource):
+    # PyInstaller extracts resources to the MEIPASS temporary directory when the application is run.
+    # We want to load resources from this directory if we are running from an executable,
+    #   or fall back to the local program directory if we are running from a development environment.
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath("resources/")
+
+    # Append the resource location to the root directory and return the result.
+    return os.path.join(base_path, resource)
+
+
 WINDOWS = "win32"
 LINUX = "linux"
 OSX = "darwin"
@@ -941,7 +954,6 @@ def get_database_location():
 
 
 if __name__ == '__main__':
-    print(get_application_data_folder())
     # Ensure the /db/ folder exists, then initialize the db file.
     try:
         os.makedirs(get_application_data_folder())
@@ -953,7 +965,7 @@ if __name__ == '__main__':
     # Set custom font.
     # TODO: how do we load .ttf/resources from the bundled .exe?
     try:
-        font_id = QFontDatabase.addApplicationFont('resources/roboto-light.ttf')
+        font_id = QFontDatabase.addApplicationFont(get_resource_path("roboto-light.ttf"))
         font_db = QFontDatabase()
         font_styles = font_db.styles('Roboto')
         font_families = QFontDatabase.applicationFontFamilies(font_id)
