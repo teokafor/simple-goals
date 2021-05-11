@@ -540,7 +540,7 @@ def open_edit_goal(goal_id):
     calendar.setSelectedDate(datetime.strptime(current_row.get_end_date(), "%Y-%m-%d"))
     title.setMinimumWidth(400)
     description.setMinimumWidth(400)
-    description.setMaximumHeight(50)
+    description.setMaximumHeight(115)
     title.adjustSize()
     description.adjustSize()
 
