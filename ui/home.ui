@@ -438,7 +438,15 @@ padding: 10px;</string>
       <height>31</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="endDateLayout"/>
+    <layout class="QVBoxLayout" name="endDateLayout">
+     <item>
+      <widget class="QWidget" name="dummyThingy" native="true">
+       <property name="styleSheet">
+        <string notr="true">background-color: white;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -497,6 +505,32 @@ color: white;
      </property>
     </widget>
    </widget>
+   <widget class="Line" name="verticalLine">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>0</y>
+      <width>2</width>
+      <height>850</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="horizontalLine">
+    <property name="geometry">
+     <rect>
+      <x>-113</x>
+      <y>50</y>
+      <width>1261</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
    <zorder>widget</zorder>
    <zorder>newGoal</zorder>
    <zorder>horizontalLayoutWidget</zorder>
@@ -505,6 +539,8 @@ color: white;
    <zorder>descriptionWidget</zorder>
    <zorder>filler</zorder>
    <zorder>verticalLayoutWidget</zorder>
+   <zorder>verticalLine</zorder>
+   <zorder>horizontalLine</zorder>
   </widget>
  </widget>
  <resources/>
