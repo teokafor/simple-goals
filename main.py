@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PyQt5 import QtCore, QtWidgets
@@ -803,6 +804,10 @@ def quit_program():
 
 
 if __name__ == '__main__':
+    # Ensure the /db/ folder exists, then initialize the db file.
+    os.mkdir("db")
+    projectio.initialize()
+
     # Set custom font.
     font_id = QFontDatabase.addApplicationFont('resources/roboto-light.ttf')
     font_db = QFontDatabase()

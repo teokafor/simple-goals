@@ -1,16 +1,26 @@
 import sqlite3
 
-# Create the database file, if it does not already exist.
-con = sqlite3.connect('db/main.db')  # Create and connect to the main database file
-cur = con.cursor()  # Create a cursor object
-cur.execute("CREATE TABLE IF NOT EXISTS Goal ('GoalID' INTEGER NOT NULL, 'GoalName' TEXT NOT NULL, 'GoalDesc' TEXT,'StartDate'	TEXT NOT NULL, 'EndDate' TEXT, 'TimeSpent' NUMERIC, 'Completion' NUMERIC, PRIMARY KEY('GoalID'))")
-cur.execute("CREATE TABLE IF NOT EXISTS SubGoal ('SubID' INTEGER NOT NULL, 'GoalID' INTEGER NOT NULL, 'SubName' TEXT NOT NULL, 'Completion' INTEGER NOT NULL, FOREIGN KEY('GoalID') REFERENCES 'Goal' ('GoalID'), PRIMARY KEY('SubID'))")
-con.commit()
+con = None
+cur = None
 
 
-# Initial connection to database
-cur.execute("SELECT * FROM Goal")
-cur.execute('PRAGMA foreign_keys=ON')  # Enforce foreign keys. Needed to link subgoals to goals table.
+def initialize():
+    global con
+    global cur
+
+    # Create the database file, if it does not already exist.
+    con = sqlite3.connect('db/main.db')  # Create and connect to the main database file
+    cur = con.cursor()  # Create a cursor object
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS Goal ('GoalID' INTEGER NOT NULL, 'GoalName' TEXT NOT NULL, 'GoalDesc' TEXT,'StartDate'	TEXT NOT NULL, 'EndDate' TEXT, 'TimeSpent' NUMERIC, 'Completion' NUMERIC, PRIMARY KEY('GoalID'))")
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS SubGoal ('SubID' INTEGER NOT NULL, 'GoalID' INTEGER NOT NULL, 'SubName' TEXT NOT NULL, 'Completion' INTEGER NOT NULL, FOREIGN KEY('GoalID') REFERENCES 'Goal' ('GoalID'), PRIMARY KEY('SubID'))")
+    con.commit()
+
+    # Initial connection to database
+    cur.execute("SELECT * FROM Goal")
+    cur.execute('PRAGMA foreign_keys=ON')  # Enforce foreign keys. Needed to link subgoals to goals table.
+
 
 # Objects of this class will represent an individual row present in the Goals table.
 class Row:
