@@ -231,7 +231,7 @@ class SubgoalWidget(QtWidgets.QPushButton):
         self.setStyleSheet("""
                 [accessibleName="entryWidget"] {
             border-radius: 15px 15px 0px 0px;
-            background-color: #E8E4EF;
+            background-color: #f7f5fb;
         }
 
         [accessibleName="editButton"] {
@@ -661,6 +661,7 @@ def display_goal(goal_id):
         scroll_area = HOME.subgoalScrollArea
         scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scrollbar_style()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
 
@@ -679,6 +680,7 @@ def display_goal(goal_id):
         desc_scroll_area = HOME.descriptionScrollArea
         desc_scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         desc_scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scrollbar_style()
         desc_scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(ROOT.parentWidget())
 
@@ -752,6 +754,34 @@ def setup_hover():
         element.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 
 
+def scrollbar_style():
+    """
+    This function will update the scrollbar style for goals, subgoals, and the descripton box.
+    """
+    # Scroll qss referenced by three widgets
+    scroll_qss = """ 
+    QScrollBar {
+        background: #E8E4EF;
+        
+    }
+
+    QScrollBar::handle {
+        background: #bcb7c6;
+    }
+
+    QScrollBar::handle::pressed {
+        background: #9d9d9d;
+    }
+    """
+
+    # Get all scrollbars present in scene
+    scrollbars = ROOT.findChildren(QtWidgets.QScrollBar)
+
+    # Add style to each of them
+    for scrollbar in scrollbars:
+        scrollbar.setStyleSheet(scroll_qss)
+
+
 # When called (by selecting a date tab) this function will reload the current goals in the frame
 def update_goal_list(date_limit):
     # Set the date tab to whatever tab was selected last
@@ -796,6 +826,7 @@ def update_goal_list(date_limit):
     scroll_area = HOME.scrollArea
     scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
     scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+    scrollbar_style()
     scroll_area.setWidgetResizable(True)
     scroll_area.setWidget(ROOT.parentWidget())
 
